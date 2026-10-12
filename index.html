@@ -3,18 +3,74 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Mapa hacia el Secreto del Desarrollo Web - Una aplicación pirata interactiva para estudiar y dominar conceptos de HTML, CSS y JavaScript.">
-  <title>Mapa hacia el Secreto del Desarrollo Web</title>
+  
+  <!-- SEO Básico -->
+  <title>Mapa hacia el Secreto del Desarrollo Web | Aprende HTML, CSS y JavaScript</title>
+  <meta name="description" content="Aprende y estudia conceptos clave de desarrollo web frontend (HTML, CSS y JavaScript) con una experiencia interactiva temática de mapa pirata, lecciones en pergamino, cuestionarios y exámenes finales.">
+  <meta name="keywords" content="desarrollo web, aprender html, aprender css, aprender javascript, frontend, programacion web, educacion interactiva, conceptos web, estudio frontend">
+  <meta name="author" content="Mapa del Desarrollo Web">
+  <meta name="robots" content="index, follow">
+  <meta name="theme-color" content="#EEC67C">
 
-  <!-- Google Fonts: Pirate Header & Monospace Reading Font -->
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="alternate icon" type="image/svg+xml" href="favicon.svg">
+
+  <!-- Open Graph / Redes Sociales (Facebook, WhatsApp, LinkedIn) -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="./">
+  <meta property="og:site_name" content="Mapa hacia el Secreto del Desarrollo Web">
+  <meta property="og:title" content="Mapa hacia el Secreto del Desarrollo Web | Aprende Frontend">
+  <meta property="og:description" content="Embárcate en la expedición pirata para dominar HTML, CSS y JavaScript a través de 30 módulos conceptuales y exámenes interactivos.">
+  <meta property="og:image" content="favicon.svg">
+  <meta property="og:locale" content="es_LA">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Mapa hacia el Secreto del Desarrollo Web">
+  <meta name="twitter:description" content="Domina los conceptos de desarrollo frontend con 3 islas de conocimiento: HTML, CSS y JavaScript.">
+  <meta name="twitter:image" content="favicon.svg">
+
+  <!-- Metadatos Geográficos (GEO Tags) -->
+  <meta name="geo.region" content="MX">
+  <meta name="geo.placename" content="América Latina">
+  <meta name="geo.position" content="19.4326;-99.1332">
+  <meta name="ICBM" content="19.4326, -99.1332">
+  <meta name="distribution" content="global">
+  <meta name="language" content="es">
+
+  <!-- Datos Estructurados Schema.org (JSON-LD) para Motores de Búsqueda -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Mapa hacia el Secreto del Desarrollo Web",
+    "applicationCategory": "EducationalApplication",
+    "operatingSystem": "All",
+    "browserRequirements": "Requires JavaScript. Requires HTML5.",
+    "description": "Aplicación interactiva y gamificada para estudiar y aprender conceptos de HTML, CSS y JavaScript con temática náutica y pirata.",
+    "inLanguage": "es",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "educationalUse": "Estudio y autoaprendizaje de desarrollo web frontend"
+  }
+  </script>
+
+  <!-- Google Fonts: Títulos de Aventura y Tipografía Monoespaciada -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Pirata+One&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=MedievalSharp&family=Pirata+One&display=swap" rel="stylesheet">
 
   <!-- Estilos principales -->
   <link rel="stylesheet" href="CSS/styles.css">
 </head>
 <body class="theme-light">
+  <!-- Enlace accesible de salto al contenido principal -->
+  <a href="#view-home" class="skip-link">Saltar al contenido principal</a>
+
   <!-- Fondo con textura sutil de pergamino e ilustraciones discretas -->
   <div class="parchment-background-layer" aria-hidden="true"></div>
 
@@ -23,14 +79,7 @@
 
     <!-- HEADER GLOBAL -->
     <header class="app-header" id="global-header">
-      <div class="header-left">
-        <button id="btn-home-nav" class="pirate-icon-btn" title="Volver al Gran Mapa" aria-label="Ir al inicio">
-          <svg class="icon-svg" viewBox="0 0 24 24" width="22" height="22">
-            <path fill="currentColor" d="M12 2L2 12h3v8h6v-6h2v6h6v-8h3L12 2zm0 2.84L18 10.2v7.8h-2v-6H8v6H6v-7.8l6-5.36z"/>
-          </svg>
-          <span class="btn-text-sm">Gran Mapa</span>
-        </button>
-      </div>
+      <div class="header-left"></div>
 
       <div class="header-center">
         <h1 class="app-main-title" id="app-heading">Mapa hacia el Secreto del Desarrollo Web</h1>
@@ -169,12 +218,7 @@
         </article>
       </section>
 
-      <!-- Pie de página con opción de reiniciar progreso -->
-      <footer class="home-bottom-tools">
-        <button id="btn-reset-data" class="pirate-link-btn" title="Reiniciar todo el progreso">
-          <span>🔄 Reiniciar bitácora de viaje</span>
-        </button>
-      </footer>
+
     </main>
 
     <!-- VISTA 2: ISLA ESPECÍFICA (MAPA CON 10 LECCIONES + EXAMEN FINAL) -->
@@ -215,7 +259,7 @@
 
         <!-- Lista desordenada estilizada con hitos del mapa -->
         <ul class="pirate-lessons-trail" id="island-lessons-list">
-          <!-- Inyectado dinámicamente mediante scrip.js -->
+          <!-- Inyectado dinámicamente mediante script.js -->
         </ul>
 
         <!-- Hito Final: El Examen del Tesoro de la Isla -->
@@ -282,7 +326,7 @@
 
           <!-- Texto de lectura con tipografía Courier New -->
           <div class="lesson-text-body" id="lesson-text-content">
-            <!-- Inyectado por scrip.js -->
+            <!-- Inyectado por script.js -->
           </div>
         </article>
 
@@ -297,7 +341,7 @@
           </div>
 
           <div class="questions-cards-stack" id="lesson-questions-container">
-            <!-- 3 preguntas inyectadas por scrip.js -->
+            <!-- 3 preguntas inyectadas por script.js -->
           </div>
         </section>
 
@@ -339,7 +383,7 @@
       <div class="exam-main-container">
         <!-- Tarjeta de pregunta dinámica del examen -->
         <article class="parchment-sheet exam-question-card" id="exam-question-card">
-          <!-- Inyectado por scrip.js -->
+          <!-- Inyectado por script.js -->
         </article>
 
         <!-- Controles de navegación del examen -->
@@ -355,6 +399,8 @@
     <div id="modal-celebration" class="pirate-modal-backdrop" aria-hidden="true" role="dialog" aria-modal="true">
       <div class="pirate-modal-card">
         <div class="modal-seal" id="modal-seal-icon">🏆</div>
+        <!-- Contenedor dinámico de animaciones: Loro Pirata y Olas del Mar -->
+        <div class="modal-illustration-box" id="modal-illustration-container"></div>
         <h2 class="modal-title" id="modal-title">¡Módulo Conquistado!</h2>
         <p class="modal-message" id="modal-message">Has dominado este concepto con éxito. El mapa ha registrado tu logro.</p>
 
@@ -372,6 +418,6 @@
   </div>
 
   <!-- Script principal del cliente -->
-  <script src="js/scrip.js"></script>
+  <script src="js/script.js"></script>
 </body>
 </html>

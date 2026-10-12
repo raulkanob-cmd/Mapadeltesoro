@@ -575,9 +575,9 @@ p {
               explanation: 'Verdadero. Permite definir el tamaño en pixeles, rems u otras unidades.'
             },
             {
-              statement: 'font-weight: bold hace que el texto se muestre en cursiva o itálica.',
-              answer: false,
-              explanation: 'Falso. font-weight controla el grosor o negrita. La cursiva se controla con font-style: italic.'
+              statement: 'La propiedad font-weight con el valor bold se utiliza para mostrar el texto en negrita y aumentar su grosor.',
+              answer: true,
+              explanation: 'Verdadero. font-weight define el grosor de la tipografía y el valor bold aplica estilo en negrita.'
             },
             {
               statement: 'Siempre es recomendable incluir fuentes de respaldo en font-family separadas por comas.',
@@ -814,7 +814,7 @@ p {
             <pre><code>console.log("¡Calavera a babor!");
 console.warn("Aguas poco profundas");
 console.error("¡Nos estamos hundiendo!");</code></pre>
-            <p>Se enlaza en HTML mediante la etiqueta <code>&lt;script src="js/scrip.js"&gt;&lt;/script&gt;</code>.</p>
+            <p>Se enlaza en HTML mediante la etiqueta <code>&lt;script src="js/script.js"&gt;&lt;/script&gt;</code>.</p>
           `,
           questions: [
             {
@@ -1371,6 +1371,7 @@ botonDisparo.addEventListener("click", function() {
     // Modal de Celebración
     modalCelebration: document.getElementById('modal-celebration'),
     modalSealIcon: document.getElementById('modal-seal-icon'),
+    modalIllustrationContainer: document.getElementById('modal-illustration-container'),
     modalTitle: document.getElementById('modal-title'),
     modalMessage: document.getElementById('modal-message'),
     modalStatsBox: document.getElementById('modal-stats-box'),
@@ -1552,6 +1553,17 @@ botonDisparo.addEventListener("click", function() {
   }
 
   // -------------------------------------------------------------------------
+  // FORMATEADOR DE CÓDIGO Y ETIQUETAS (Evita que el navegador oculte las etiquetas HTML)
+  // -------------------------------------------------------------------------
+  function formatCodeInText(text) {
+    if (!text) return '';
+    // Escapa y envuelve etiquetas como <ul>, <item>, <li>, <!DOCTYPE ...>, etc. en <code>&lt;...&gt;</code>
+    return text.replace(/<(\/?(?:!DOCTYPE|[a-zA-Z0-9_-]+)(?:\s+[^>]*)?)>/g, (match, tagContent) => {
+      return `<code>&lt;${tagContent}&gt;</code>`;
+    });
+  }
+
+  // -------------------------------------------------------------------------
   // 9. VISTA LECCIÓN: LECTURA EN PERGAMINO, 3 PREGUNTAS V/F Y TERMINAR
   // -------------------------------------------------------------------------
   function openLesson(islandId, lessonIndex) {
@@ -1588,13 +1600,15 @@ botonDisparo.addEventListener("click", function() {
           <span class="question-number-badge">Pregunta ${qIndex + 1} de 3 (Verdadero / Falso)</span>
           <span class="question-feedback-icon" id="q-icon-${qIndex}">❓</span>
         </div>
-        <p class="question-prompt-text">${q.statement}</p>
+        <p class="question-prompt-text">${formatCodeInText(q.statement)}</p>
         <div class="tf-buttons-row">
           <button type="button" class="tf-btn" data-choice="true" id="btn-q-${qIndex}-true">
-            <span>✔️</span> Verdadero
+            <span class="tf-icon" id="btn-icon-${qIndex}-true"></span>
+            <span>Verdadero</span>
           </button>
           <button type="button" class="tf-btn" data-choice="false" id="btn-q-${qIndex}-false">
-            <span>❌</span> Falso
+            <span class="tf-icon" id="btn-icon-${qIndex}-false"></span>
+            <span>Falso</span>
           </button>
         </div>
         <div class="question-explanation-box" id="q-exp-${qIndex}" style="display: none;"></div>
@@ -1639,20 +1653,29 @@ botonDisparo.addEventListener("click", function() {
     const chosenBtn = userChoice ? btnTrue : btnFalse;
     const correctBtn = qData.answer ? btnTrue : btnFalse;
 
+    const iconTrue = document.getElementById(`btn-icon-${qIndex}-true`);
+    const iconFalse = document.getElementById(`btn-icon-${qIndex}-false`);
+
     if (isCorrect) {
       sound.correct();
       chosenBtn.classList.add('selected-correct');
+      if (iconTrue && iconFalse) {
+        (userChoice ? iconTrue : iconFalse).textContent = '✔ ';
+      }
       iconSpan.textContent = '✅';
       expBox.className = 'question-explanation-box is-correct';
-      expBox.innerHTML = `<strong>¡Correcto, corsario!</strong> ${qData.explanation}`;
+      expBox.innerHTML = `<strong>¡Correcto, corsario!</strong> ${formatCodeInText(qData.explanation)}`;
     } else {
       sound.wrong();
-      // "en caso de una equivocación hacer notar en color rojo y señalar en verde cual era la correcta para aprender"
       chosenBtn.classList.add('selected-wrong');
       correctBtn.classList.add('correct-revealed');
+      if (iconTrue && iconFalse) {
+        (userChoice ? iconTrue : iconFalse).textContent = '❌ ';
+        (qData.answer ? iconTrue : iconFalse).textContent = '✔ ';
+      }
       iconSpan.textContent = '⚠️';
       expBox.className = 'question-explanation-box is-wrong';
-      expBox.innerHTML = `<strong>¡Atención marinero!</strong> Tu respuesta fue incorrecta. La respuesta correcta era <u>${qData.answer ? 'Verdadero' : 'Falso'}</u> para aprender: ${qData.explanation}`;
+      expBox.innerHTML = `<strong>¡Atención marinero!</strong> Tu respuesta fue incorrecta. La respuesta correcta era <u>${qData.answer ? 'Verdadero' : 'Falso'}</u>: ${formatCodeInText(qData.explanation)}`;
     }
 
     expBox.style.display = 'block';
@@ -1696,8 +1719,11 @@ botonDisparo.addEventListener("click", function() {
       saveState(appState);
     }
 
-    // Modal de felicitación
-    dom.modalSealIcon.textContent = '📜';
+    // Modal de felicitación con animación del loro pirata
+    dom.modalSealIcon.style.display = 'none';
+    if (dom.modalIllustrationContainer) {
+      dom.modalIllustrationContainer.innerHTML = getParrotAnimationHtml();
+    }
     dom.modalTitle.textContent = '¡Lección Conquistada!';
     dom.modalMessage.textContent = `Has superado con éxito "${lesson.title}". Tu cuaderno de bitácora ha sido actualizado.`;
 
@@ -1765,10 +1791,10 @@ botonDisparo.addEventListener("click", function() {
       // 1. Dinámica Verdadero o Falso
       dom.examQuestionCard.innerHTML = `
         <span class="exam-type-pill">Dinámica 1: Verdadero o Falso</span>
-        <h3 class="exam-question-statement">${qData.statement}</h3>
+        <h3 class="exam-question-statement">${formatCodeInText(qData.statement)}</h3>
         <div class="tf-buttons-row">
-          <button type="button" class="tf-btn" id="exam-tf-true"><span>✔️</span> Verdadero</button>
-          <button type="button" class="tf-btn" id="exam-tf-false"><span>❌</span> Falso</button>
+          <button type="button" class="tf-btn" id="exam-tf-true">Verdadero</button>
+          <button type="button" class="tf-btn" id="exam-tf-false">Falso</button>
         </div>
         <div class="question-explanation-box" id="exam-explanation-box" style="display: none;"></div>
       `;
@@ -1787,13 +1813,13 @@ botonDisparo.addEventListener("click", function() {
           currentExamScore++;
           (val ? btnT : btnF).classList.add('selected-correct');
           exp.className = 'question-explanation-box is-correct';
-          exp.innerHTML = `<strong>¡Excelente!</strong> ${qData.explanation}`;
+          exp.innerHTML = `<strong>¡Excelente!</strong> ${formatCodeInText(qData.explanation)}`;
         } else {
           sound.wrong();
           (val ? btnT : btnF).classList.add('selected-wrong');
           (qData.answer ? btnT : btnF).classList.add('correct-revealed');
           exp.className = 'question-explanation-box is-wrong';
-          exp.innerHTML = `<strong>¡Incorrecto!</strong> La respuesta correcta era ${qData.answer ? 'Verdadero' : 'Falso'}. ${qData.explanation}`;
+          exp.innerHTML = `<strong>¡Incorrecto!</strong> La respuesta correcta era <u>${qData.answer ? 'Verdadero' : 'Falso'}</u>: ${formatCodeInText(qData.explanation)}`;
         }
         exp.style.display = 'block';
         dom.btnExamNext.disabled = false;
@@ -1806,12 +1832,12 @@ botonDisparo.addEventListener("click", function() {
       // 2. Dinámica de Opción Múltiple
       let optionsHtml = '';
       qData.options.forEach((opt, idx) => {
-        optionsHtml += `<button type="button" class="mc-option-btn" data-index="${idx}" id="exam-mc-${idx}">${opt}</button>`;
+        optionsHtml += `<button type="button" class="mc-option-btn" data-index="${idx}" id="exam-mc-${idx}">${formatCodeInText(opt)}</button>`;
       });
 
       dom.examQuestionCard.innerHTML = `
         <span class="exam-type-pill">Dinámica 2: Opción Múltiple</span>
-        <h3 class="exam-question-statement">${qData.statement}</h3>
+        <h3 class="exam-question-statement">${formatCodeInText(qData.statement)}</h3>
         <div class="mc-options-grid">
           ${optionsHtml}
         </div>
@@ -1831,13 +1857,13 @@ botonDisparo.addEventListener("click", function() {
             currentExamScore++;
             btn.classList.add('selected-correct');
             exp.className = 'question-explanation-box is-correct';
-            exp.innerHTML = `<strong>¡Correcto!</strong> ${qData.explanation}`;
+            exp.innerHTML = `<strong>¡Correcto!</strong> ${formatCodeInText(qData.explanation)}`;
           } else {
             sound.wrong();
             btn.classList.add('selected-wrong');
             btns[qData.answerIndex].classList.add('correct-revealed');
             exp.className = 'question-explanation-box is-wrong';
-            exp.innerHTML = `<strong>Incorrecto.</strong> La opción correcta era: "${qData.options[qData.answerIndex]}". ${qData.explanation}`;
+            exp.innerHTML = `<strong>Incorrecto.</strong> La opción correcta era: "${formatCodeInText(qData.options[qData.answerIndex])}". ${formatCodeInText(qData.explanation)}`;
           }
           exp.style.display = 'block';
           dom.btnExamNext.disabled = false;
@@ -1846,10 +1872,11 @@ botonDisparo.addEventListener("click", function() {
 
     } else if (qData.type === 'fill') {
       // 3. Dinámica de Completar la Oración
-      const sentenceParts = qData.statement.split('_____');
+      const formattedStatement = formatCodeInText(qData.statement);
+      const sentenceParts = formattedStatement.split('_____');
       let chipsHtml = '';
       qData.options.forEach((word) => {
-        chipsHtml += `<button type="button" class="word-chip-btn" data-word="${word}">${word}</button>`;
+        chipsHtml += `<button type="button" class="word-chip-btn" data-word="${word}">${formatCodeInText(word)}</button>`;
       });
 
       dom.examQuestionCard.innerHTML = `
@@ -1884,14 +1911,14 @@ botonDisparo.addEventListener("click", function() {
             blankSlot.style.borderColor = 'var(--color-success)';
             blankSlot.style.color = 'var(--color-success)';
             exp.className = 'question-explanation-box is-correct';
-            exp.innerHTML = `<strong>¡Perfecto!</strong> La palabra correcta es "${qData.correctWord}". ${qData.explanation}`;
+            exp.innerHTML = `<strong>¡Perfecto!</strong> La palabra correcta es "${qData.correctWord}". ${formatCodeInText(qData.explanation)}`;
           } else {
             sound.wrong();
             chip.classList.add('selected-wrong');
             blankSlot.style.borderColor = 'var(--color-error)';
             blankSlot.style.color = 'var(--color-error)';
             exp.className = 'question-explanation-box is-wrong';
-            exp.innerHTML = `<strong>Cuidado:</strong> La palabra correcta era "${qData.correctWord}". ${qData.explanation}`;
+            exp.innerHTML = `<strong>Cuidado:</strong> La palabra correcta era "${qData.correctWord}". ${formatCodeInText(qData.explanation)}`;
           }
           exp.style.display = 'block';
           dom.btnExamNext.disabled = false;
@@ -1921,7 +1948,10 @@ botonDisparo.addEventListener("click", function() {
       appState.passedExams[currentActiveIsland] = true;
       saveState(appState);
 
-      dom.modalSealIcon.textContent = '👑';
+      dom.modalSealIcon.style.display = 'none';
+      if (dom.modalIllustrationContainer) {
+        dom.modalIllustrationContainer.innerHTML = getOceanWavesAnimationHtml();
+      }
       dom.modalTitle.textContent = `¡Gran Capitán de ${COURSE_DATA[currentActiveIsland].shortName}!`;
       dom.modalMessage.textContent = `Has conquistado el Examen Final de la isla con éxito rotundo.`;
       dom.modalStatsBox.innerHTML = `
@@ -1942,7 +1972,11 @@ botonDisparo.addEventListener("click", function() {
       };
     } else {
       sound.wrong();
+      dom.modalSealIcon.style.display = 'block';
       dom.modalSealIcon.textContent = '⚓';
+      if (dom.modalIllustrationContainer) {
+        dom.modalIllustrationContainer.innerHTML = '';
+      }
       dom.modalTitle.textContent = 'Continúa Navegando';
       dom.modalMessage.textContent = `Obtuviste ${currentExamScore} de ${totalQ} respuestas correctas. Necesitas al menos 4 aciertos para conquistar el tesoro de la isla.`;
       dom.modalStatsBox.innerHTML = `
@@ -1965,6 +1999,93 @@ botonDisparo.addEventListener("click", function() {
     openCelebrationModal();
   }
 
+
+  // -------------------------------------------------------------------------
+  // ANIMACIONES TEMÁTICAS PIRATAS: LORO PIRATA Y OLAS DEL MAR
+  // -------------------------------------------------------------------------
+  function getParrotAnimationHtml() {
+    return `
+      <div class="parrot-celebration-wrapper" id="parrot-celebration">
+        <div class="parrot-speech-bubble">¡Squawk! ¡Lección conquistada, marinero! 🦜</div>
+        <svg class="pirate-parrot-svg" viewBox="0 0 120 120">
+          <!-- Perca de madera -->
+          <rect x="25" y="100" width="70" height="8" rx="4" fill="#6B4423" stroke="#3D2314" stroke-width="1.5"/>
+          
+          <!-- Cola de plumas con degradé caribeño -->
+          <g class="parrot-tail">
+            <path d="M42 85 C35 105, 30 115, 25 120 C32 110, 42 100, 46 90 Z" fill="#07CEF5"/>
+            <path d="M45 85 C40 102, 38 112, 32 118 C38 108, 46 98, 49 88 Z" fill="#2ECC71"/>
+          </g>
+
+          <!-- Cuerpo carmesí -->
+          <ellipse cx="60" cy="72" rx="22" ry="26" fill="#E63946"/>
+          <!-- Pecho dorado -->
+          <path d="M56 60 Q 72 70 65 92 Q 52 82 56 60 Z" fill="#FFD166"/>
+
+          <!-- Pata de marinero y garra -->
+          <line x1="52" y1="95" x2="52" y2="102" stroke="#49321E" stroke-width="3" stroke-linecap="round"/>
+          <path d="M68 95 L68 102 M65 102 L71 102" stroke="#E09F3E" stroke-width="2.5" stroke-linecap="round"/>
+
+          <!-- Ala que aletea -->
+          <g class="parrot-wing">
+            <path d="M42 62 C35 68, 30 82, 42 90 C46 80, 52 70, 48 64 Z" fill="#1D3557"/>
+            <path d="M44 65 C38 72, 35 84, 43 88 C46 80, 50 72, 47 66 Z" fill="#07CEF5"/>
+            <path d="M46 68 C42 74, 40 82, 45 86 C48 80, 51 74, 48 70 Z" fill="#2ECC71"/>
+          </g>
+
+          <!-- Cabeza del loro pirata con tricornio y parche -->
+          <g class="parrot-head">
+            <circle cx="68" cy="42" r="16" fill="#E63946"/>
+            <!-- Pico curvado -->
+            <path d="M78 40 Q 94 44 88 54 Q 78 52 76 46 Z" fill="#FFB703" stroke="#B87700" stroke-width="1"/>
+            <path d="M76 46 Q 84 49 80 53 Z" fill="#E59B00"/>
+
+            <!-- Parche pirata -->
+            <path d="M56 36 Q 66 42 78 40" stroke="#1D1E2C" stroke-width="1.8" fill="none"/>
+            <ellipse cx="68" cy="40" rx="4" ry="4.5" fill="#1D1E2C"/>
+            <circle cx="68" cy="40" r="1.5" fill="#FFFFFF" opacity="0.7"/>
+
+            <!-- Sombrero pirata de capitán -->
+            <path d="M50 32 C55 20, 80 20, 86 32 C78 28, 58 28, 50 32 Z" fill="#111827"/>
+            <polygon points="46,32 90,32 68,16" fill="#1F2937"/>
+            <circle cx="68" cy="24" r="2.2" fill="#FFFFFF"/>
+            <line x1="65" y1="27" x2="71" y2="27" stroke="#FFFFFF" stroke-width="0.8"/>
+          </g>
+        </svg>
+      </div>
+    `;
+  }
+
+  function getOceanWavesAnimationHtml() {
+    return `
+      <div class="ocean-waves-celebration" id="ocean-waves-celebration">
+        <!-- Barco pirata navegando sobre el oleaje -->
+        <div class="floating-ship-wrap">
+          <svg viewBox="0 0 60 40" width="56" height="38" class="ship-svg">
+            <path d="M5 25 L12 35 L48 35 L55 25 Z" fill="#6B4423" stroke="#3D2314" stroke-width="1.5"/>
+            <line x1="30" y1="6" x2="30" y2="25" stroke="#3D2314" stroke-width="2"/>
+            <polygon points="30,8 50,16 30,22" fill="#FFFDF8" stroke="#D4A373" stroke-width="1"/>
+            <polygon points="30,10 14,18 30,22" fill="#07CEF5" stroke="#05AECF" stroke-width="1"/>
+            <polygon points="27,6 30,8 27,10" fill="#E63946"/>
+          </svg>
+        </div>
+        
+        <!-- Olas del mar animadas -->
+        <svg class="ocean-waves-svg" viewBox="0 24 150 28" preserveAspectRatio="none">
+          <defs>
+            <path id="gentle-wave-path" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
+          </defs>
+          <g class="parallax-waves">
+            <use href="#gentle-wave-path" x="48" y="0" fill="rgba(7, 206, 245, 0.25)" />
+            <use href="#gentle-wave-path" x="48" y="3" fill="rgba(7, 206, 245, 0.45)" />
+            <use href="#gentle-wave-path" x="48" y="5" fill="rgba(30, 144, 255, 0.65)" />
+            <use href="#gentle-wave-path" x="48" y="7" fill="rgba(7, 206, 245, 0.95)" />
+          </g>
+        </svg>
+      </div>
+    `;
+  }
+
   // -------------------------------------------------------------------------
   // 11. MODAL DE CELEBRACIÓN / TROFEOS
   // -------------------------------------------------------------------------
@@ -1976,6 +2097,12 @@ botonDisparo.addEventListener("click", function() {
   function closeCelebrationModal() {
     dom.modalCelebration.classList.remove('active');
     dom.modalCelebration.setAttribute('aria-hidden', 'true');
+    if (dom.modalIllustrationContainer) {
+      dom.modalIllustrationContainer.innerHTML = '';
+    }
+    if (dom.modalSealIcon) {
+      dom.modalSealIcon.style.display = 'block';
+    }
   }
 
   // -------------------------------------------------------------------------
@@ -1991,11 +2118,13 @@ botonDisparo.addEventListener("click", function() {
       dom.soundIcon.textContent = sound.enabled ? '🔊' : '🔇';
     });
 
-    // Botón Home del header
-    dom.btnHomeNav.addEventListener('click', () => {
-      sound.click();
-      switchView('home');
-    });
+    // Botón Home del header (si existe)
+    if (dom.btnHomeNav) {
+      dom.btnHomeNav.addEventListener('click', () => {
+        sound.click();
+        switchView('home');
+      });
+    }
 
     // Tarjetas de islas en el Home
     ['html', 'css', 'js'].forEach(islandKey => {
@@ -2047,17 +2176,19 @@ botonDisparo.addEventListener("click", function() {
     // Botón siguiente en el examen
     dom.btnExamNext.addEventListener('click', advanceExam);
 
-    // Botón de reiniciar progreso
-    dom.btnResetData.addEventListener('click', () => {
-      if (confirm('¿Deseas reiniciar toda la bitácora de viaje? Se borrará el progreso guardado.')) {
-        localStorage.removeItem(STORAGE_KEY);
-        appState.completedLessons = { html: [], css: [], js: [] };
-        appState.passedExams = { html: false, css: false, js: false };
-        saveState(appState);
-        renderHomeStats();
-        sound.click();
-      }
-    });
+    // Botón de reiniciar progreso (si existe)
+    if (dom.btnResetData) {
+      dom.btnResetData.addEventListener('click', () => {
+        if (confirm('¿Deseas reiniciar toda la bitácora de viaje? Se borrará el progreso guardado.')) {
+          localStorage.removeItem(STORAGE_KEY);
+          appState.completedLessons = { html: [], css: [], js: [] };
+          appState.passedExams = { html: false, css: false, js: false };
+          saveState(appState);
+          renderHomeStats();
+          sound.click();
+        }
+      });
+    }
   }
 
   // -------------------------------------------------------------------------

@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <radialGradient id="parchment" cx="35%" cy="35%" r="65%">
+      <stop offset="0%" stop-color="#FFF4DC"/>
+      <stop offset="70%" stop-color="#EEC67C"/>
+      <stop offset="100%" stop-color="#C9934E"/>
+    </radialGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#2A1A0F" flood-opacity="0.35"/>
+    </filter>
+  </defs>
+
+  <!-- Moneda / Brújula de Pergamino Pirata -->
+  <circle cx="32" cy="32" r="30" fill="url(#parchment)" stroke="#5C3B1E" stroke-width="2.5" filter="url(#shadow)"/>
+  <circle cx="32" cy="32" r="25" fill="none" stroke="#BFA06E" stroke-width="1" stroke-dasharray="2,2"/>
+
+  <!-- Rosa de los vientos / Estrella Náutica -->
+  <polygon points="32,8 36,28 56,32 36,36 32,56 28,36 8,32 28,28" fill="#5C3B1E"/>
+  <polygon points="32,8 36,28 32,32 28,28" fill="#07CEF5"/>
+  <polygon points="56,32 36,36 32,32 36,28" fill="#05AECF"/>
+  <polygon points="32,56 28,36 32,32 36,36" fill="#07CEF5"/>
+  <polygon points="8,32 28,28 32,32 28,36" fill="#05AECF"/>
+
+  <!-- Centro de la Brújula -->
+  <circle cx="32" cy="32" r="4" fill="#FFFDF8" stroke="#5C3B1E" stroke-width="1.5"/>
+  <circle cx="32" cy="32" r="1.5" fill="#E63946"/>
+</svg>

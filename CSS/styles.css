@@ -32,7 +32,7 @@
   --shadow-parchment: 0 8px 24px rgba(66, 42, 18, 0.14), 0 2px 6px rgba(66, 42, 18, 0.08);
   --shadow-card-hover: 0 12px 28px rgba(66, 42, 18, 0.22);
   
-  --font-pirate: 'Pirata One', 'MedievalSharp', Georgia, serif;
+  --font-pirate: 'Cinzel', 'MedievalSharp', Georgia, serif;
   --font-mono: 'Courier New', 'Courier Prime', Courier, monospace;
   --font-display: 'Cinzel', Georgia, serif;
   
@@ -83,6 +83,32 @@ body.theme-dark {
 html {
   font-size: 16px;
   scroll-behavior: smooth;
+}
+
+/* Accesibilidad: Enlace de salto rápido y foco visible */
+.skip-link {
+  position: absolute;
+  top: -60px;
+  left: 12px;
+  background: var(--accent);
+  color: #051419;
+  padding: 0.6rem 1.2rem;
+  font-weight: bold;
+  border-radius: var(--radius-md);
+  z-index: 1000;
+  transition: top 0.2s ease;
+  text-decoration: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.skip-link:focus {
+  top: 12px;
+  outline: 3px solid #051419;
+}
+
+:focus-visible {
+  outline: 2.5px solid var(--accent);
+  outline-offset: 3px;
 }
 
 body {
@@ -154,16 +180,22 @@ body.theme-dark .parchment-background-layer {
 
 .app-main-title {
   font-family: var(--font-pirate);
-  font-size: 2.2rem;
-  font-weight: 400;
-  letter-spacing: 1.5px;
+  font-size: 2.1rem;
+  font-weight: 400; /* Peso 400 elegante y delgado */
+  letter-spacing: 2.8px; /* Espaciado generoso */
   color: var(--text-main);
   text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.4);
-  line-height: 1.15;
+  line-height: 1.25;
 }
 
 body.theme-dark .app-main-title {
-  text-shadow: 0 2px 8px rgba(7, 206, 245, 0.3);
+  font-family: var(--font-pirate);
+  font-size: 2.1rem;
+  font-weight: 400; /* Peso 400 elegante y delgado */
+  letter-spacing: 2.8px; /* Espaciado generoso */
+  color: var(--text-main);
+  text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.4);
+  line-height: 1.25;
 }
 
 .app-subtitle {
@@ -393,12 +425,12 @@ body.theme-dark .global-progress-track {
 
 .island-title {
   font-family: var(--font-pirate);
-  font-size: 2.4rem;
+  font-size: 2.1rem;
   font-weight: 400;
-  letter-spacing: 1px;
+  letter-spacing: 2px;
   color: var(--text-main);
   margin-bottom: 0.2rem;
-  line-height: 1.1;
+  line-height: 1.2;
 }
 
 .island-desc {
@@ -572,8 +604,10 @@ body.theme-dark .global-progress-track {
 
 .island-name-heading {
   font-family: var(--font-pirate);
-  font-size: 2.5rem;
-  line-height: 1.1;
+  font-size: 2.2rem;
+  font-weight: 400;
+  letter-spacing: 2px;
+  line-height: 1.2;
   color: var(--text-main);
 }
 
@@ -813,7 +847,9 @@ body.theme-dark .island-progress-track {
 
 .exam-title {
   font-family: var(--font-pirate);
-  font-size: 1.8rem;
+  font-size: 1.7rem;
+  font-weight: 400;
+  letter-spacing: 1.5px;
   color: var(--text-main);
   line-height: 1.2;
 }
@@ -946,9 +982,11 @@ body.theme-dark .lesson-progress-track {
 
 .lesson-concept-title {
   font-family: var(--font-pirate);
-  font-size: 2.4rem;
+  font-size: 2rem;
+  font-weight: 400;
+  letter-spacing: 1.8px;
   color: var(--text-main);
-  line-height: 1.15;
+  line-height: 1.25;
   margin-bottom: 0.8rem;
 }
 
@@ -1056,8 +1094,10 @@ body.theme-dark .lesson-text-body code {
 
 .questions-title {
   font-family: var(--font-pirate);
-  font-size: 1.7rem;
-  line-height: 1.15;
+  font-size: 1.55rem;
+  font-weight: 400;
+  letter-spacing: 1.5px;
+  line-height: 1.2;
   color: var(--text-main);
 }
 
@@ -1109,7 +1149,45 @@ body.theme-dark .lesson-text-body code {
   font-weight: bold;
   color: var(--text-main);
   margin-bottom: 1.2rem;
-  line-height: 1.4;
+  line-height: 1.6;
+}
+
+/* Cuadro de código estilizado para etiquetas en preguntas y explicaciones */
+.question-prompt-text code,
+.question-explanation-box code,
+.exam-question-statement code,
+.mc-option-btn code {
+  background: rgba(7, 206, 245, 0.12);
+  border: 1.5px solid var(--accent);
+  padding: 0.15rem 0.5rem;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+  color: #B23B00;
+  font-weight: 700;
+  display: inline-block;
+  vertical-align: baseline;
+  margin: 0 0.2rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+body.theme-light .question-prompt-text code,
+body.theme-light .question-explanation-box code,
+body.theme-light .exam-question-statement code,
+body.theme-light .mc-option-btn code {
+  background: #FFF4DC;
+  border-color: #C9934E;
+  color: #8C3200;
+}
+
+body.theme-dark .question-prompt-text code,
+body.theme-dark .question-explanation-box code,
+body.theme-dark .exam-question-statement code,
+body.theme-dark .mc-option-btn code {
+  background: rgba(7, 206, 245, 0.16);
+  border-color: #07CEF5;
+  color: #FFA726;
+  box-shadow: 0 0 8px rgba(7, 206, 245, 0.25);
 }
 
 /* Botones de Verdadero o Falso */
@@ -1387,10 +1465,12 @@ body.theme-dark .lesson-text-body code {
 
 .modal-title {
   font-family: var(--font-pirate);
-  font-size: 2.2rem;
+  font-size: 1.9rem;
+  font-weight: 400;
+  letter-spacing: 2px;
   color: var(--text-main);
   margin-bottom: 0.5rem;
-  line-height: 1.1;
+  line-height: 1.2;
 }
 
 .modal-message {
@@ -1450,8 +1530,14 @@ body.theme-dark .lesson-text-body code {
   }
   
   .app-main-title {
-    font-size: 1.8rem;
-  }
+  font-family: var(--font-pirate);
+  font-size: 2.1rem;
+  font-weight: 400; /* Peso 400 elegante y delgado */
+  letter-spacing: 2.8px; /* Espaciado generoso */
+  color: var(--text-main);
+  text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.4);
+  line-height: 1.25;
+}
   
   .islands-grid-container {
     grid-template-columns: 1fr;
@@ -1478,4 +1564,172 @@ body.theme-dark .lesson-text-body code {
   .modal-actions-row {
     flex-direction: column;
   }
+}
+
+
+/* --------------------------------------------------
+   11. ANIMACIÓN DEL LORO PIRATA (FIN DE LECCIÓN)
+   -------------------------------------------------- */
+.modal-illustration-box {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0.5rem 0 1rem 0;
+  min-height: 110px;
+}
+
+.parrot-celebration-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  animation: parrotEnter 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.parrot-speech-bubble {
+  background: var(--bg-parchment-sheet);
+  border: 1.5px solid var(--accent);
+  color: var(--text-main);
+  padding: 0.35rem 0.85rem;
+  border-radius: var(--radius-md);
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  font-weight: bold;
+  margin-bottom: 0.35rem;
+  position: relative;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
+  animation: speechBob 2s ease-in-out infinite alternate;
+}
+
+.parrot-speech-bubble::after {
+  content: '';
+  position: absolute;
+  bottom: -6px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 6px 6px 0;
+  border-style: solid;
+  border-color: var(--accent) transparent;
+  display: block;
+  width: 0;
+}
+
+.pirate-parrot-svg {
+  width: 100px;
+  height: 100px;
+  filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.2));
+  animation: parrotHop 1.6s ease-in-out infinite alternate;
+  transform-origin: bottom center;
+}
+
+.parrot-wing {
+  animation: wingFlap 1.4s ease-in-out infinite alternate;
+  transform-origin: 50px 65px;
+}
+
+.parrot-head {
+  animation: headBob 2s ease-in-out infinite alternate;
+  transform-origin: 65px 42px;
+}
+
+@keyframes parrotEnter {
+  from { opacity: 0; transform: scale(0.6) translateY(20px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+@keyframes parrotHop {
+  0% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-7px) rotate(-3deg); }
+  100% { transform: translateY(-2px) rotate(3deg); }
+}
+
+@keyframes wingFlap {
+  0% { transform: rotate(0deg); }
+  50% { transform: rotate(-18deg) scaleY(1.05); }
+  100% { transform: rotate(4deg); }
+}
+
+@keyframes headBob {
+  0% { transform: rotate(0deg); }
+  50% { transform: rotate(4deg); }
+  100% { transform: rotate(-4deg); }
+}
+
+@keyframes speechBob {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-4px); }
+}
+
+/* --------------------------------------------------
+   12. ANIMACIÓN DE OLAS EN EL MAR (FIN DE EXAMEN)
+   -------------------------------------------------- */
+.ocean-waves-celebration {
+  position: relative;
+  width: 100%;
+  max-width: 380px;
+  height: 125px;
+  margin: 0.5rem 0 1rem 0;
+  overflow: hidden;
+  border-radius: var(--radius-md);
+  background: linear-gradient(180deg, rgba(7, 206, 245, 0.12) 0%, rgba(5, 174, 207, 0.35) 100%);
+  border: 1.5px solid var(--accent);
+  box-shadow: 0 4px 14px var(--accent-glow);
+}
+
+.floating-ship-wrap {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 3;
+  animation: shipSailing 3.5s ease-in-out infinite alternate;
+}
+
+.ship-svg {
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.35));
+}
+
+.ocean-waves-svg {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 85px;
+  min-height: 65px;
+}
+
+.parallax-waves > use {
+  animation: moveWaves 12s cubic-bezier(.55,.5,.45,.5) infinite;
+}
+
+.parallax-waves > use:nth-child(1) {
+  animation-delay: -2s;
+  animation-duration: 7s;
+}
+
+.parallax-waves > use:nth-child(2) {
+  animation-delay: -3s;
+  animation-duration: 10s;
+}
+
+.parallax-waves > use:nth-child(3) {
+  animation-delay: -4s;
+  animation-duration: 13s;
+}
+
+.parallax-waves > use:nth-child(4) {
+  animation-delay: -5s;
+  animation-duration: 18s;
+}
+
+@keyframes moveWaves {
+  0% { transform: translate3d(-90px, 0, 0); }
+  100% { transform: translate3d(85px, 0, 0); }
+}
+
+@keyframes shipSailing {
+  0% { transform: translateX(-50%) translateY(0) rotate(-6deg); }
+  50% { transform: translateX(-48%) translateY(-6px) rotate(4deg); }
+  100% { transform: translateX(-52%) translateY(2px) rotate(-4deg); }
 }
