@@ -1,0 +1,1481 @@
+/* ==========================================================================
+   ESTILOS PRINCIPALES: MAPA HACIA EL SECRETO DEL DESARROLLO WEB
+   Estética de Pergamino Pirata Minimalista, Modo Claro y Modo Oscuro
+   ========================================================================== */
+
+/* --------------------------------------------------
+   1. VARIABLES CSS (PALETA OFICIAL Y TOKENS)
+   -------------------------------------------------- */
+:root {
+  /* Modo Claro Pirata (Por defecto) */
+  --bg-primary: #EEC67C;             /* Fondo pergamino clásico */
+  --bg-card: #FFFDF8;                /* Secundario blanco pergamino */
+  --bg-card-translucent: rgba(255, 253, 248, 0.92);
+  --bg-parchment-sheet: #FFF9E9;     /* Pergamino envejecido suave */
+  --text-main: #2A1A0F;              /* Texto oscuro principal */
+  --text-muted: #6B523E;             /* Texto secundario / leyendas */
+  --accent: #07CEF5;                 /* Acento oficial: Azul Cian brillante */
+  --accent-hover: #05AECF;
+  --accent-glow: rgba(7, 206, 245, 0.35);
+  
+  --border-pirate: #BFA06E;          /* Borde envejecido sutil */
+  --border-card: #E5CCA0;
+  
+  --color-success: #1E824C;          /* Verde aprendizaje correcto */
+  --color-success-bg: #E8F8F0;
+  --color-success-border: #2ECC71;
+  
+  --color-error: #B02A37;            /* Rojo para señalar error */
+  --color-error-bg: #FDF0F2;
+  --color-error-border: #E74C3C;
+  
+  --shadow-parchment: 0 8px 24px rgba(66, 42, 18, 0.14), 0 2px 6px rgba(66, 42, 18, 0.08);
+  --shadow-card-hover: 0 12px 28px rgba(66, 42, 18, 0.22);
+  
+  --font-pirate: 'Pirata One', 'MedievalSharp', Georgia, serif;
+  --font-mono: 'Courier New', 'Courier Prime', Courier, monospace;
+  --font-display: 'Cinzel', Georgia, serif;
+  
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-full: 9999px;
+
+  --transition-smooth: all 0.25s cubic-bezier(0.2, 0, 0, 1);
+}
+
+/* Modo Nocturno Pirata (Mar de Medianoche & Tesoro Fluorescente) */
+body.theme-dark {
+  --bg-primary: #151922;             /* Mar nocturno profundo */
+  --bg-card: #1E2430;                /* Cubierta del galeón oscuro */
+  --bg-card-translucent: rgba(30, 36, 48, 0.95);
+  --bg-parchment-sheet: #222938;     /* Pergamino oscuro a la luz de las velas */
+  --text-main: #F3EBDD;              /* Texto pergamino claro */
+  --text-muted: #A6B4C9;             /* Texto atenuado claro */
+  --accent: #07CEF5;                 /* Cian radiante en la oscuridad */
+  --accent-hover: #40DCFB;
+  --accent-glow: rgba(7, 206, 245, 0.5);
+  
+  --border-pirate: #3D495F;
+  --border-card: #2E384A;
+  
+  --color-success: #2ECC71;
+  --color-success-bg: rgba(46, 204, 113, 0.16);
+  --color-success-border: #2ECC71;
+  
+  --color-error: #FF6B6B;
+  --color-error-bg: rgba(231, 76, 60, 0.18);
+  --color-error-border: #FF6B6B;
+  
+  --shadow-parchment: 0 8px 30px rgba(0, 0, 0, 0.45), 0 2px 8px rgba(0, 0, 0, 0.3);
+  --shadow-card-hover: 0 14px 32px rgba(0, 0, 0, 0.6);
+}
+
+/* --------------------------------------------------
+   2. RESET Y BASES GLOBALES
+   -------------------------------------------------- */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-main);
+  font-family: var(--font-mono);
+  line-height: 1.6;
+  min-height: 100vh;
+  transition: background-color 0.4s ease, color 0.4s ease;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Capa de fondo con marcas discretas y casi transparentes (Rosa de los Vientos y Líneas Náuticas) */
+.parchment-background-layer {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.08;
+  background-image: 
+    radial-gradient(circle at 10% 20%, #462A0D 1px, transparent 1px),
+    radial-gradient(circle at 90% 80%, #462A0D 1px, transparent 1px),
+    repeating-linear-gradient(45deg, transparent, transparent 40px, rgba(70, 42, 13, 0.08) 40px, rgba(70, 42, 13, 0.08) 41px);
+}
+
+body.theme-dark .parchment-background-layer {
+  opacity: 0.06;
+  background-image: 
+    radial-gradient(circle at 10% 20%, #A6B4C9 1px, transparent 1px),
+    radial-gradient(circle at 90% 80%, #A6B4C9 1px, transparent 1px);
+}
+
+/* Contenedor principal */
+.app-container {
+  position: relative;
+  z-index: 1;
+  max-width: 1040px;
+  margin: 0 auto;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: 0 1rem 2.5rem 1rem;
+}
+
+/* --------------------------------------------------
+   3. HEADER GLOBAL
+   -------------------------------------------------- */
+.app-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 0;
+  border-bottom: 2px dashed var(--border-pirate);
+  margin-bottom: 1.5rem;
+}
+
+.header-left, .header-right {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.header-center {
+  text-align: center;
+  flex: 1;
+}
+
+.app-main-title {
+  font-family: var(--font-pirate);
+  font-size: 2.2rem;
+  font-weight: 400;
+  letter-spacing: 1.5px;
+  color: var(--text-main);
+  text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.4);
+  line-height: 1.15;
+}
+
+body.theme-dark .app-main-title {
+  text-shadow: 0 2px 8px rgba(7, 206, 245, 0.3);
+}
+
+.app-subtitle {
+  font-size: 0.82rem;
+  letter-spacing: 0.5px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+/* Botones con estilo pirata */
+.pirate-icon-btn {
+  background: var(--bg-card);
+  color: var(--text-main);
+  border: 1.5px solid var(--border-pirate);
+  border-radius: var(--radius-md);
+  padding: 0.45rem 0.75rem;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+}
+
+.pirate-icon-btn:hover {
+  border-color: var(--accent);
+  box-shadow: 0 0 10px var(--accent-glow);
+  transform: translateY(-1px);
+}
+
+/* Botón temático de Modo Claro / Oscuro con Farol de Barco */
+.pirate-theme-toggle {
+  background: var(--bg-card);
+  color: var(--text-main);
+  border: 2px solid var(--border-pirate);
+  border-radius: var(--radius-full);
+  padding: 0.35rem 0.9rem;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  font-weight: bold;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.pirate-theme-toggle:hover {
+  border-color: var(--accent);
+  box-shadow: 0 0 12px var(--accent-glow);
+  transform: translateY(-1px);
+}
+
+.lantern-graphic {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease;
+}
+
+.pirate-theme-toggle:hover .lantern-graphic {
+  transform: rotate(-12deg) scale(1.1);
+}
+
+.lantern-glow {
+  transition: fill 0.3s ease, filter 0.3s ease;
+}
+
+body.theme-dark .lantern-glow {
+  fill: #FFE066;
+  filter: drop-shadow(0 0 6px #FFE066);
+}
+
+/* --------------------------------------------------
+   4. SISTEMA DE VISTAS (SPA TRANSITIONS)
+   -------------------------------------------------- */
+.view-section {
+  display: none;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.view-section.active {
+  display: block;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* --------------------------------------------------
+   5. VISTA HOME: EL GRAN MAPA Y LAS 3 ISLAS
+   -------------------------------------------------- */
+.map-intro {
+  margin-bottom: 2rem;
+}
+
+.scroll-banner {
+  text-align: center;
+  padding: 0.85rem 1.25rem;
+  background: var(--bg-card-translucent);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-md);
+  margin-bottom: 1.25rem;
+  box-shadow: var(--shadow-parchment);
+}
+
+.intro-quote {
+  font-style: italic;
+  font-size: 0.95rem;
+  color: var(--text-muted);
+}
+
+/* Barra global de progreso */
+.overall-progress-card {
+  background: var(--bg-card);
+  border: 1.5px solid var(--border-pirate);
+  border-radius: var(--radius-md);
+  padding: 1rem 1.25rem;
+  box-shadow: var(--shadow-parchment);
+}
+
+.progress-info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  margin-bottom: 0.6rem;
+  font-size: 0.88rem;
+}
+
+.stat-badge strong {
+  color: var(--text-main);
+  background: rgba(7, 206, 245, 0.15);
+  padding: 0.15rem 0.5rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(7, 206, 245, 0.3);
+}
+
+.global-progress-track {
+  width: 100%;
+  height: 12px;
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  border: 1px solid var(--border-pirate);
+}
+
+body.theme-dark .global-progress-track {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.global-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #07CEF5, #38EF7D);
+  border-radius: var(--radius-full);
+  transition: width 0.5s ease-out;
+}
+
+/* Tarjetas de las 3 Islas */
+.islands-grid-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.island-card {
+  position: relative;
+  background: var(--bg-card);
+  border: 2px solid var(--border-card);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  text-align: center;
+  box-shadow: var(--shadow-parchment);
+  transition: var(--transition-smooth);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+}
+
+.island-card:hover, .island-card:focus-visible {
+  transform: translateY(-6px);
+  border-color: var(--accent);
+  box-shadow: var(--shadow-card-hover), 0 0 16px var(--accent-glow);
+  outline: none;
+}
+
+.island-badge {
+  position: absolute;
+  top: 12px;
+  left: 14px;
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  padding: 0.2rem 0.6rem;
+  background: rgba(7, 206, 245, 0.15);
+  border: 1px solid var(--accent);
+  border-radius: var(--radius-sm);
+  color: var(--text-main);
+}
+
+.island-art {
+  width: 160px;
+  height: 120px;
+  margin: 0.8rem 0 0.5rem 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.island-svg-art {
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
+  transition: transform 0.3s ease;
+}
+
+.island-card:hover .island-svg-art {
+  transform: scale(1.06);
+}
+
+.island-title {
+  font-family: var(--font-pirate);
+  font-size: 2.4rem;
+  font-weight: 400;
+  letter-spacing: 1px;
+  color: var(--text-main);
+  margin-bottom: 0.2rem;
+  line-height: 1.1;
+}
+
+.island-desc {
+  font-size: 0.86rem;
+  color: var(--text-muted);
+  margin-bottom: 1.25rem;
+  flex-grow: 1;
+}
+
+.island-status-pill {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0.45rem 0.85rem;
+  background: var(--bg-parchment-sheet);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-md);
+  font-size: 0.82rem;
+  margin-bottom: 1.2rem;
+}
+
+.pill-count {
+  font-weight: bold;
+}
+
+.pill-icon {
+  color: var(--accent);
+  font-weight: bold;
+}
+
+.pill-icon.completed {
+  color: var(--color-success);
+}
+
+/* Botones pirata generales */
+.pirate-btn {
+  background: var(--bg-card);
+  color: var(--text-main);
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
+  font-weight: bold;
+  padding: 0.7rem 1.4rem;
+  border: 2px solid var(--border-pirate);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: var(--transition-smooth);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.pirate-btn:hover:not(:disabled) {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: #0B2228;
+  box-shadow: 0 4px 14px var(--accent-glow);
+  transform: translateY(-2px);
+}
+
+.pirate-btn:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.pirate-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  filter: grayscale(0.5);
+}
+
+.pirate-btn-accent {
+  background: var(--accent);
+  color: #091D24;
+  border-color: #05AECF;
+}
+
+.pirate-btn-accent:hover:not(:disabled) {
+  background: #25DCFF;
+  border-color: #07CEF5;
+  color: #051419;
+}
+
+.island-enter-btn {
+  width: 100%;
+}
+
+.home-bottom-tools {
+  text-align: center;
+  padding-top: 1.5rem;
+}
+
+.pirate-link-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  cursor: pointer;
+  text-decoration: underline;
+  transition: color 0.2s;
+}
+
+.pirate-link-btn:hover {
+  color: var(--text-main);
+}
+
+/* --------------------------------------------------
+   6. VISTA ISLA: SENDERO DE LAS 10 LECCIONES
+   -------------------------------------------------- */
+.island-nav-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.25rem;
+}
+
+.pirate-back-btn {
+  background: var(--bg-card);
+  color: var(--text-main);
+  border: 1.5px solid var(--border-pirate);
+  border-radius: var(--radius-md);
+  padding: 0.5rem 1rem;
+  font-family: var(--font-mono);
+  font-size: 0.88rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+
+.pirate-back-btn:hover {
+  border-color: var(--accent);
+  box-shadow: 0 0 10px var(--accent-glow);
+  transform: translateX(-3px);
+}
+
+.compass-badge {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  background: var(--bg-card);
+  padding: 0.35rem 0.75rem;
+  border-radius: var(--radius-sm);
+  border: 1px dashed var(--border-pirate);
+}
+
+/* Cabecera de la isla */
+.island-header-card {
+  background: var(--bg-card);
+  border: 2px solid var(--border-card);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  box-shadow: var(--shadow-parchment);
+}
+
+.island-progress-header-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+
+.island-kicker {
+  font-family: var(--font-display);
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--accent);
+}
+
+.island-name-heading {
+  font-family: var(--font-pirate);
+  font-size: 2.5rem;
+  line-height: 1.1;
+  color: var(--text-main);
+}
+
+.island-quote-text {
+  font-size: 0.88rem;
+  color: var(--text-muted);
+}
+
+.island-meter-box {
+  min-width: 260px;
+  flex-shrink: 0;
+}
+
+.island-meter-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  margin-bottom: 0.35rem;
+}
+
+.island-progress-track {
+  width: 100%;
+  height: 12px;
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  border: 1px solid var(--border-pirate);
+  margin-bottom: 0.35rem;
+}
+
+body.theme-dark .island-progress-track {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.island-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #07CEF5, #2ECC71);
+  border-radius: var(--radius-full);
+  transition: width 0.4s ease;
+}
+
+.island-ratio-text {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  display: block;
+  text-align: right;
+}
+
+/* Sendero Pirata de las 10 Lecciones */
+.island-trail-wrapper {
+  position: relative;
+  background: var(--bg-card-translucent);
+  border: 2px solid var(--border-card);
+  border-radius: var(--radius-lg);
+  padding: 2rem 1.5rem;
+  box-shadow: var(--shadow-parchment);
+}
+
+.trail-watermark-compass {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 320px;
+  height: 320px;
+  background-image: radial-gradient(circle, transparent 40%, rgba(7, 206, 245, 0.05) 100%);
+  border: 1px dashed rgba(191, 160, 110, 0.25);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+/* Lista desordenada hacia abajo con estilo de ruta de mapa del tesoro */
+.pirate-lessons-trail {
+  list-style: none;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+  margin-bottom: 2.5rem;
+}
+
+/* Línea de sendero pirata punteada conectora */
+.pirate-lessons-trail::before {
+  content: '';
+  position: absolute;
+  top: 20px;
+  bottom: 20px;
+  left: 32px;
+  width: 3px;
+  background-image: repeating-linear-gradient(to bottom, var(--accent) 0, var(--accent) 8px, transparent 8px, transparent 16px);
+  opacity: 0.6;
+  z-index: 0;
+}
+
+/* Elemento individual de lección */
+.lesson-node-item {
+  position: relative;
+  z-index: 1;
+}
+
+.lesson-trail-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  background: var(--bg-card);
+  border: 1.5px solid var(--border-card);
+  border-radius: var(--radius-md);
+  padding: 0.9rem 1.25rem;
+  transition: var(--transition-smooth);
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.lesson-trail-card:hover {
+  border-color: var(--accent);
+  box-shadow: 0 4px 14px var(--accent-glow);
+  transform: translateX(6px);
+}
+
+.lesson-node-left {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* Marcador numérico */
+.node-step-circle {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--bg-parchment-sheet);
+  border: 2px solid var(--border-pirate);
+  color: var(--text-main);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.95rem;
+  flex-shrink: 0;
+  transition: var(--transition-smooth);
+}
+
+.lesson-trail-card:hover .node-step-circle {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: #0A1C23;
+}
+
+.lesson-trail-card.completed .node-step-circle {
+  background: var(--color-success);
+  border-color: var(--color-success);
+  color: #FFFFFF;
+}
+
+.node-text-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.node-badge-num {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  letter-spacing: 0.5px;
+}
+
+.node-lesson-title {
+  font-size: 1.05rem;
+  font-weight: bold;
+  color: var(--text-main);
+  line-height: 1.3;
+}
+
+/* Icono del lado derecho que muestre el estado de la actividad (palomeada si completada) */
+.lesson-node-right {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.status-check-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  font-size: 1.1rem;
+  background: var(--bg-parchment-sheet);
+  border: 1px solid var(--border-card);
+  color: var(--text-muted);
+  transition: var(--transition-smooth);
+}
+
+/* Estado palomeada cuando fue completada */
+.lesson-trail-card.completed .status-check-badge {
+  background: var(--color-success-bg);
+  border-color: var(--color-success-border);
+  color: var(--color-success);
+  font-weight: bold;
+  box-shadow: 0 0 8px rgba(46, 204, 113, 0.4);
+}
+
+/* Hito del Examen Final */
+.final-exam-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+  background: var(--bg-card);
+  border: 2px dashed var(--accent);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  box-shadow: var(--shadow-parchment), 0 0 16px var(--accent-glow);
+}
+
+.chest-icon-col {
+  font-size: 2.8rem;
+}
+
+.chest-info-col {
+  flex: 1;
+  min-width: 220px;
+}
+
+.exam-tag {
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--accent);
+  letter-spacing: 1px;
+}
+
+.exam-title {
+  font-family: var(--font-pirate);
+  font-size: 1.8rem;
+  color: var(--text-main);
+  line-height: 1.2;
+}
+
+.exam-desc {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+/* --------------------------------------------------
+   7. VISTA LECCIÓN: PERGAMINO, 3 PREGUNTAS V/F Y TERMINAR
+   -------------------------------------------------- */
+.lesson-header-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  background: var(--bg-card);
+  border: 2px solid var(--border-card);
+  border-radius: var(--radius-lg);
+  padding: 0.75rem 1.25rem;
+  margin-bottom: 1.5rem;
+  box-shadow: var(--shadow-parchment);
+  position: sticky;
+  top: 10px;
+  z-index: 10;
+}
+
+/* Botón de la 'X' para abandonar lección */
+.btn-close-lesson {
+  width: 38px;
+  height: 38px;
+  background: var(--bg-parchment-sheet);
+  border: 1.5px solid var(--border-pirate);
+  border-radius: 50%;
+  color: var(--text-main);
+  font-size: 1.2rem;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition-smooth);
+}
+
+.btn-close-lesson:hover {
+  background: var(--color-error);
+  color: #FFFFFF;
+  border-color: var(--color-error);
+  transform: rotate(90deg) scale(1.1);
+}
+
+/* Barra de progreso de la lección que indica avance */
+.lesson-progress-container {
+  min-width: 240px;
+  flex: 1;
+  max-width: 480px;
+}
+
+.lesson-progress-info {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  margin-bottom: 0.3rem;
+}
+
+.lesson-progress-track {
+  width: 100%;
+  height: 10px;
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  border: 1px solid var(--border-pirate);
+}
+
+body.theme-dark .lesson-progress-track {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.lesson-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #07CEF5, #2ECC71);
+  border-radius: var(--radius-full);
+  transition: width 0.3s ease;
+}
+
+.lesson-badge-pill {
+  font-size: 0.8rem;
+  font-family: var(--font-display);
+  background: rgba(7, 206, 245, 0.12);
+  border: 1px solid var(--accent);
+  padding: 0.3rem 0.75rem;
+  border-radius: var(--radius-sm);
+  color: var(--text-main);
+  white-space: nowrap;
+}
+
+/* Hoja de Pergamino Viejo */
+.parchment-sheet {
+  position: relative;
+  background: var(--bg-parchment-sheet);
+  border: 2px solid var(--border-pirate);
+  border-radius: var(--radius-lg);
+  padding: 2.2rem 2rem;
+  margin-bottom: 2rem;
+  box-shadow: var(--shadow-parchment);
+}
+
+.parchment-pin {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  background: #A67C52;
+  border: 2px solid #5C3B1E;
+  border-radius: 50%;
+  top: 14px;
+}
+
+.parchment-pin-tl { left: 14px; }
+.parchment-pin-tr { right: 14px; }
+
+.lesson-crumbs {
+  font-size: 0.78rem;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 0.3rem;
+}
+
+.lesson-concept-title {
+  font-family: var(--font-pirate);
+  font-size: 2.4rem;
+  color: var(--text-main);
+  line-height: 1.15;
+  margin-bottom: 0.8rem;
+}
+
+.pirate-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin: 1rem 0 1.5rem 0;
+}
+
+.pirate-divider::before, .pirate-divider::after {
+  content: '';
+  height: 1px;
+  flex: 1;
+  background: var(--border-pirate);
+}
+
+.pirate-divider span {
+  color: var(--border-pirate);
+  font-size: 1rem;
+}
+
+/* Cuerpo de texto de la lección */
+.lesson-text-body {
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
+  color: var(--text-main);
+  line-height: 1.8;
+}
+
+.lesson-text-body p {
+  margin-bottom: 1rem;
+}
+
+.lesson-text-body strong {
+  color: var(--text-main);
+  font-weight: 700;
+}
+
+.lesson-text-body code {
+  background: rgba(0, 0, 0, 0.07);
+  border: 1px solid var(--border-card);
+  padding: 0.15rem 0.4rem;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+  color: #B23B00;
+}
+
+body.theme-dark .lesson-text-body code {
+  background: rgba(255, 255, 255, 0.08);
+  color: #FFA726;
+}
+
+.lesson-text-body pre {
+  background: #1C1917;
+  color: #F8F9FA;
+  padding: 1rem 1.2rem;
+  border-radius: var(--radius-md);
+  overflow-x: auto;
+  margin: 1.25rem 0;
+  border: 1.5px solid #443B33;
+  font-family: var(--font-mono);
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+
+.lesson-text-body pre code {
+  background: transparent;
+  border: none;
+  color: #E2E8F0;
+  padding: 0;
+}
+
+.lesson-callout {
+  background: rgba(7, 206, 245, 0.1);
+  border-left: 4px solid var(--accent);
+  padding: 0.85rem 1.2rem;
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  margin: 1.25rem 0;
+  font-size: 0.9rem;
+}
+
+/* Sección de Preguntas */
+.lesson-questions-section {
+  margin-bottom: 2.5rem;
+}
+
+.questions-section-header {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  background: var(--bg-card);
+  border: 1.5px solid var(--border-card);
+  border-radius: var(--radius-md);
+  padding: 1rem 1.25rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+}
+
+.scroll-icon-mini {
+  font-size: 1.8rem;
+}
+
+.questions-title {
+  font-family: var(--font-pirate);
+  font-size: 1.7rem;
+  line-height: 1.15;
+  color: var(--text-main);
+}
+
+.questions-instructions {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+
+.questions-cards-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 1.4rem;
+}
+
+/* Tarjeta individual de pregunta */
+.question-card {
+  background: var(--bg-card);
+  border: 2px solid var(--border-card);
+  border-radius: var(--radius-lg);
+  padding: 1.4rem 1.5rem;
+  box-shadow: var(--shadow-parchment);
+  transition: var(--transition-smooth);
+}
+
+.question-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.8rem;
+}
+
+.question-number-badge {
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--accent);
+  background: rgba(7, 206, 245, 0.12);
+  padding: 0.2rem 0.6rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(7, 206, 245, 0.3);
+}
+
+.question-feedback-icon {
+  font-size: 1.1rem;
+}
+
+.question-prompt-text {
+  font-size: 1rem;
+  font-weight: bold;
+  color: var(--text-main);
+  margin-bottom: 1.2rem;
+  line-height: 1.4;
+}
+
+/* Botones de Verdadero o Falso */
+.tf-buttons-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 0.8rem;
+}
+
+.tf-btn {
+  background: var(--bg-parchment-sheet);
+  color: var(--text-main);
+  border: 2px solid var(--border-pirate);
+  border-radius: var(--radius-md);
+  padding: 0.75rem 1rem;
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: var(--transition-smooth);
+}
+
+.tf-btn:hover:not(:disabled) {
+  border-color: var(--accent);
+  box-shadow: 0 0 10px var(--accent-glow);
+  transform: translateY(-2px);
+}
+
+/* Estados de Verdadero/Falso: ROJO error y VERDE correcta */
+.tf-btn.selected-wrong {
+  background-color: var(--color-error-bg) !important;
+  border-color: var(--color-error-border) !important;
+  color: var(--color-error) !important;
+  box-shadow: 0 0 12px rgba(231, 76, 60, 0.35) !important;
+  animation: shakeX 0.4s ease-in-out;
+}
+
+.tf-btn.selected-correct, .tf-btn.correct-revealed {
+  background-color: var(--color-success-bg) !important;
+  border-color: var(--color-success-border) !important;
+  color: var(--color-success) !important;
+  box-shadow: 0 0 12px rgba(46, 204, 113, 0.35) !important;
+}
+
+.tf-btn:disabled {
+  cursor: default;
+  opacity: 0.9;
+}
+
+/* Mensaje explicativo tras responder */
+.question-explanation-box {
+  background: var(--bg-parchment-sheet);
+  border: 1.5px solid var(--border-card);
+  border-radius: var(--radius-md);
+  padding: 0.85rem 1rem;
+  font-size: 0.85rem;
+  margin-top: 0.8rem;
+  line-height: 1.5;
+  animation: fadeIn 0.3s ease;
+}
+
+.question-explanation-box.is-correct {
+  border-left: 4px solid var(--color-success);
+}
+
+.question-explanation-box.is-wrong {
+  border-left: 4px solid var(--color-error);
+}
+
+/* Botón inferior centrado para terminar lección */
+.lesson-footer-action {
+  text-align: center;
+  padding: 1.5rem 0 3rem 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.pirate-btn-finish {
+  min-width: 260px;
+  padding: 1rem 2rem;
+  font-size: 1.15rem;
+  border-radius: var(--radius-full);
+}
+
+.finish-hint {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+
+/* --------------------------------------------------
+   8. VISTA EXAMEN FINAL MULTIDINÁMICA
+   -------------------------------------------------- */
+.exam-main-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.exam-question-card {
+  min-height: 320px;
+  display: flex;
+  flex-direction: column;
+}
+
+.exam-type-pill {
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  color: var(--accent);
+  background: rgba(7, 206, 245, 0.12);
+  border: 1px solid var(--accent);
+  padding: 0.2rem 0.6rem;
+  border-radius: var(--radius-sm);
+  display: inline-block;
+  margin-bottom: 0.8rem;
+}
+
+.exam-question-statement {
+  font-size: 1.15rem;
+  font-weight: bold;
+  color: var(--text-main);
+  margin-bottom: 1.5rem;
+  line-height: 1.4;
+}
+
+/* Opciones múltiples */
+.mc-options-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  margin-bottom: 1.2rem;
+}
+
+.mc-option-btn {
+  background: var(--bg-card);
+  border: 2px solid var(--border-card);
+  border-radius: var(--radius-md);
+  padding: 0.85rem 1.2rem;
+  color: var(--text-main);
+  font-family: var(--font-mono);
+  font-size: 0.92rem;
+  text-align: left;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+
+.mc-option-btn:hover:not(:disabled) {
+  border-color: var(--accent);
+  box-shadow: 0 0 10px var(--accent-glow);
+  transform: translateX(4px);
+}
+
+.mc-option-btn.selected-wrong {
+  background-color: var(--color-error-bg);
+  border-color: var(--color-error-border);
+  color: var(--color-error);
+}
+
+.mc-option-btn.selected-correct, .mc-option-btn.correct-revealed {
+  background-color: var(--color-success-bg);
+  border-color: var(--color-success-border);
+  color: var(--color-success);
+}
+
+/* Dinámica completar palabra */
+.fill-blank-sentence {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  padding: 1.25rem;
+  background: var(--bg-card);
+  border: 1.5px dashed var(--border-pirate);
+  border-radius: var(--radius-md);
+  margin-bottom: 1.5rem;
+}
+
+.blank-slot {
+  display: inline-block;
+  min-width: 140px;
+  padding: 0.2rem 0.8rem;
+  border-bottom: 2px solid var(--accent);
+  color: var(--accent);
+  font-weight: bold;
+  text-align: center;
+  background: rgba(7, 206, 245, 0.08);
+  border-radius: var(--radius-sm);
+}
+
+.fill-word-chips-pool {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  margin-bottom: 1.2rem;
+}
+
+.word-chip-btn {
+  background: var(--bg-card);
+  border: 1.5px solid var(--border-pirate);
+  border-radius: var(--radius-full);
+  padding: 0.5rem 1.2rem;
+  font-family: var(--font-mono);
+  font-size: 0.92rem;
+  font-weight: bold;
+  color: var(--text-main);
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+
+.word-chip-btn:hover:not(:disabled) {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: #051419;
+  transform: translateY(-2px);
+}
+
+.word-chip-btn.selected-wrong {
+  background: var(--color-error-bg);
+  border-color: var(--color-error);
+  color: var(--color-error);
+}
+
+.word-chip-btn.selected-correct {
+  background: var(--color-success-bg);
+  border-color: var(--color-success);
+  color: var(--color-success);
+}
+
+.exam-nav-controls {
+  text-align: right;
+}
+
+/* --------------------------------------------------
+   9. MODAL DE CELEBRACIÓN / TROFEO PIRATA
+   -------------------------------------------------- */
+.pirate-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(14, 10, 6, 0.7);
+  backdrop-filter: blur(4px);
+  z-index: 100;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.pirate-modal-backdrop.active {
+  display: flex;
+  animation: fadeIn 0.25s ease;
+}
+
+.pirate-modal-card {
+  background: var(--bg-card);
+  border: 3px solid var(--border-pirate);
+  border-radius: var(--radius-lg);
+  padding: 2.5rem 2rem;
+  max-width: 460px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.4), 0 0 24px var(--accent-glow);
+  position: relative;
+  animation: scaleUp 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.modal-seal {
+  font-size: 3.5rem;
+  margin-bottom: 0.5rem;
+  animation: bounce 1s infinite alternate;
+}
+
+.modal-title {
+  font-family: var(--font-pirate);
+  font-size: 2.2rem;
+  color: var(--text-main);
+  margin-bottom: 0.5rem;
+  line-height: 1.1;
+}
+
+.modal-message {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  margin-bottom: 1.5rem;
+}
+
+.modal-stats-box {
+  background: var(--bg-parchment-sheet);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-md);
+  padding: 0.9rem;
+  font-size: 0.88rem;
+  margin-bottom: 1.5rem;
+}
+
+.modal-actions-row {
+  display: flex;
+  gap: 0.8rem;
+  justify-content: center;
+}
+
+/* --------------------------------------------------
+   10. ANIMACIONES Y MEDIA QUERIES
+   -------------------------------------------------- */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes scaleUp {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes bounce {
+  from { transform: translateY(0); }
+  to { transform: translateY(-8px); }
+}
+
+@keyframes shakeX {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-6px); }
+  75% { transform: translateX(6px); }
+}
+
+@media (max-width: 680px) {
+  .app-header {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .header-left, .header-right {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .app-main-title {
+    font-size: 1.8rem;
+  }
+  
+  .islands-grid-container {
+    grid-template-columns: 1fr;
+  }
+  
+  .tf-buttons-row {
+    grid-template-columns: 1fr;
+  }
+  
+  .lesson-header-bar {
+    flex-wrap: wrap;
+  }
+  
+  .lesson-progress-container {
+    order: 3;
+    width: 100%;
+    max-width: none;
+  }
+  
+  .parchment-sheet {
+    padding: 1.5rem 1.1rem;
+  }
+  
+  .modal-actions-row {
+    flex-direction: column;
+  }
+}

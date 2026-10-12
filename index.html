@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Mapa hacia el Secreto del Desarrollo Web - Una aplicación pirata interactiva para estudiar y dominar conceptos de HTML, CSS y JavaScript.">
+  <title>Mapa hacia el Secreto del Desarrollo Web</title>
+
+  <!-- Google Fonts: Pirate Header & Monospace Reading Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Pirata+One&display=swap" rel="stylesheet">
+
+  <!-- Estilos principales -->
+  <link rel="stylesheet" href="CSS/styles.css">
+</head>
+<body class="theme-light">
+  <!-- Fondo con textura sutil de pergamino e ilustraciones discretas -->
+  <div class="parchment-background-layer" aria-hidden="true"></div>
+
+  <!-- Contenedor Principal de la Aplicación -->
+  <div id="app" class="app-container">
+
+    <!-- HEADER GLOBAL -->
+    <header class="app-header" id="global-header">
+      <div class="header-left">
+        <button id="btn-home-nav" class="pirate-icon-btn" title="Volver al Gran Mapa" aria-label="Ir al inicio">
+          <svg class="icon-svg" viewBox="0 0 24 24" width="22" height="22">
+            <path fill="currentColor" d="M12 2L2 12h3v8h6v-6h2v6h6v-8h3L12 2zm0 2.84L18 10.2v7.8h-2v-6H8v6H6v-7.8l6-5.36z"/>
+          </svg>
+          <span class="btn-text-sm">Gran Mapa</span>
+        </button>
+      </div>
+
+      <div class="header-center">
+        <h1 class="app-main-title" id="app-heading">Mapa hacia el Secreto del Desarrollo Web</h1>
+        <p class="app-subtitle" id="app-subheading">Expedición de Aprendizaje Frontend</p>
+      </div>
+
+      <div class="header-right">
+        <!-- Control de Sonido Sintetizado Náutico -->
+        <button id="btn-sound-toggle" class="pirate-icon-btn" title="Activar/Silenciar Efectos de Sonido" aria-label="Silenciar sonido">
+          <span id="sound-icon">🔊</span>
+        </button>
+
+        <!-- Botón de Modo Claro / Modo Oscuro con elemento representativo pirata (Farol de Barco / Calavera Lunar) -->
+        <button id="btn-theme-toggle" class="pirate-theme-toggle" title="Cambiar a Modo Nocturno Pirata" aria-label="Alternar modo claro y oscuro">
+          <div class="lantern-graphic" id="theme-icon-container">
+            <svg class="lantern-svg" viewBox="0 0 32 32" width="26" height="26">
+              <!-- Farol Náutico Pirata con vela / fuego -->
+              <path class="lantern-metal" fill="currentColor" d="M16 2a3 3 0 0 0-3 3c0 .3.05.6.14.86L11 8v2h10V8l-2.14-2.14A3 3 0 0 0 16 2zm-1 3a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM8 11l2 15h12l2-15H8zm4 3h8l-1.5 10h-5L12 14zm-4 13h16v3H8v-3z"/>
+              <circle class="lantern-glow" cx="16" cy="18" r="4" fill="#07CEF5"/>
+            </svg>
+          </div>
+          <span class="theme-label" id="theme-mode-label">Modo Mar</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- VISTA 1: HOME (EL GRAN MAPA Y LAS 3 ISLAS) -->
+    <main id="view-home" class="view-section active">
+      <section class="map-intro">
+        <div class="scroll-banner">
+          <p class="intro-quote">"Todo gran corsario de la web debe conquistar las 3 islas legendarias: Estructura, Estilo y Magia."</p>
+        </div>
+
+        <!-- Barra Global de Estadísticas -->
+        <div class="overall-progress-card">
+          <div class="progress-info-row">
+            <span class="stat-badge"><span>🗺️ Exploración Total:</span> <strong id="global-progress-text">0 / 30 Lecciones (0%)</strong></span>
+            <span class="stat-badge"><span>🏆 Tesoros / Exámenes:</span> <strong id="global-medals-text">0 / 3 Conquistados</strong></span>
+          </div>
+          <div class="global-progress-track">
+            <div class="global-progress-fill" id="global-progress-bar" style="width: 0%;"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SELECCIÓN DE LAS 3 ISLAS DE CONTENIDO -->
+      <section class="islands-grid-container" aria-label="Islas de contenido">
+        <!-- ISLA 1: HTML -->
+        <article class="island-card" id="card-island-html" data-island="html" tabindex="0" role="button" aria-label="Navegar a la Isla de HTML">
+          <div class="island-badge">Isla I</div>
+          <div class="island-art">
+            <svg viewBox="0 0 160 120" class="island-svg-art">
+              <!-- Mar sutil -->
+              <path d="M10 100 Q 40 92, 80 100 T 150 100" stroke="currentColor" fill="none" opacity="0.3" stroke-width="2"/>
+              <!-- Isla montañosa / Pergamino -->
+              <path d="M20 100 C 35 70, 50 60, 80 60 C 110 60, 125 70, 140 100 Z" fill="#E6BA6E" stroke="#5C3B1E" stroke-width="2"/>
+              <!-- Palmera -->
+              <path d="M80 65 Q 85 45 92 30" stroke="#7A4E26" stroke-width="3" fill="none"/>
+              <path d="M92 30 Q 110 20 115 32" stroke="#2D6A4F" stroke-width="2.5" fill="none"/>
+              <path d="M92 30 Q 105 40 110 48" stroke="#2D6A4F" stroke-width="2.5" fill="none"/>
+              <path d="M92 30 Q 75 20 68 28" stroke="#2D6A4F" stroke-width="2.5" fill="none"/>
+              <path d="M92 30 Q 82 42 75 46" stroke="#2D6A4F" stroke-width="2.5" fill="none"/>
+              <!-- Calavera o Etiqueta HTML </> -->
+              <rect x="42" y="72" width="32" height="20" rx="4" fill="#FFFFFF" stroke="#332115" stroke-width="1.5"/>
+              <text x="58" y="86" font-family="monospace" font-size="11" font-weight="bold" fill="#07CEF5" text-anchor="middle">&lt;/&gt;</text>
+              <circle cx="120" cy="85" r="4" fill="#D4A373" stroke="#5C3B1E"/>
+            </svg>
+          </div>
+          <h2 class="island-title">HTML</h2>
+          <p class="island-desc">La Estructura Sagrada y los Cimientos de la Web</p>
+          <div class="island-status-pill">
+            <span class="pill-count" id="badge-html-count">0 / 10 Lecciones</span>
+            <span class="pill-icon" id="badge-html-status">⚓ Pendiente</span>
+          </div>
+          <button class="pirate-btn island-enter-btn" data-island="html">Explorar Isla</button>
+        </article>
+
+        <!-- ISLA 2: CSS -->
+        <article class="island-card" id="card-island-css" data-island="css" tabindex="0" role="button" aria-label="Navegar a la Isla de CSS">
+          <div class="island-badge">Isla II</div>
+          <div class="island-art">
+            <svg viewBox="0 0 160 120" class="island-svg-art">
+              <!-- Mar sutil -->
+              <path d="M10 100 Q 40 92, 80 100 T 150 100" stroke="currentColor" fill="none" opacity="0.3" stroke-width="2"/>
+              <!-- Isla montañosa -->
+              <path d="M25 100 C 40 65, 55 55, 85 55 C 115 55, 125 72, 138 100 Z" fill="#E6BA6E" stroke="#5C3B1E" stroke-width="2"/>
+              <!-- Torreón / Faro náutico -->
+              <rect x="75" y="35" width="14" height="28" fill="#FFFFFF" stroke="#5C3B1E" stroke-width="1.5" rx="2"/>
+              <polygon points="73,35 89,35 82,24" fill="#07CEF5" stroke="#5C3B1E" stroke-width="1.5"/>
+              <circle cx="82" cy="42" r="3" fill="#EEC67C"/>
+              <!-- Paleta de colores / llaves {} -->
+              <rect x="36" y="74" width="30" height="20" rx="4" fill="#FFFFFF" stroke="#332115" stroke-width="1.5"/>
+              <text x="51" y="88" font-family="monospace" font-size="12" font-weight="bold" fill="#07CEF5" text-anchor="middle">{ }</text>
+              <!-- Bandera pirata -->
+              <line x1="115" y1="65" x2="115" y2="90" stroke="#5C3B1E" stroke-width="2"/>
+              <polygon points="115,65 130,72 115,79" fill="#2C1810"/>
+            </svg>
+          </div>
+          <h2 class="island-title">CSS</h2>
+          <p class="island-desc">Los Estilos, Colores y Formas del Horizonte</p>
+          <div class="island-status-pill">
+            <span class="pill-count" id="badge-css-count">0 / 10 Lecciones</span>
+            <span class="pill-icon" id="badge-css-status">⚓ Pendiente</span>
+          </div>
+          <button class="pirate-btn island-enter-btn" data-island="css">Explorar Isla</button>
+        </article>
+
+        <!-- ISLA 3: JAVASCRIPT -->
+        <article class="island-card" id="card-island-js" data-island="js" tabindex="0" role="button" aria-label="Navegar a la Isla de Java Script">
+          <div class="island-badge">Isla III</div>
+          <div class="island-art">
+            <svg viewBox="0 0 160 120" class="island-svg-art">
+              <!-- Mar sutil -->
+              <path d="M10 100 Q 40 92, 80 100 T 150 100" stroke="currentColor" fill="none" opacity="0.3" stroke-width="2"/>
+              <!-- Isla montañosa volcánica / tesoro -->
+              <path d="M18 100 C 35 62, 50 50, 80 50 C 110 50, 125 68, 142 100 Z" fill="#E6BA6E" stroke="#5C3B1E" stroke-width="2"/>
+              <!-- Cofre del Tesoro con relámpago de dinamismo -->
+              <rect x="66" y="68" width="28" height="20" rx="3" fill="#D4A373" stroke="#5C3B1E" stroke-width="2"/>
+              <path d="M66 68 Q 80 60 94 68 Z" fill="#7A4E26" stroke="#5C3B1E" stroke-width="1.5"/>
+              <circle cx="80" cy="78" r="3" fill="#EEC67C" stroke="#5C3B1E"/>
+              <!-- Símbolo JS ( ) => -->
+              <rect x="30" y="74" width="30" height="20" rx="4" fill="#FFFFFF" stroke="#332115" stroke-width="1.5"/>
+              <text x="45" y="88" font-family="monospace" font-size="11" font-weight="bold" fill="#07CEF5" text-anchor="middle">JS</text>
+              <!-- Brújula náutica mística -->
+              <circle cx="118" cy="76" r="10" fill="#FFFFFF" stroke="#5C3B1E" stroke-width="1.5"/>
+              <polygon points="118,68 121,76 118,84 115,76" fill="#07CEF5"/>
+            </svg>
+          </div>
+          <h2 class="island-title">Java scrp</h2>
+          <p class="island-desc">La Magia, Dinámica e Interactividad de a Bordo</p>
+          <div class="island-status-pill">
+            <span class="pill-count" id="badge-js-count">0 / 10 Lecciones</span>
+            <span class="pill-icon" id="badge-js-status">⚓ Pendiente</span>
+          </div>
+          <button class="pirate-btn island-enter-btn" data-island="js">Explorar Isla</button>
+        </article>
+      </section>
+
+      <!-- Pie de página con opción de reiniciar progreso -->
+      <footer class="home-bottom-tools">
+        <button id="btn-reset-data" class="pirate-link-btn" title="Reiniciar todo el progreso">
+          <span>🔄 Reiniciar bitácora de viaje</span>
+        </button>
+      </footer>
+    </main>
+
+    <!-- VISTA 2: ISLA ESPECÍFICA (MAPA CON 10 LECCIONES + EXAMEN FINAL) -->
+    <main id="view-island" class="view-section">
+      <nav class="island-nav-bar">
+        <button id="btn-back-to-home" class="pirate-back-btn">
+          <span>← Volver al Gran Mapa</span>
+        </button>
+        <div class="island-nav-title-group">
+          <span class="compass-badge">🧭 Coordenadas del Mar</span>
+        </div>
+      </nav>
+
+      <!-- Barra de Progreso Superior de la Isla -->
+      <section class="island-header-card">
+        <div class="island-progress-header-box">
+          <div class="island-meta">
+            <span class="island-kicker">Cuaderno de Navegación</span>
+            <h2 class="island-name-heading" id="current-island-title">Isla HTML</h2>
+            <p class="island-quote-text" id="current-island-subtitle">Domina las 10 lecciones y completa el Examen del Tesoro.</p>
+          </div>
+          <div class="island-meter-box">
+            <div class="island-meter-label">
+              <span>Progreso de la Isla:</span>
+              <strong id="island-progress-percent">0%</strong>
+            </div>
+            <div class="island-progress-track">
+              <div class="island-progress-fill" id="island-progress-bar" style="width: 0%;"></div>
+            </div>
+            <span class="island-ratio-text" id="island-ratio-text">0 de 10 Lecciones Completadas</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- MAPA NÁUTICO CON SENDERO DE LAS 10 LECCIONES -->
+      <section class="island-trail-wrapper" aria-label="Ruta de lecciones de la isla">
+        <div class="trail-watermark-compass" aria-hidden="true"></div>
+
+        <!-- Lista desordenada estilizada con hitos del mapa -->
+        <ul class="pirate-lessons-trail" id="island-lessons-list">
+          <!-- Inyectado dinámicamente mediante scrip.js -->
+        </ul>
+
+        <!-- Hito Final: El Examen del Tesoro de la Isla -->
+        <div class="final-exam-card" id="card-final-exam">
+          <div class="chest-icon-col">
+            <div class="chest-graphic" id="exam-chest-graphic">💎</div>
+          </div>
+          <div class="chest-info-col">
+            <span class="exam-tag">Prueba Suprema</span>
+            <h3 class="exam-title" id="final-exam-title">Examen Final de la Isla</h3>
+            <p class="exam-desc">Pon a prueba tu conocimiento con preguntas de Verdadero/Falso, Opción Múltiple y Rellenar la Palabra.</p>
+            <div class="exam-meta-status" id="exam-status-meta">
+              <span class="status-indicator" id="exam-badge-status">🔓 Disponible</span>
+            </div>
+          </div>
+          <div class="chest-btn-col">
+            <button id="btn-start-final-exam" class="pirate-btn pirate-btn-accent">Iniciar Examen</button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- VISTA 3: PÁGINA DE LECCIÓN (HEADER CON X Y BARRA DE PROGRESO, LECTURA EN PERGAMINO, 3 PREGUNTAS V/F Y BOTÓN TERMINAR) -->
+    <main id="view-lesson" class="view-section">
+      <!-- HEADER DE LA LECCIÓN -->
+      <header class="lesson-header-bar">
+        <div class="lesson-header-left">
+          <button id="btn-exit-lesson" class="btn-close-lesson" title="Abandonar lección y volver a la isla" aria-label="Abandonar lección">
+            ✕
+          </button>
+        </div>
+
+        <div class="lesson-header-center">
+          <div class="lesson-progress-container">
+            <div class="lesson-progress-info">
+              <span id="lesson-progress-label">Avance de la lección</span>
+              <strong id="lesson-progress-percent">0%</strong>
+            </div>
+            <div class="lesson-progress-track">
+              <div class="lesson-progress-fill" id="lesson-progress-bar" style="width: 0%;"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lesson-header-right">
+          <span class="lesson-badge-pill" id="lesson-index-pill">Módulo 1 de 10</span>
+        </div>
+      </header>
+
+      <!-- CONTENEDOR DE SCROLL DE LA LECCIÓN -->
+      <div class="lesson-scroll-area" id="lesson-scroll-container">
+        <!-- HOJA DE PERGAMINO VIEJO CON EL TEXTO CONCEPTUAL -->
+        <article class="parchment-sheet">
+          <div class="parchment-pin parchment-pin-tl" aria-hidden="true"></div>
+          <div class="parchment-pin parchment-pin-tr" aria-hidden="true"></div>
+
+          <header class="lesson-intro-header">
+            <div class="lesson-crumbs" id="lesson-island-breadcrumb">Isla HTML ➔ Módulo 1</div>
+            <h2 class="lesson-concept-title" id="lesson-concept-title">Cargando lección...</h2>
+            <div class="pirate-divider">
+              <span>⚓</span>
+            </div>
+          </header>
+
+          <!-- Texto de lectura con tipografía Courier New -->
+          <div class="lesson-text-body" id="lesson-text-content">
+            <!-- Inyectado por scrip.js -->
+          </div>
+        </article>
+
+        <!-- SECCIÓN DE LAS 3 PREGUNTAS DE VERDADERO O FALSO -->
+        <section class="lesson-questions-section" aria-label="Preguntas de comprobación">
+          <div class="questions-section-header">
+            <div class="scroll-icon-mini">📜</div>
+            <div>
+              <h3 class="questions-title">Desafío del Vigía: 3 Preguntas de Verdadero o Falso</h3>
+              <p class="questions-instructions">Responde cada una para verificar que has asimilado el concepto antes de terminar.</p>
+            </div>
+          </div>
+
+          <div class="questions-cards-stack" id="lesson-questions-container">
+            <!-- 3 preguntas inyectadas por scrip.js -->
+          </div>
+        </section>
+
+        <!-- BOTÓN DE TERMINAR CENTRADO EN LA PARTE INFERIOR -->
+        <div class="lesson-footer-action">
+          <button id="btn-finish-lesson" class="pirate-btn pirate-btn-finish" disabled>
+            <span class="btn-icon">✔️</span>
+            <span id="btn-finish-text">Terminar Lección</span>
+          </button>
+          <p class="finish-hint" id="finish-hint-text">Contesta las 3 preguntas para completar este módulo.</p>
+        </div>
+      </div>
+    </main>
+
+    <!-- VISTA 4: EXAMEN FINAL DE LA ISLA (V o F, Opción Múltiple, y Completar Oración) -->
+    <main id="view-exam" class="view-section">
+      <header class="lesson-header-bar">
+        <div class="lesson-header-left">
+          <button id="btn-exit-exam" class="btn-close-lesson" title="Salir del examen" aria-label="Salir del examen">
+            ✕
+          </button>
+        </div>
+        <div class="lesson-header-center">
+          <div class="lesson-progress-container">
+            <div class="lesson-progress-info">
+              <span id="exam-progress-label">Pregunta 1 de 6</span>
+              <strong id="exam-progress-percent">0%</strong>
+            </div>
+            <div class="lesson-progress-track">
+              <div class="lesson-progress-fill" id="exam-progress-bar" style="width: 0%;"></div>
+            </div>
+          </div>
+        </div>
+        <div class="lesson-header-right">
+          <span class="lesson-badge-pill" id="exam-island-pill">Examen Final</span>
+        </div>
+      </header>
+
+      <div class="exam-main-container">
+        <!-- Tarjeta de pregunta dinámica del examen -->
+        <article class="parchment-sheet exam-question-card" id="exam-question-card">
+          <!-- Inyectado por scrip.js -->
+        </article>
+
+        <!-- Controles de navegación del examen -->
+        <div class="exam-nav-controls">
+          <button id="btn-exam-next" class="pirate-btn pirate-btn-accent" disabled>
+            Siguiente Pregunta ➔
+          </button>
+        </div>
+      </div>
+    </main>
+
+    <!-- MODAL / VISTA DE ÉXITO O FELICITACIÓN -->
+    <div id="modal-celebration" class="pirate-modal-backdrop" aria-hidden="true" role="dialog" aria-modal="true">
+      <div class="pirate-modal-card">
+        <div class="modal-seal" id="modal-seal-icon">🏆</div>
+        <h2 class="modal-title" id="modal-title">¡Módulo Conquistado!</h2>
+        <p class="modal-message" id="modal-message">Has dominado este concepto con éxito. El mapa ha registrado tu logro.</p>
+
+        <div class="modal-stats-box" id="modal-stats-box">
+          <!-- Detalles de puntuación / retroalimentación -->
+        </div>
+
+        <div class="modal-actions-row">
+          <button id="btn-modal-return-island" class="pirate-btn">Volver al Mapa</button>
+          <button id="btn-modal-next-step" class="pirate-btn pirate-btn-accent">Siguiente Reto ➔</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Script principal del cliente -->
+  <script src="js/scrip.js"></script>
+</body>
+</html>

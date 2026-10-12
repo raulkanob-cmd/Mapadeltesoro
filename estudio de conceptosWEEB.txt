@@ -1,0 +1,63 @@
+aplicación en producto mínimo viable.
+que hare: una APP de para estudiar y aprender coceptos de programación web, solo de fronten. 
+
+Dinamica de la app:la idea es que funcione por bloques en la primero solo sea de HTML, el segundo de CSS y el 3 de Java scrp. estando en las lecciones abra: un texto para leer y después abajo 3 preguntas sobre lo que habla el texto. el final del bloque se completara con un examen con diversas dimanicas como: verdarero o falso, preguntas de opsion multiple y seleccionar la palabra que compl,ete la oracion.
+Cada lección trata sobre un concepto.
+
+contenido:
+3 islas de contenidos: HTML
+CSS Y Java scrp
+
+cada isla consta de 10 modulos mas un examen final.
+al pasar a la isla de cada lección serán vicibles los 10 contenidos en titulo con un icono del lado deracho que muestre el estado de la actividad, si esta palomeada es que fue completada.
+resumen:
+ 3 islas> una de la islas, con sus modulos> leccion= lectura y luego 3 preguntas > botón de terminar
+(importante las 3 preguntas de cada obsion son de verdarero o falso: en saso de una equivocación hacer notar en color rojo y señalar en verde cual era la correcta para aprender)
+
+  ESTETICA DE LA APP
+Extraer el concepto de un mapa del tesoro y piratas, ósea sobre un pedazo de papel viejo, que tenga un diseño minimalista solo con pequeños adornos que aludan a la estética propuesta pero que sean discretos y pequeños, casi trasparentes, para que aya máximo enfoque a la letra y los graficos.
+colores de la app:
+fondo: #EEC67C
+color secundario: blanco
+acento:#07CEF5
+
+tipografía:
+títulos:una frente con  estetica de Piratas
+textos:Courier New
+letra va en coilor oscuro.
+
+bordes de cuadros redondeados lirejamnete
+impotante su diseño es color calro para posterior mente tambien tener un modo oscuro con otro color acento adaptado.
+ 
+la estrctura de la leccion:
+de heder en la parte superior lado izquiedoun X para avandonar la leccion luego una barra de pregreso que indique abanse cuando se aga el scrol del texto y contesten las 3 preguntas: el texto de la leccion va sobre un pergamino viejo. y porteriormente abalo una por una las 3 preguntas de V o f.
+por ultimo la parte inperior de manera centrica el voton de terminar.
+
+estructura de isla:  
+esta pagina esta sobre el fonde de un mapa, arriva una varra de progreso que se llene conforma las lecciones de acompleten, luego avajo el titulo de la isla:Ejemplo Isla HTML. despuesel listado de las 10 lecciones regadas por el mapa en foema de lista desosdenada asi avajo.
+
+estructura del home:
+heder: titulo de la app: Mapa asia el secreto del derarrollo weed
+u fondo liso y enmedio 3 islas :
+HTML
+CSS
+Java scrp
+ 
+abajo un boton para cambiar del modo claro al oscuro: abiendado a un elemento representativo sobre la tematica que se trabaja.
+
+IMPORTANTE: 
+la informacion de los teniminos la sacaras de los siguintes links:
+https://plan.ahautalam.com/boards/1813373306531743283
+
+https://www.freecodecamp.org/espanol/learn/responsive-web-design-v9/review-html/review-html
+
+https://www.freecodecamp.org/espanol/learn/responsive-web-design-v9/review-css-backgrounds-and-borders/review-css-backgrounds-and-borders
+
+
+
+
+
+
+ 
+
+
