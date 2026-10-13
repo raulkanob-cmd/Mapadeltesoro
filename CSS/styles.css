@@ -21,6 +21,13 @@
   --border-pirate: #BFA06E;          /* Borde envejecido sutil */
   --border-card: #E5CCA0;
   
+  --header-bg: #D6A45E;              /* Barra del encabezado: tono del fondo, más oscuro */
+  --header-text: #2A1A0F;
+  --header-icon-bg: rgba(42, 26, 15, 0.14);
+  --header-icon-hover: rgba(42, 26, 15, 0.26);
+  --header-switch-track: rgba(42, 26, 15, 0.28);
+  --header-switch-thumb: #FFFDF8;
+  
   --color-success: #1E824C;          /* Verde aprendizaje correcto */
   --color-success-bg: #E8F8F0;
   --color-success-border: #2ECC71;
@@ -55,6 +62,13 @@ body.theme-dark {
   --accent: #07CEF5;                 /* Cian radiante en la oscuridad */
   --accent-hover: #40DCFB;
   --accent-glow: rgba(7, 206, 245, 0.5);
+  
+  --header-bg: #0E1219;              /* Encabezado más oscuro que el fondo */
+  --header-text: #EDE3D2;
+  --header-icon-bg: rgba(255, 255, 255, 0.10);
+  --header-icon-hover: rgba(255, 255, 255, 0.20);
+  --header-switch-track: rgba(255, 255, 255, 0.22);
+  --header-switch-thumb: #F3EBDD;
   
   --border-pirate: #3D495F;
   --border-card: #2E384A;
@@ -146,131 +160,174 @@ body.theme-dark .parchment-background-layer {
 .app-container {
   position: relative;
   z-index: 1;
-  max-width: 1040px;
+  max-width: 1000px;
   margin: 0 auto;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  padding: 0 1rem 2.5rem 1rem;
+  padding: 0 1rem 2rem 1rem;
 }
 
 /* --------------------------------------------------
-   3. HEADER GLOBAL
+   3. HEADER GLOBAL (barra de color + iconos laterales)
    -------------------------------------------------- */
 .app-header {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 1rem;
-  padding: 1rem 0;
-  border-bottom: 2px dashed var(--border-pirate);
-  margin-bottom: 1.5rem;
+  gap: 0.6rem;
+  padding: 0.55rem 0.7rem;
+  margin-bottom: 1.25rem;
+  background: var(--header-bg);
+  border-radius: var(--radius-md);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.12);
+  color: var(--header-text);
+}
+
+body.theme-dark .app-header {
+  box-shadow: 0 3px 14px rgba(0, 0, 0, 0.5);
 }
 
 .header-left, .header-right {
   display: flex;
   align-items: center;
-  gap: 0.6rem;
+  gap: 0.45rem;
+  flex-shrink: 0;
 }
 
 .header-center {
   text-align: center;
   flex: 1;
+  min-width: 0;
 }
 
 .app-main-title {
   font-family: var(--font-pirate);
-  font-size: 2.1rem;
-  font-weight: 400; /* Peso 400 elegante y delgado */
-  letter-spacing: 2.8px; /* Espaciado generoso */
-  color: var(--text-main);
-  text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.4);
-  line-height: 1.25;
-}
-
-body.theme-dark .app-main-title {
-  font-family: var(--font-pirate);
-  font-size: 2.1rem;
-  font-weight: 400; /* Peso 400 elegante y delgado */
-  letter-spacing: 2.8px; /* Espaciado generoso */
-  color: var(--text-main);
-  text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.4);
-  line-height: 1.25;
-}
-
-.app-subtitle {
-  font-size: 0.82rem;
-  letter-spacing: 0.5px;
-  color: var(--text-muted);
+  font-size: clamp(0.95rem, 2.4vw, 1.4rem);
+  font-weight: 500;
+  letter-spacing: 1.6px;
   text-transform: uppercase;
+  color: var(--header-text);
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-/* Botones con estilo pirata */
-.pirate-icon-btn {
-  background: var(--bg-card);
-  color: var(--text-main);
-  border: 1.5px solid var(--border-pirate);
-  border-radius: var(--radius-md);
-  padding: 0.45rem 0.75rem;
-  font-family: var(--font-mono);
-  font-size: 0.85rem;
+/* Botón de icono del encabezado (cuadrado suave) */
+.header-icon-btn {
+  background: var(--header-icon-bg);
+  color: var(--header-text);
+  border: none;
+  border-radius: var(--radius-sm);
+  width: 36px;
+  height: 34px;
   display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  cursor: pointer;
-  transition: var(--transition-smooth);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
-}
-
-.pirate-icon-btn:hover {
-  border-color: var(--accent);
-  box-shadow: 0 0 10px var(--accent-glow);
-  transform: translateY(-1px);
-}
-
-/* Botón temático de Modo Claro / Oscuro con Farol de Barco */
-.pirate-theme-toggle {
-  background: var(--bg-card);
-  color: var(--text-main);
-  border: 2px solid var(--border-pirate);
-  border-radius: var(--radius-full);
-  padding: 0.35rem 0.9rem;
-  font-family: var(--font-mono);
-  font-size: 0.82rem;
-  font-weight: bold;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  cursor: pointer;
-  transition: var(--transition-smooth);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-}
-
-.pirate-theme-toggle:hover {
-  border-color: var(--accent);
-  box-shadow: 0 0 12px var(--accent-glow);
-  transform: translateY(-1px);
-}
-
-.lantern-graphic {
-  display: flex;
   align-items: center;
   justify-content: center;
-  transition: transform 0.3s ease;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+  flex-shrink: 0;
 }
 
-.pirate-theme-toggle:hover .lantern-graphic {
-  transform: rotate(-12deg) scale(1.1);
+.header-icon-btn:hover,
+.header-icon-btn:focus-visible {
+  background: var(--header-icon-hover);
 }
 
-.lantern-glow {
-  transition: fill 0.3s ease, filter 0.3s ease;
+.header-icon-btn.is-muted {
+  opacity: 0.65;
 }
 
-body.theme-dark .lantern-glow {
-  fill: #FFE066;
-  filter: drop-shadow(0 0 6px #FFE066);
+/* Switch minimalista de modo claro / oscuro (sin letras) */
+.theme-switch {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
 }
+
+.switch-track {
+  width: 46px;
+  height: 26px;
+  border-radius: var(--radius-full);
+  background: var(--header-switch-track);
+  display: inline-flex;
+  align-items: center;
+  padding: 3px;
+  transition: background 0.3s ease;
+}
+
+.switch-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--header-switch-thumb);
+  color: #C88A2E;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s cubic-bezier(0.2, 0, 0, 1), color 0.3s ease;
+}
+
+.theme-switch[aria-checked="true"] .switch-track {
+  background: rgba(10, 22, 36, 0.75);
+}
+
+.theme-switch[aria-checked="true"] .switch-thumb {
+  transform: translateX(20px);
+  color: #16324A;
+}
+
+/* Panel de ajustes desplegable */
+.header-settings-panel {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  min-width: 210px;
+  background: var(--bg-card);
+  border: 1.5px solid var(--border-card);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-parchment);
+  padding: 0.4rem;
+  z-index: 30;
+  animation: fadeIn 0.2s ease;
+}
+
+.settings-action {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 0.6rem 0.7rem;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--text-main);
+  cursor: pointer;
+  transition: var(--transition-smooth);
+  text-align: left;
+}
+
+.settings-action:hover {
+  background: var(--bg-parchment-sheet);
+  color: var(--color-error);
+}
+
+/* Icono SVG genérico de un solo color (currentColor) */
+.ui-icon {
+  display: inline-block;
+  vertical-align: -0.18em;
+  flex-shrink: 0;
+}
+
 
 /* --------------------------------------------------
    4. SISTEMA DE VISTAS (SPA TRANSITIONS)
@@ -328,6 +385,13 @@ body.theme-dark .lantern-glow {
   gap: 0.8rem;
   margin-bottom: 0.6rem;
   font-size: 0.88rem;
+}
+
+.stat-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: var(--text-muted);
 }
 
 .stat-badge strong {
@@ -454,11 +518,17 @@ body.theme-dark .global-progress-track {
 
 .pill-count {
   font-weight: bold;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
 }
 
 .pill-icon {
   color: var(--accent);
   font-weight: bold;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
 }
 
 .pill-icon.completed {
@@ -537,6 +607,232 @@ body.theme-dark .global-progress-track {
 .pirate-link-btn:hover {
   color: var(--text-main);
 }
+/* Botón de acceso al targetero de fichas */
+.home-study-action {
+  display: flex;
+  justify-content: center;
+  margin: 0.5rem 0 2rem 0;
+}
+
+.pirate-btn-study {
+  min-width: 200px;
+  border-radius: var(--radius-full);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-size: 0.88rem;
+}
+
+/* --------------------------------------------------
+   5B. TARGETERO DE FICHAS DE CONCEPTOS (GLOSARIO)
+   -------------------------------------------------- */
+.glosario-header-card {
+  padding-top: 1.1rem;
+  padding-bottom: 1rem;
+}
+
+.glosario-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.glosario-search-box {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--bg-parchment-sheet);
+  border: 1.5px solid var(--border-pirate);
+  border-radius: var(--radius-full);
+  padding: 0.45rem 0.9rem;
+  color: var(--text-muted);
+  min-width: 240px;
+  transition: var(--transition-smooth);
+}
+
+.glosario-search-box:focus-within {
+  border-color: var(--accent);
+  box-shadow: 0 0 10px var(--accent-glow);
+}
+
+.glosario-search-input {
+  border: none;
+  background: transparent;
+  outline: none;
+  font-family: var(--font-mono);
+  font-size: 0.88rem;
+  color: var(--text-main);
+  width: 100%;
+}
+
+.glosario-count {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  margin-top: 0.7rem;
+}
+
+.glosario-board {
+  position: relative;
+}
+
+/* Slider de fichas: se apilan en fila y se deslizan hacia los lados */
+.glosario-slider {
+  overflow: hidden;
+  padding: 0.5rem 0.15rem 0.75rem 0.15rem;
+  cursor: grab;
+  touch-action: pan-y;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.glosario-slider.is-dragging {
+  cursor: grabbing;
+}
+
+.glosario-track {
+  display: flex;
+  align-items: stretch;
+  transition: transform 0.4s cubic-bezier(0.2, 0, 0, 1);
+  will-change: transform;
+}
+
+.glosario-slide {
+  flex: 0 0 100%;
+  min-width: 0;
+  display: flex;
+  justify-content: center;
+  padding: 0.2rem 0.35rem;
+}
+
+/* Ficha bibliográfica temática: un concepto por ficha */
+.study-card {
+  position: relative;
+  width: 100%;
+  max-width: 520px;
+  background: var(--bg-card);
+  border: 1.5px solid var(--border-card);
+  border-radius: var(--radius-md);
+  padding: 1.4rem 1.5rem 1.5rem 1.5rem;
+  box-shadow: var(--shadow-parchment);
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.study-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 1.5rem;
+  right: 1.5rem;
+  height: 3px;
+  border-radius: var(--radius-full);
+  background: var(--accent);
+  opacity: 0.75;
+}
+
+.study-term {
+  font-family: var(--font-pirate);
+  font-size: 1.3rem;
+  font-weight: 600;
+  letter-spacing: 0.8px;
+  color: var(--text-main);
+  line-height: 1.25;
+  padding-top: 0.35rem;
+}
+
+.study-def {
+  font-family: var(--font-mono);
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+/* Controles del slider */
+.glosario-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 0.4rem;
+}
+
+.glosario-nav-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--bg-card);
+  border: 1.5px solid var(--border-pirate);
+  color: var(--text-main);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
+}
+
+.glosario-nav-btn:hover:not(:disabled) {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: #051419;
+  box-shadow: 0 0 12px var(--accent-glow);
+}
+
+.glosario-nav-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.glosario-position {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  font-weight: bold;
+  color: var(--text-main);
+  background: var(--bg-parchment-sheet);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-full);
+  padding: 0.3rem 0.9rem;
+  min-width: 92px;
+  text-align: center;
+}
+
+.glosario-hint {
+  text-align: center;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-top: 0.7rem;
+  letter-spacing: 0.5px;
+}
+
+.glosario-empty {
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  padding: 2.5rem 0;
+}
+
+@media (max-width: 560px) {
+  .glosario-header-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .glosario-search-box {
+    min-width: 0;
+    width: 100%;
+  }
+
+  .study-card {
+    padding: 1.2rem 1.1rem 1.25rem 1.1rem;
+  }
+
+  .study-term {
+    font-size: 1.15rem;
+  }
+}
+
 
 /* --------------------------------------------------
    6. VISTA ISLA: SENDERO DE LAS 10 LECCIONES
@@ -559,21 +855,15 @@ body.theme-dark .global-progress-track {
   font-weight: bold;
   cursor: pointer;
   transition: var(--transition-smooth);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
 }
 
 .pirate-back-btn:hover {
   border-color: var(--accent);
   box-shadow: 0 0 10px var(--accent-glow);
   transform: translateX(-3px);
-}
-
-.compass-badge {
-  font-size: 0.82rem;
-  color: var(--text-muted);
-  background: var(--bg-card);
-  padding: 0.35rem 0.75rem;
-  border-radius: var(--radius-sm);
-  border: 1px dashed var(--border-pirate);
 }
 
 /* Cabecera de la isla */
@@ -594,17 +884,9 @@ body.theme-dark .global-progress-track {
   gap: 1.5rem;
 }
 
-.island-kicker {
-  font-family: var(--font-display);
-  font-size: 0.78rem;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  color: var(--accent);
-}
-
 .island-name-heading {
   font-family: var(--font-pirate);
-  font-size: 2.2rem;
+  font-size: clamp(1.5rem, 3.4vw, 2rem);
   font-weight: 400;
   letter-spacing: 2px;
   line-height: 1.2;
@@ -828,7 +1110,15 @@ body.theme-dark .island-progress-track {
 }
 
 .chest-icon-col {
-  font-size: 2.8rem;
+  color: var(--accent);
+  display: flex;
+  align-items: center;
+}
+
+.chest-graphic {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .chest-info-col {
@@ -1005,9 +1295,8 @@ body.theme-dark .lesson-progress-track {
   background: var(--border-pirate);
 }
 
-.pirate-divider span {
+.pirate-divider .ui-icon {
   color: var(--border-pirate);
-  font-size: 1rem;
 }
 
 /* Cuerpo de texto de la lección */
@@ -1089,7 +1378,9 @@ body.theme-dark .lesson-text-body code {
 }
 
 .scroll-icon-mini {
-  font-size: 1.8rem;
+  color: var(--accent);
+  display: flex;
+  align-items: center;
 }
 
 .questions-title {
@@ -1141,8 +1432,13 @@ body.theme-dark .lesson-text-body code {
 }
 
 .question-feedback-icon {
-  font-size: 1.1rem;
+  display: inline-flex;
+  align-items: center;
+  color: var(--text-muted);
 }
+
+.question-feedback-icon.is-correct { color: var(--color-success); }
+.question-feedback-icon.is-wrong { color: var(--color-error); }
 
 .question-prompt-text {
   font-size: 1rem;
@@ -1241,6 +1537,16 @@ body.theme-dark .mc-option-btn code {
   cursor: default;
   opacity: 0.9;
 }
+
+/* Iconos dentro de los botones V/F */
+.tf-icon {
+  display: inline-flex;
+  align-items: center;
+  min-width: 18px;
+}
+
+.tf-icon.is-correct { color: var(--color-success); }
+.tf-icon.is-wrong { color: var(--color-error); }
 
 /* Mensaje explicativo tras responder */
 .question-explanation-box {
@@ -1448,9 +1754,11 @@ body.theme-dark .mc-option-btn code {
   background: var(--bg-card);
   border: 3px solid var(--border-pirate);
   border-radius: var(--radius-lg);
-  padding: 2.5rem 2rem;
+  padding: 1.6rem 1.4rem;
   max-width: 460px;
   width: 100%;
+  max-height: calc(100vh - 2rem);
+  overflow-y: auto;
   text-align: center;
   box-shadow: 0 20px 40px rgba(0,0,0,0.4), 0 0 24px var(--accent-glow);
   position: relative;
@@ -1458,34 +1766,40 @@ body.theme-dark .mc-option-btn code {
 }
 
 .modal-seal {
-  font-size: 3.5rem;
-  margin-bottom: 0.5rem;
+  display: flex;
+  justify-content: center;
+  color: var(--accent);
+  margin-bottom: 0.35rem;
   animation: bounce 1s infinite alternate;
+}
+
+.modal-seal:empty {
+  display: none;
 }
 
 .modal-title {
   font-family: var(--font-pirate);
-  font-size: 1.9rem;
+  font-size: 1.6rem;
   font-weight: 400;
   letter-spacing: 2px;
   color: var(--text-main);
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.4rem;
   line-height: 1.2;
 }
 
 .modal-message {
-  font-size: 0.9rem;
+  font-size: 0.88rem;
   color: var(--text-muted);
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
 }
 
 .modal-stats-box {
   background: var(--bg-parchment-sheet);
   border: 1px solid var(--border-card);
   border-radius: var(--radius-md);
-  padding: 0.9rem;
-  font-size: 0.88rem;
-  margin-bottom: 1.5rem;
+  padding: 0.8rem;
+  font-size: 0.85rem;
+  margin-bottom: 1rem;
 }
 
 .modal-actions-row {
@@ -1518,51 +1832,150 @@ body.theme-dark .mc-option-btn code {
   75% { transform: translateX(6px); }
 }
 
+/* El encabezado permanece en una sola línea (inline) en cualquier tema y ancho */
 @media (max-width: 680px) {
   .app-header {
-    flex-direction: column;
-    text-align: center;
+    gap: 0.4rem;
+    padding: 0.45rem 0.5rem;
   }
-  
-  .header-left, .header-right {
-    width: 100%;
-    justify-content: center;
-  }
-  
+
   .app-main-title {
-  font-family: var(--font-pirate);
-  font-size: 2.1rem;
-  font-weight: 400; /* Peso 400 elegante y delgado */
-  letter-spacing: 2.8px; /* Espaciado generoso */
-  color: var(--text-main);
-  text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.4);
-  line-height: 1.25;
-}
-  
+    font-size: 0.82rem;
+    letter-spacing: 0.8px;
+  }
+
+  .header-icon-btn {
+    width: 30px;
+    height: 28px;
+  }
+
+  .switch-track {
+    width: 40px;
+    height: 22px;
+  }
+
+  .switch-thumb {
+    width: 16px;
+    height: 16px;
+  }
+
+  .theme-switch[aria-checked="true"] .switch-thumb {
+    transform: translateX(18px);
+  }
+
   .islands-grid-container {
     grid-template-columns: 1fr;
   }
-  
+
   .tf-buttons-row {
     grid-template-columns: 1fr;
   }
-  
+
   .lesson-header-bar {
     flex-wrap: wrap;
   }
-  
+
   .lesson-progress-container {
     order: 3;
     width: 100%;
     max-width: none;
   }
-  
+
   .parchment-sheet {
-    padding: 1.5rem 1.1rem;
+    padding: 1.3rem 1rem;
   }
-  
+
   .modal-actions-row {
     flex-direction: column;
+  }
+}
+
+/* Pantallas bajas (laptops): la página completa debe caber sin recortes */
+@media (max-height: 800px) {
+  .app-header {
+    padding: 0.4rem 0.6rem;
+    margin-bottom: 0.9rem;
+  }
+
+  .app-main-title {
+    font-size: clamp(0.85rem, 2vw, 1.15rem);
+  }
+
+  .map-intro {
+    margin-bottom: 1.25rem;
+  }
+
+  .scroll-banner {
+    padding: 0.6rem 1rem;
+    margin-bottom: 0.9rem;
+  }
+
+  .overall-progress-card,
+  .island-header-card,
+  .island-trail-wrapper {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+  }
+
+  .island-art {
+    width: 120px;
+    height: 90px;
+    margin: 0.4rem 0 0.3rem 0;
+  }
+
+  .island-title {
+    font-size: 1.7rem;
+  }
+
+  .island-desc {
+    margin-bottom: 0.9rem;
+  }
+
+  .island-status-pill {
+    margin-bottom: 0.8rem;
+  }
+
+  .pirate-lessons-trail {
+    gap: 0.8rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .lesson-trail-card {
+    padding: 0.65rem 1rem;
+  }
+
+  .node-step-circle {
+    width: 38px;
+    height: 38px;
+  }
+
+  .final-exam-card,
+  .question-card {
+    padding: 1rem 1.2rem;
+  }
+
+  .parchment-sheet {
+    padding: 1.5rem 1.4rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .lesson-header-bar {
+    padding: 0.55rem 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .lesson-concept-title {
+    font-size: 1.6rem;
+  }
+
+  .lesson-footer-action {
+    padding: 1rem 0 1.5rem 0;
+  }
+
+  .pirate-btn-finish {
+    min-width: 220px;
+    padding: 0.8rem 1.6rem;
+    font-size: 1.05rem;
   }
 }
 
@@ -1575,8 +1988,8 @@ body.theme-dark .mc-option-btn code {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 0.5rem 0 1rem 0;
-  min-height: 110px;
+  margin: 0.35rem 0 0.8rem 0;
+  min-height: 96px;
 }
 
 .parrot-celebration-wrapper {
@@ -1616,8 +2029,8 @@ body.theme-dark .mc-option-btn code {
 }
 
 .pirate-parrot-svg {
-  width: 100px;
-  height: 100px;
+  width: 84px;
+  height: 84px;
   filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.2));
   animation: parrotHop 1.6s ease-in-out infinite alternate;
   transform-origin: bottom center;
@@ -1667,9 +2080,9 @@ body.theme-dark .mc-option-btn code {
 .ocean-waves-celebration {
   position: relative;
   width: 100%;
-  max-width: 380px;
-  height: 125px;
-  margin: 0.5rem 0 1rem 0;
+  max-width: 360px;
+  height: 112px;
+  margin: 0.35rem 0 0.8rem 0;
   overflow: hidden;
   border-radius: var(--radius-md);
   background: linear-gradient(180deg, rgba(7, 206, 245, 0.12) 0%, rgba(5, 174, 207, 0.35) 100%);
@@ -1695,8 +2108,8 @@ body.theme-dark .mc-option-btn code {
   bottom: 0;
   left: 0;
   width: 100%;
-  height: 85px;
-  min-height: 65px;
+  height: 75px;
+  min-height: 60px;
 }
 
 .parallax-waves > use {

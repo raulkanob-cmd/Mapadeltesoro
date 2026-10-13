@@ -9,6 +9,36 @@
   'use strict';
 
   // -------------------------------------------------------------------------
+  // 0. BIBLIOTECA DE ICONOS SVG MINIMALISTAS (un solo color, estilo Lucide)
+  // -------------------------------------------------------------------------
+  const ICON_PATHS = {
+    check: '<path d="M20 6 9 17l-5-5"/>',
+    x: '<path d="M18 6 6 18M6 6l12 12"/>',
+    anchor: '<circle cx="12" cy="5" r="3"/><path d="M12 22v-10M4 12H2a10 10 0 0 0 20 0h-2"/>',
+    gem: '<path d="M6 3h12l4 6-10 13L2 9z"/><path d="M11 3 8 9l4 13 4-13-3-6"/><path d="M2 9h20"/>',
+    trophy: '<path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6M18 9h1.5a2.5 2.5 0 0 0 0-5H18M4 22h16M10 14.7V17c0 .6-.5 1-1 1.2-1.2.5-2 2-2 3.8M14 14.7V17c0 .6.5 1 1 1.2 1.2.5 2 2 2 3.8M18 2H6v7a6 6 0 0 0 12 0z"/>',
+    unlock: '<rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 9.9-1"/>',
+    help: '<circle cx="12" cy="12" r="10"/><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 3-3 3"/><path d="M12 17h.01"/>',
+    checkCircle: '<circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/>',
+    alert: '<path d="m21.7 18-8-14a2 2 0 0 0-3.4 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.7-3Z"/><path d="M12 9v4M12 17h.01"/>',
+    volume: '<path d="M11 5 6 9H2v6h4l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M19 4.9a10 10 0 0 1 0 14.2"/>',
+    volumeX: '<path d="M11 5 6 9H2v6h4l5 4z"/><path d="m22 9-6 6M16 9l6 6"/>',
+    sun: '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>',
+    moon: '<path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>'
+  };
+
+  function icon(name, size = 16, extraClass = '') {
+    const paths = ICON_PATHS[name] || '';
+    return `<svg class="ui-icon ${extraClass}" width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${paths}</svg>`;
+  }
+
+  // Escapa texto inyectado en HTML (evita que etiquetas como <a> o <dialog> se interpreten)
+  function escapeHtml(text) {
+    const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' };
+    return String(text).replace(/[&<>"']/g, ch => map[ch]);
+  }
+
+  // -------------------------------------------------------------------------
   // 1. BASE DE DATOS DE CONTENIDO: 3 ISLAS, 10 MÓDULOS C/U + EXÁMENES FINALES
   // -------------------------------------------------------------------------
   const COURSE_DATA = {
@@ -16,7 +46,7 @@
       id: 'html',
       name: 'Isla HTML',
       shortName: 'HTML',
-      subtitle: 'La Estructura Sagrada y los Cimientos del Mar Web',
+      subtitle: 'Estructura y contenido',
       lessons: [
         {
           id: 'html-1',
@@ -408,7 +438,7 @@
       id: 'css',
       name: 'Isla CSS',
       shortName: 'CSS',
-      subtitle: 'Los Estilos, Colores y Formas del Horizonte',
+      subtitle: 'Estilos y diseño',
       lessons: [
         {
           id: 'css-1',
@@ -800,9 +830,9 @@ p {
 
     js: {
       id: 'js',
-      name: 'Isla Java scrp',
-      shortName: 'Java scrp',
-      subtitle: 'La Magia, Dinámica e Interactividad de a Bordo',
+      name: 'Isla JavaScript',
+      shortName: 'JavaScript',
+      subtitle: 'Interactividad',
       lessons: [
         {
           id: 'js-1',
@@ -1118,7 +1148,7 @@ titulo.classList.add("activo");</code></pre>
           id: 'js-10',
           title: 'Eventos: Escuchar a los Tripulantes',
           content: `
-            <p>¡Hemos llegado a la cumbre de la Isla Java scrp! Una web cobra vida cuando reacciona a lo que hace el usuario: clics, teclas o scroll.</p>
+            <p>¡Hemos llegado a la cumbre de la Isla JavaScript! Una web cobra vida cuando reacciona a lo que hace el usuario: clics, teclas o scroll.</p>
             <p>Para escuchar acciones usamos <code>addEventListener()</code>:</p>
             <pre><code>const botonDisparo = document.getElementById("btn-disparar");
 
@@ -1147,7 +1177,7 @@ botonDisparo.addEventListener("click", function() {
         }
       ],
       exam: {
-        title: 'Examen Final de Java scrp: El Orbe de la Magia',
+        title: 'Examen Final de JavaScript: El Orbe de la Magia',
         questions: [
           {
             type: 'tf',
@@ -1315,10 +1345,24 @@ botonDisparo.addEventListener("click", function() {
     // Cabecera global y botones
     btnHomeNav: document.getElementById('btn-home-nav'),
     btnThemeToggle: document.getElementById('btn-theme-toggle'),
-    themeModeLabel: document.getElementById('theme-mode-label'),
+    themeThumb: document.getElementById('theme-icon-container'),
     btnSoundToggle: document.getElementById('btn-sound-toggle'),
-    soundIcon: document.getElementById('sound-icon'),
+    btnSettings: document.getElementById('btn-settings'),
+    settingsPanel: document.getElementById('header-settings-panel'),
     btnResetData: document.getElementById('btn-reset-data'),
+
+    // Targetero de fichas de conceptos
+    viewGlosario: document.getElementById('view-glosario'),
+    btnOpenGlosario: document.getElementById('btn-open-glosario'),
+    btnBackGlosario: document.getElementById('btn-back-glosario'),
+    glosarioSlider: document.getElementById('glosario-slider'),
+    glosarioTrack: document.getElementById('glosario-track'),
+    glosarioEmpty: document.getElementById('glosario-empty'),
+    glosarioCount: document.getElementById('glosario-count'),
+    glosarioPosition: document.getElementById('glosario-position'),
+    glosarioSearchInput: document.getElementById('glosario-search-input'),
+    btnGlosarioPrev: document.getElementById('btn-glosario-prev'),
+    btnGlosarioNext: document.getElementById('btn-glosario-next'),
 
     // Vista Home
     globalProgressBar: document.getElementById('global-progress-bar'),
@@ -1393,14 +1437,29 @@ botonDisparo.addEventListener("click", function() {
     if (theme === 'dark') {
       document.body.classList.remove('theme-light');
       document.body.classList.add('theme-dark');
-      dom.themeModeLabel.textContent = 'Modo Noche';
     } else {
       document.body.classList.remove('theme-dark');
       document.body.classList.add('theme-light');
-      dom.themeModeLabel.textContent = 'Modo Mar';
     }
+
+    // Switch del encabezado: solo cambio visual, sin letras
+    if (dom.btnThemeToggle) {
+      dom.btnThemeToggle.setAttribute('aria-checked', String(theme === 'dark'));
+    }
+    if (dom.themeThumb) {
+      dom.themeThumb.innerHTML = theme === 'dark' ? icon('moon', 14) : icon('sun', 14);
+    }
+
     appState.theme = theme;
     saveState(appState);
+  }
+
+  // Icono del botón de sonido (volumen activo / silenciado)
+  function renderSoundIcon() {
+    if (!dom.btnSoundToggle) return;
+    dom.btnSoundToggle.innerHTML = sound.enabled ? icon('volume', 20) : icon('volumeX', 20);
+    dom.btnSoundToggle.classList.toggle('is-muted', !sound.enabled);
+    dom.btnSoundToggle.setAttribute('aria-label', sound.enabled ? 'Silenciar sonido' : 'Activar sonido');
   }
 
   function toggleTheme() {
@@ -1414,7 +1473,7 @@ botonDisparo.addEventListener("click", function() {
   // -------------------------------------------------------------------------
   function switchView(targetViewId) {
     window.scrollTo({ top: 0, behavior: 'smooth' });
-    [dom.viewHome, dom.viewIsland, dom.viewLesson, dom.viewExam].forEach(view => {
+    [dom.viewHome, dom.viewIsland, dom.viewLesson, dom.viewExam, dom.viewGlosario].forEach(view => {
       view.classList.remove('active');
     });
 
@@ -1428,7 +1487,75 @@ botonDisparo.addEventListener("click", function() {
       dom.viewLesson.classList.add('active');
     } else if (targetViewId === 'exam') {
       dom.viewExam.classList.add('active');
+    } else if (targetViewId === 'glosario') {
+      dom.viewGlosario.classList.add('active');
+      renderGlosario(dom.glosarioSearchInput ? dom.glosarioSearchInput.value : '');
     }
+  }
+
+  // -------------------------------------------------------------------------
+  // 6B. TARGETERO DE FICHAS DE CONCEPTOS (GLOSARIO EN SLIDER)
+  // -------------------------------------------------------------------------
+  const GLOSSARY_DATA = Array.isArray(window.GLOSARIO_DATA) ? window.GLOSARIO_DATA : [];
+
+  let glosarioVisibleCards = [];
+  let glosarioIndex = 0;
+
+  function renderGlosario(filter = '') {
+    if (!dom.glosarioTrack) return;
+
+    const query = String(filter).trim().toLowerCase();
+    glosarioVisibleCards = GLOSSARY_DATA.filter(ficha =>
+      !query ||
+      ficha.term.toLowerCase().includes(query) ||
+      ficha.def.toLowerCase().includes(query)
+    );
+
+    dom.glosarioTrack.innerHTML = glosarioVisibleCards.map(ficha => `
+      <div class="glosario-slide">
+        <article class="study-card">
+          <h3 class="study-term">${escapeHtml(ficha.term)}</h3>
+          <p class="study-def">${escapeHtml(ficha.def)}</p>
+        </article>
+      </div>
+    `).join('');
+
+    glosarioIndex = 0;
+    updateGlosarioSlider(false);
+
+    if (dom.glosarioEmpty) dom.glosarioEmpty.hidden = glosarioVisibleCards.length > 0;
+    if (dom.glosarioCount) {
+      dom.glosarioCount.textContent = query
+        ? `${glosarioVisibleCards.length} de ${GLOSSARY_DATA.length} fichas`
+        : `${GLOSSARY_DATA.length} fichas`;
+    }
+  }
+
+  // Coloca la pista en la ficha actual (sin animación opcional, p. ej. al buscar)
+  function updateGlosarioSlider(animate = true) {
+    if (!dom.glosarioTrack) return;
+
+    const total = glosarioVisibleCards.length;
+
+    if (!animate) dom.glosarioTrack.style.transition = 'none';
+    dom.glosarioTrack.style.transform = `translateX(-${glosarioIndex * 100}%)`;
+    if (!animate) {
+      void dom.glosarioTrack.offsetWidth; // forzar reflow
+      dom.glosarioTrack.style.transition = '';
+    }
+
+    if (dom.glosarioPosition) {
+      dom.glosarioPosition.textContent = total ? `${glosarioIndex + 1} / ${total}` : '0 / 0';
+    }
+    if (dom.btnGlosarioPrev) dom.btnGlosarioPrev.disabled = glosarioIndex <= 0;
+    if (dom.btnGlosarioNext) dom.btnGlosarioNext.disabled = glosarioIndex >= total - 1;
+  }
+
+  function goToGlosarioCard(index) {
+    const total = glosarioVisibleCards.length;
+    if (!total) return;
+    glosarioIndex = Math.max(0, Math.min(total - 1, index));
+    updateGlosarioSlider();
   }
 
   // -------------------------------------------------------------------------
@@ -1448,24 +1575,24 @@ botonDisparo.addEventListener("click", function() {
     if (appState.passedExams.js) examsPassedCount++;
 
     dom.globalProgressBar.style.width = `${percent}%`;
-    dom.globalProgressText.textContent = `${totalCompleted} / ${totalLessons} Lecciones (${percent}%)`;
-    dom.globalMedalsText.textContent = `${examsPassedCount} / 3 Conquistados`;
+    dom.globalProgressText.textContent = `${totalCompleted} / ${totalLessons} (${percent}%)`;
+    dom.globalMedalsText.textContent = `${examsPassedCount} / 3`;
 
     // Badges de cada isla
-    dom.badgeHtmlCount.textContent = `${completedHtml} / 10 Lecciones`;
-    dom.badgeHtmlStatus.innerHTML = completedHtml === 10
-      ? '<span class="pill-icon completed">✔ Conquistada</span>'
-      : `<span class="pill-icon">⚓ ${Math.round((completedHtml / 10) * 100)}%</span>`;
+    const renderIslandPill = (statusEl, count) => {
+      statusEl.innerHTML = count === 10
+        ? `<span class="pill-icon completed">${icon('check', 14)} Conquistada</span>`
+        : `<span class="pill-icon">${icon('anchor', 14)} ${Math.round((count / 10) * 100)}%</span>`;
+    };
 
-    dom.badgeCssCount.textContent = `${completedCss} / 10 Lecciones`;
-    dom.badgeCssStatus.innerHTML = completedCss === 10
-      ? '<span class="pill-icon completed">✔ Conquistada</span>'
-      : `<span class="pill-icon">⚓ ${Math.round((completedCss / 10) * 100)}%</span>`;
+    dom.badgeHtmlCount.textContent = `${completedHtml} / 10`;
+    renderIslandPill(dom.badgeHtmlStatus, completedHtml);
 
-    dom.badgeJsCount.textContent = `${completedJs} / 10 Lecciones`;
-    dom.badgeJsStatus.innerHTML = completedJs === 10
-      ? '<span class="pill-icon completed">✔ Conquistada</span>'
-      : `<span class="pill-icon">⚓ ${Math.round((completedJs / 10) * 100)}%</span>`;
+    dom.badgeCssCount.textContent = `${completedCss} / 10`;
+    renderIslandPill(dom.badgeCssStatus, completedCss);
+
+    dom.badgeJsCount.textContent = `${completedJs} / 10`;
+    renderIslandPill(dom.badgeJsStatus, completedJs);
   }
 
   // -------------------------------------------------------------------------
@@ -1486,7 +1613,7 @@ botonDisparo.addEventListener("click", function() {
 
     dom.islandProgressBar.style.width = `${percent}%`;
     dom.islandProgressPercent.textContent = `${percent}%`;
-    dom.islandRatioText.textContent = `${completedCount} de 10 Lecciones Completadas`;
+    dom.islandRatioText.textContent = `${completedCount} / 10`;
 
     // Generar la lista de las 10 lecciones
     dom.islandLessonsList.innerHTML = '';
@@ -1501,7 +1628,7 @@ botonDisparo.addEventListener("click", function() {
         <div class="lesson-trail-card ${isCompleted ? 'completed' : ''}" data-lesson-index="${index}" tabindex="0" role="button" aria-label="Lección ${index + 1}: ${lesson.title}">
           <div class="lesson-node-left">
             <div class="node-step-circle">
-              ${isCompleted ? '✔' : index + 1}
+              ${isCompleted ? icon('check', 18) : index + 1}
             </div>
             <div class="node-text-group">
               <span class="node-badge-num">Módulo ${index + 1}</span>
@@ -1510,7 +1637,7 @@ botonDisparo.addEventListener("click", function() {
           </div>
           <div class="lesson-node-right">
             <span class="status-check-badge" title="${isCompleted ? 'Completada' : 'Pendiente'}">
-              ${isCompleted ? '✔' : '⚓'}
+              ${isCompleted ? icon('check', 16) : icon('anchor', 16)}
             </span>
           </div>
         </div>
@@ -1534,21 +1661,21 @@ botonDisparo.addEventListener("click", function() {
     });
 
     // Estado del Examen Final de la Isla
-    dom.finalExamTitle.textContent = `Examen Final de ${islandData.shortName}`;
+    dom.finalExamTitle.textContent = `Examen: ${islandData.shortName}`;
     const examPassed = appState.passedExams[islandId];
 
     if (examPassed) {
-      dom.examBadgeStatus.textContent = '🏆 ¡Conquistado con Honores!';
+      dom.examBadgeStatus.innerHTML = `${icon('trophy', 15)} Conquistado`;
       dom.examBadgeStatus.style.color = '#1E824C';
-      dom.btnStartFinalExam.textContent = 'Repetir Examen';
-      dom.examChestGraphic.textContent = '🏆';
+      dom.btnStartFinalExam.textContent = 'Repetir';
+      dom.examChestGraphic.innerHTML = icon('trophy', 42);
     } else {
-      dom.examBadgeStatus.textContent = completedCount >= 10
-        ? '🔓 ¡Listo para el Examen Final!'
-        : `⚓ Desbloqueado (${completedCount}/10 lecciones listas)`;
       dom.examBadgeStatus.style.color = '';
-      dom.btnStartFinalExam.textContent = 'Iniciar Examen';
-      dom.examChestGraphic.textContent = '💎';
+      dom.examBadgeStatus.innerHTML = completedCount >= 10
+        ? `${icon('unlock', 15)} Listo`
+        : `${icon('anchor', 15)} ${completedCount} / 10`;
+      dom.btnStartFinalExam.textContent = 'Iniciar';
+      dom.examChestGraphic.innerHTML = icon('gem', 42);
     }
   }
 
@@ -1580,8 +1707,8 @@ botonDisparo.addEventListener("click", function() {
     updateLessonProgress();
 
     // Rellenar cabecera
-    dom.lessonIndexPill.textContent = `Módulo ${lessonIndex + 1} de 10`;
-    dom.lessonIslandBreadcrumb.textContent = `${islandData.name} ➔ Módulo ${lessonIndex + 1}`;
+    dom.lessonIndexPill.textContent = `Módulo ${lessonIndex + 1} / 10`;
+    dom.lessonIslandBreadcrumb.textContent = `${islandData.name} · Módulo ${lessonIndex + 1}`;
     dom.lessonConceptTitle.textContent = lesson.title;
 
     // Rellenar texto conceptual en pergamino
@@ -1597,8 +1724,8 @@ botonDisparo.addEventListener("click", function() {
 
       qCard.innerHTML = `
         <div class="question-header-row">
-          <span class="question-number-badge">Pregunta ${qIndex + 1} de 3 (Verdadero / Falso)</span>
-          <span class="question-feedback-icon" id="q-icon-${qIndex}">❓</span>
+          <span class="question-number-badge">Pregunta ${qIndex + 1} / 3</span>
+          <span class="question-feedback-icon" id="q-icon-${qIndex}">${icon('help', 18)}</span>
         </div>
         <p class="question-prompt-text">${formatCodeInText(q.statement)}</p>
         <div class="tf-buttons-row">
@@ -1626,7 +1753,7 @@ botonDisparo.addEventListener("click", function() {
 
     // Resetear botón de terminar
     dom.btnFinishLesson.disabled = true;
-    dom.finishHintText.textContent = 'Contesta las 3 preguntas de Verdadero o Falso para completar la lección.';
+    dom.finishHintText.textContent = 'Responde las 3 preguntas.';
 
     switchView('lesson');
   }
@@ -1660,22 +1787,23 @@ botonDisparo.addEventListener("click", function() {
       sound.correct();
       chosenBtn.classList.add('selected-correct');
       if (iconTrue && iconFalse) {
-        (userChoice ? iconTrue : iconFalse).textContent = '✔ ';
+        const okIcon = icon('check', 16, 'is-correct');
+        (userChoice ? iconTrue : iconFalse).innerHTML = okIcon;
       }
-      iconSpan.textContent = '✅';
+      iconSpan.innerHTML = icon('checkCircle', 18, 'is-correct');
       expBox.className = 'question-explanation-box is-correct';
-      expBox.innerHTML = `<strong>¡Correcto, corsario!</strong> ${formatCodeInText(qData.explanation)}`;
+      expBox.innerHTML = `<strong>¡Correcto!</strong> ${formatCodeInText(qData.explanation)}`;
     } else {
       sound.wrong();
       chosenBtn.classList.add('selected-wrong');
       correctBtn.classList.add('correct-revealed');
       if (iconTrue && iconFalse) {
-        (userChoice ? iconTrue : iconFalse).textContent = '❌ ';
-        (qData.answer ? iconTrue : iconFalse).textContent = '✔ ';
+        (userChoice ? iconTrue : iconFalse).innerHTML = icon('x', 16, 'is-wrong');
+        (qData.answer ? iconTrue : iconFalse).innerHTML = icon('check', 16, 'is-correct');
       }
-      iconSpan.textContent = '⚠️';
+      iconSpan.innerHTML = icon('alert', 18, 'is-wrong');
       expBox.className = 'question-explanation-box is-wrong';
-      expBox.innerHTML = `<strong>¡Atención marinero!</strong> Tu respuesta fue incorrecta. La respuesta correcta era <u>${qData.answer ? 'Verdadero' : 'Falso'}</u>: ${formatCodeInText(qData.explanation)}`;
+      expBox.innerHTML = `<strong>Incorrecto.</strong> Era <u>${qData.answer ? 'Verdadero' : 'Falso'}</u>. ${formatCodeInText(qData.explanation)}`;
     }
 
     expBox.style.display = 'block';
@@ -1686,7 +1814,7 @@ botonDisparo.addEventListener("click", function() {
     const allAnswered = currentLessonQuestionsState.every(ans => ans !== null);
     if (allAnswered) {
       dom.btnFinishLesson.disabled = false;
-      dom.finishHintText.innerHTML = '✨ ¡Has respondido las 3 preguntas! Pulsa <strong>Terminar Lección</strong> para registrar tu avance.';
+      dom.finishHintText.innerHTML = 'Listo. Pulsa <strong>Terminar lección</strong>.';
     }
   }
 
@@ -1720,32 +1848,33 @@ botonDisparo.addEventListener("click", function() {
     }
 
     // Modal de felicitación con animación del loro pirata
-    dom.modalSealIcon.style.display = 'none';
+    dom.modalSealIcon.innerHTML = '';
     if (dom.modalIllustrationContainer) {
       dom.modalIllustrationContainer.innerHTML = getParrotAnimationHtml();
     }
-    dom.modalTitle.textContent = '¡Lección Conquistada!';
-    dom.modalMessage.textContent = `Has superado con éxito "${lesson.title}". Tu cuaderno de bitácora ha sido actualizado.`;
+    dom.modalTitle.textContent = '¡Lección conquistada!';
+    dom.modalMessage.textContent = `"${lesson.title}" completada.`;
 
     const totalInIsland = islandList.length;
     dom.modalStatsBox.innerHTML = `
-      <p>🎯 <strong>Progreso en ${COURSE_DATA[currentActiveIsland].name}:</strong> ${totalInIsland} de 10 Módulos.</p>
+      <p><strong>${COURSE_DATA[currentActiveIsland].name}:</strong> ${totalInIsland} / 10 módulos.</p>
     `;
 
     // Configurar botones del modal
+    dom.btnModalReturnIsland.textContent = 'Isla';
     dom.btnModalReturnIsland.onclick = () => {
       closeCelebrationModal();
       switchView('island');
     };
 
     if (currentActiveLessonIndex < 9) {
-      dom.btnModalNextStep.textContent = `Siguiente: Módulo ${currentActiveLessonIndex + 2} ➔`;
+      dom.btnModalNextStep.textContent = `Módulo ${currentActiveLessonIndex + 2}`;
       dom.btnModalNextStep.onclick = () => {
         closeCelebrationModal();
         openLesson(currentActiveIsland, currentActiveLessonIndex + 1);
       };
     } else {
-      dom.btnModalNextStep.textContent = `¡Ir al Examen Final! 💎`;
+      dom.btnModalNextStep.textContent = 'Examen final';
       dom.btnModalNextStep.onclick = () => {
         closeCelebrationModal();
         startFinalExam(currentActiveIsland);
@@ -1766,7 +1895,7 @@ botonDisparo.addEventListener("click", function() {
     currentExamQuestionIndex = 0;
     currentExamScore = 0;
 
-    dom.examIslandPill.textContent = `Examen Final: ${islandData.shortName}`;
+    dom.examIslandPill.textContent = `Examen: ${islandData.shortName}`;
     renderExamQuestion();
     switchView('exam');
   }
@@ -1780,7 +1909,7 @@ botonDisparo.addEventListener("click", function() {
     const currentPercent = Math.round((currentExamQuestionIndex / totalQ) * 100);
     dom.examProgressBar.style.width = `${currentPercent}%`;
     dom.examProgressPercent.textContent = `${currentPercent}%`;
-    dom.examProgressLabel.textContent = `Pregunta ${currentExamQuestionIndex + 1} de ${totalQ}`;
+    dom.examProgressLabel.textContent = `${currentExamQuestionIndex + 1} / ${totalQ}`;
 
     dom.btnExamNext.disabled = true;
 
@@ -1790,7 +1919,7 @@ botonDisparo.addEventListener("click", function() {
     if (qData.type === 'tf') {
       // 1. Dinámica Verdadero o Falso
       dom.examQuestionCard.innerHTML = `
-        <span class="exam-type-pill">Dinámica 1: Verdadero o Falso</span>
+        <span class="exam-type-pill">Verdadero o Falso</span>
         <h3 class="exam-question-statement">${formatCodeInText(qData.statement)}</h3>
         <div class="tf-buttons-row">
           <button type="button" class="tf-btn" id="exam-tf-true">Verdadero</button>
@@ -1813,13 +1942,13 @@ botonDisparo.addEventListener("click", function() {
           currentExamScore++;
           (val ? btnT : btnF).classList.add('selected-correct');
           exp.className = 'question-explanation-box is-correct';
-          exp.innerHTML = `<strong>¡Excelente!</strong> ${formatCodeInText(qData.explanation)}`;
+          exp.innerHTML = `<strong>¡Bien!</strong> ${formatCodeInText(qData.explanation)}`;
         } else {
           sound.wrong();
           (val ? btnT : btnF).classList.add('selected-wrong');
           (qData.answer ? btnT : btnF).classList.add('correct-revealed');
           exp.className = 'question-explanation-box is-wrong';
-          exp.innerHTML = `<strong>¡Incorrecto!</strong> La respuesta correcta era <u>${qData.answer ? 'Verdadero' : 'Falso'}</u>: ${formatCodeInText(qData.explanation)}`;
+          exp.innerHTML = `<strong>Era ${qData.answer ? 'Verdadero' : 'Falso'}.</strong> ${formatCodeInText(qData.explanation)}`;
         }
         exp.style.display = 'block';
         dom.btnExamNext.disabled = false;
@@ -1836,7 +1965,7 @@ botonDisparo.addEventListener("click", function() {
       });
 
       dom.examQuestionCard.innerHTML = `
-        <span class="exam-type-pill">Dinámica 2: Opción Múltiple</span>
+        <span class="exam-type-pill">Opción múltiple</span>
         <h3 class="exam-question-statement">${formatCodeInText(qData.statement)}</h3>
         <div class="mc-options-grid">
           ${optionsHtml}
@@ -1857,13 +1986,13 @@ botonDisparo.addEventListener("click", function() {
             currentExamScore++;
             btn.classList.add('selected-correct');
             exp.className = 'question-explanation-box is-correct';
-            exp.innerHTML = `<strong>¡Correcto!</strong> ${formatCodeInText(qData.explanation)}`;
+            exp.innerHTML = `<strong>¡Bien!</strong> ${formatCodeInText(qData.explanation)}`;
           } else {
             sound.wrong();
             btn.classList.add('selected-wrong');
             btns[qData.answerIndex].classList.add('correct-revealed');
             exp.className = 'question-explanation-box is-wrong';
-            exp.innerHTML = `<strong>Incorrecto.</strong> La opción correcta era: "${formatCodeInText(qData.options[qData.answerIndex])}". ${formatCodeInText(qData.explanation)}`;
+            exp.innerHTML = `<strong>Era:</strong> "${formatCodeInText(qData.options[qData.answerIndex])}". ${formatCodeInText(qData.explanation)}`;
           }
           exp.style.display = 'block';
           dom.btnExamNext.disabled = false;
@@ -1880,13 +2009,13 @@ botonDisparo.addEventListener("click", function() {
       });
 
       dom.examQuestionCard.innerHTML = `
-        <span class="exam-type-pill">Dinámica 3: Completar la Oración</span>
+        <span class="exam-type-pill">Completar</span>
         <p class="fill-blank-sentence">
           ${sentenceParts[0]}
-          <span class="blank-slot" id="exam-blank-slot">[ Selecciona la palabra ]</span>
+          <span class="blank-slot" id="exam-blank-slot">_____</span>
           ${sentenceParts[1] || ''}
         </p>
-        <p style="font-size: 0.84rem; color: var(--text-muted); margin-bottom: 0.8rem;">Haz clic sobre la palabra correcta:</p>
+        <p style="font-size: 0.84rem; color: var(--text-muted); margin-bottom: 0.8rem;">Elige la palabra:</p>
         <div class="fill-word-chips-pool">
           ${chipsHtml}
         </div>
@@ -1911,14 +2040,14 @@ botonDisparo.addEventListener("click", function() {
             blankSlot.style.borderColor = 'var(--color-success)';
             blankSlot.style.color = 'var(--color-success)';
             exp.className = 'question-explanation-box is-correct';
-            exp.innerHTML = `<strong>¡Perfecto!</strong> La palabra correcta es "${qData.correctWord}". ${formatCodeInText(qData.explanation)}`;
+            exp.innerHTML = `<strong>¡Bien!</strong> "${qData.correctWord}". ${formatCodeInText(qData.explanation)}`;
           } else {
             sound.wrong();
             chip.classList.add('selected-wrong');
             blankSlot.style.borderColor = 'var(--color-error)';
             blankSlot.style.color = 'var(--color-error)';
             exp.className = 'question-explanation-box is-wrong';
-            exp.innerHTML = `<strong>Cuidado:</strong> La palabra correcta era "${qData.correctWord}". ${formatCodeInText(qData.explanation)}`;
+            exp.innerHTML = `<strong>Era:</strong> "${qData.correctWord}". ${formatCodeInText(qData.explanation)}`;
           }
           exp.style.display = 'block';
           dom.btnExamNext.disabled = false;
@@ -1948,48 +2077,47 @@ botonDisparo.addEventListener("click", function() {
       appState.passedExams[currentActiveIsland] = true;
       saveState(appState);
 
-      dom.modalSealIcon.style.display = 'none';
+      dom.modalSealIcon.innerHTML = '';
       if (dom.modalIllustrationContainer) {
         dom.modalIllustrationContainer.innerHTML = getOceanWavesAnimationHtml();
       }
-      dom.modalTitle.textContent = `¡Gran Capitán de ${COURSE_DATA[currentActiveIsland].shortName}!`;
-      dom.modalMessage.textContent = `Has conquistado el Examen Final de la isla con éxito rotundo.`;
+      dom.modalTitle.textContent = `¡Capitán de ${COURSE_DATA[currentActiveIsland].shortName}!`;
+      dom.modalMessage.textContent = 'Examen superado.';
       dom.modalStatsBox.innerHTML = `
-        <p>🏆 <strong>Puntuación del examen:</strong> ${currentExamScore} de ${totalQ} aciertos.</p>
-        <p>¡El tesoro de esta isla ahora brilla en tu sala de trofeos!</p>
+        <p><strong>Puntuación:</strong> ${currentExamScore} / ${totalQ}</p>
       `;
 
-      dom.btnModalReturnIsland.textContent = 'Volver a la Isla';
+      dom.btnModalReturnIsland.textContent = 'Isla';
       dom.btnModalReturnIsland.onclick = () => {
         closeCelebrationModal();
         switchView('island');
       };
 
-      dom.btnModalNextStep.textContent = 'Ver Gran Mapa';
+      dom.btnModalNextStep.textContent = 'Mapa';
       dom.btnModalNextStep.onclick = () => {
         closeCelebrationModal();
         switchView('home');
       };
     } else {
       sound.wrong();
-      dom.modalSealIcon.style.display = 'block';
-      dom.modalSealIcon.textContent = '⚓';
+      dom.modalSealIcon.innerHTML = icon('anchor', 40);
+      // Las olas también acompañan cuando hay que reintentar (el barco sigue navegando)
       if (dom.modalIllustrationContainer) {
-        dom.modalIllustrationContainer.innerHTML = '';
+        dom.modalIllustrationContainer.innerHTML = getOceanWavesAnimationHtml();
       }
-      dom.modalTitle.textContent = 'Continúa Navegando';
-      dom.modalMessage.textContent = `Obtuviste ${currentExamScore} de ${totalQ} respuestas correctas. Necesitas al menos 4 aciertos para conquistar el tesoro de la isla.`;
+      dom.modalTitle.textContent = 'Continúa navegando';
+      dom.modalMessage.textContent = `${currentExamScore} / ${totalQ} correctas. Mínimo: 4.`;
       dom.modalStatsBox.innerHTML = `
-        <p>Repasa las lecciones de la isla y vuelve a intentarlo cuando estés listo.</p>
+        <p>Repasa e inténtalo de nuevo.</p>
       `;
 
-      dom.btnModalReturnIsland.textContent = 'Volver a la Isla';
+      dom.btnModalReturnIsland.textContent = 'Isla';
       dom.btnModalReturnIsland.onclick = () => {
         closeCelebrationModal();
         switchView('island');
       };
 
-      dom.btnModalNextStep.textContent = 'Reintentar Examen';
+      dom.btnModalNextStep.textContent = 'Reintentar';
       dom.btnModalNextStep.onclick = () => {
         closeCelebrationModal();
         startFinalExam(currentActiveIsland);
@@ -2006,7 +2134,7 @@ botonDisparo.addEventListener("click", function() {
   function getParrotAnimationHtml() {
     return `
       <div class="parrot-celebration-wrapper" id="parrot-celebration">
-        <div class="parrot-speech-bubble">¡Squawk! ¡Lección conquistada, marinero! 🦜</div>
+        <div class="parrot-speech-bubble">¡Lección conquistada!</div>
         <svg class="pirate-parrot-svg" viewBox="0 0 120 120">
           <!-- Perca de madera -->
           <rect x="25" y="100" width="70" height="8" rx="4" fill="#6B4423" stroke="#3D2314" stroke-width="1.5"/>
@@ -2076,10 +2204,10 @@ botonDisparo.addEventListener("click", function() {
             <path id="gentle-wave-path" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
           </defs>
           <g class="parallax-waves">
-            <use href="#gentle-wave-path" x="48" y="0" fill="rgba(7, 206, 245, 0.25)" />
-            <use href="#gentle-wave-path" x="48" y="3" fill="rgba(7, 206, 245, 0.45)" />
-            <use href="#gentle-wave-path" x="48" y="5" fill="rgba(30, 144, 255, 0.65)" />
-            <use href="#gentle-wave-path" x="48" y="7" fill="rgba(7, 206, 245, 0.95)" />
+            <use href="#gentle-wave-path" xlink:href="#gentle-wave-path" x="48" y="0" fill="rgba(7, 206, 245, 0.25)" />
+            <use href="#gentle-wave-path" xlink:href="#gentle-wave-path" x="48" y="3" fill="rgba(7, 206, 245, 0.45)" />
+            <use href="#gentle-wave-path" xlink:href="#gentle-wave-path" x="48" y="5" fill="rgba(30, 144, 255, 0.65)" />
+            <use href="#gentle-wave-path" xlink:href="#gentle-wave-path" x="48" y="7" fill="rgba(7, 206, 245, 0.95)" />
           </g>
         </svg>
       </div>
@@ -2101,7 +2229,7 @@ botonDisparo.addEventListener("click", function() {
       dom.modalIllustrationContainer.innerHTML = '';
     }
     if (dom.modalSealIcon) {
-      dom.modalSealIcon.style.display = 'block';
+      dom.modalSealIcon.innerHTML = '';
     }
   }
 
@@ -2109,14 +2237,37 @@ botonDisparo.addEventListener("click", function() {
   // 12. CONFIGURACIÓN DE EVENT LISTENERS GLOBALES
   // -------------------------------------------------------------------------
   function setupEventListeners() {
-    // Alternar tema claro y oscuro
+    // Alternar tema claro y oscuro (switch del encabezado)
     dom.btnThemeToggle.addEventListener('click', toggleTheme);
 
     // Silenciar / Activar sonido
     dom.btnSoundToggle.addEventListener('click', () => {
       sound.enabled = !sound.enabled;
-      dom.soundIcon.textContent = sound.enabled ? '🔊' : '🔇';
+      renderSoundIcon();
+      if (sound.enabled) sound.click();
     });
+
+    // Engranaje (izquierda): abrir / cerrar panel de reiniciar progreso
+    if (dom.btnSettings && dom.settingsPanel) {
+      const closeSettings = () => {
+        dom.settingsPanel.hidden = true;
+        dom.btnSettings.setAttribute('aria-expanded', 'false');
+      };
+
+      dom.btnSettings.addEventListener('click', (e) => {
+        e.stopPropagation();
+        sound.click();
+        const willOpen = dom.settingsPanel.hidden;
+        dom.settingsPanel.hidden = !willOpen;
+        dom.btnSettings.setAttribute('aria-expanded', String(willOpen));
+      });
+
+      dom.settingsPanel.addEventListener('click', (e) => e.stopPropagation());
+      document.addEventListener('click', closeSettings);
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeSettings();
+      });
+    }
 
     // Botón Home del header (si existe)
     if (dom.btnHomeNav) {
@@ -2152,6 +2303,91 @@ botonDisparo.addEventListener("click", function() {
       switchView('home');
     });
 
+    // Botón Estudiar: abrir el targetero de fichas
+    if (dom.btnOpenGlosario) {
+      dom.btnOpenGlosario.addEventListener('click', () => {
+        sound.click();
+        switchView('glosario');
+      });
+    }
+
+    // Volver del glosario al Mapa
+    if (dom.btnBackGlosario) {
+      dom.btnBackGlosario.addEventListener('click', () => {
+        sound.click();
+        switchView('home');
+      });
+    }
+
+    // Buscador de fichas
+    if (dom.glosarioSearchInput) {
+      dom.glosarioSearchInput.addEventListener('input', (e) => {
+        renderGlosario(e.target.value);
+      });
+    }
+
+    // Navegación del slider: botones laterales
+    if (dom.btnGlosarioPrev) {
+      dom.btnGlosarioPrev.addEventListener('click', () => {
+        sound.click();
+        goToGlosarioCard(glosarioIndex - 1);
+      });
+    }
+
+    if (dom.btnGlosarioNext) {
+      dom.btnGlosarioNext.addEventListener('click', () => {
+        sound.click();
+        goToGlosarioCard(glosarioIndex + 1);
+      });
+    }
+
+    // Navegación del slider: arrastrar con ratón o dedo
+    if (dom.glosarioSlider && dom.glosarioTrack) {
+      let dragging = false;
+      let startX = 0;
+      let deltaX = 0;
+
+      dom.glosarioSlider.addEventListener('pointerdown', (e) => {
+        if (!glosarioVisibleCards.length) return;
+        dragging = true;
+        startX = e.clientX;
+        deltaX = 0;
+        dom.glosarioSlider.classList.add('is-dragging');
+        dom.glosarioTrack.style.transition = 'none';
+        dom.glosarioSlider.setPointerCapture(e.pointerId);
+      });
+
+      dom.glosarioSlider.addEventListener('pointermove', (e) => {
+        if (!dragging) return;
+        deltaX = e.clientX - startX;
+        dom.glosarioTrack.style.transform =
+          `translateX(calc(-${glosarioIndex * 100}% + ${deltaX}px))`;
+      });
+
+      const endDrag = () => {
+        if (!dragging) return;
+        dragging = false;
+        dom.glosarioSlider.classList.remove('is-dragging');
+        dom.glosarioTrack.style.transition = '';
+
+        const threshold = dom.glosarioSlider.clientWidth * 0.18;
+        if (deltaX <= -threshold) goToGlosarioCard(glosarioIndex + 1);
+        else if (deltaX >= threshold) goToGlosarioCard(glosarioIndex - 1);
+        else updateGlosarioSlider();
+      };
+
+      dom.glosarioSlider.addEventListener('pointerup', endDrag);
+      dom.glosarioSlider.addEventListener('pointercancel', endDrag);
+    }
+
+    // Navegación del slider: flechas del teclado
+    document.addEventListener('keydown', (e) => {
+      if (!dom.viewGlosario || !dom.viewGlosario.classList.contains('active')) return;
+      if (document.activeElement === dom.glosarioSearchInput) return;
+      if (e.key === 'ArrowRight') goToGlosarioCard(glosarioIndex + 1);
+      if (e.key === 'ArrowLeft') goToGlosarioCard(glosarioIndex - 1);
+    });
+
     // Botón salir de la lección (X)
     dom.btnExitLesson.addEventListener('click', () => {
       sound.click();
@@ -2176,16 +2412,21 @@ botonDisparo.addEventListener("click", function() {
     // Botón siguiente en el examen
     dom.btnExamNext.addEventListener('click', advanceExam);
 
-    // Botón de reiniciar progreso (si existe)
+    // Botón de reiniciar progreso (panel de ajustes)
     if (dom.btnResetData) {
       dom.btnResetData.addEventListener('click', () => {
-        if (confirm('¿Deseas reiniciar toda la bitácora de viaje? Se borrará el progreso guardado.')) {
+        if (confirm('¿Reiniciar todo el progreso?')) {
           localStorage.removeItem(STORAGE_KEY);
           appState.completedLessons = { html: [], css: [], js: [] };
           appState.passedExams = { html: false, css: false, js: false };
           saveState(appState);
           renderHomeStats();
+          renderIslandView(currentActiveIsland);
           sound.click();
+        }
+        if (dom.settingsPanel) {
+          dom.settingsPanel.hidden = true;
+          dom.btnSettings.setAttribute('aria-expanded', 'false');
         }
       });
     }
@@ -2196,6 +2437,7 @@ botonDisparo.addEventListener("click", function() {
   // -------------------------------------------------------------------------
   function init() {
     applyTheme(appState.theme || 'light');
+    renderSoundIcon();
     setupEventListeners();
     renderHomeStats();
     switchView('home');
