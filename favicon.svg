@@ -1,27 +1,121 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="Brújula de mapa del tesoro">
+  <title>Brújula pirata — pergamino viejo</title>
+
   <defs>
-    <radialGradient id="parchment" cx="35%" cy="35%" r="65%">
-      <stop offset="0%" stop-color="#FFF4DC"/>
-      <stop offset="70%" stop-color="#EEC67C"/>
-      <stop offset="100%" stop-color="#C9934E"/>
+    <!-- Pergamino viejo: luz cálida arriba-izquierda, borde tostado -->
+    <radialGradient id="paper" cx="36%" cy="32%" r="74%">
+      <stop offset="0%"   stop-color="#FFFDF8"/>
+      <stop offset="42%"  stop-color="#F7E5BE"/>
+      <stop offset="78%"  stop-color="#EEC67C"/>
+      <stop offset="100%" stop-color="#C4924C"/>
     </radialGradient>
-    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
-      <feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#2A1A0F" flood-opacity="0.35"/>
+
+    <!-- Oro envejecido del aro exterior -->
+    <linearGradient id="rimGold" x1="0" y1="0" x2="0.6" y2="1">
+      <stop offset="0%"   stop-color="#F4DCA8"/>
+      <stop offset="55%"  stop-color="#EEC67C"/>
+      <stop offset="100%" stop-color="#A9743A"/>
+    </linearGradient>
+
+    <!-- Metátesis de la rosa: cara iluminada / cara en sombra -->
+    <linearGradient id="lit" x1="0" y1="0" x2="0.4" y2="1">
+      <stop offset="0%"   stop-color="#FFFDF8"/>
+      <stop offset="100%" stop-color="#F3DCA9"/>
+    </linearGradient>
+    <linearGradient id="shade" x1="0" y1="0" x2="0.5" y2="1">
+      <stop offset="0%"   stop-color="#B98443"/>
+      <stop offset="100%" stop-color="#8A5A2B"/>
+    </linearGradient>
+    <linearGradient id="north" x1="0" y1="0" x2="0.3" y2="1">
+      <stop offset="0%"   stop-color="#48E3FF"/>
+      <stop offset="100%" stop-color="#07CEF5"/>
+    </linearGradient>
+    <linearGradient id="northDark" x1="0" y1="0" x2="0.3" y2="1">
+      <stop offset="0%"   stop-color="#07CEF5"/>
+      <stop offset="100%" stop-color="#0496C4"/>
+    </linearGradient>
+
+    <!-- Grano del pergamino -->
+    <filter id="grain" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="3" stitchTiles="stitch"/>
+      <feColorMatrix type="saturate" values="0"/>
+      <feComponentTransfer><feFuncA type="linear" slope="0.22"/></feComponentTransfer>
     </filter>
+
+    <!-- Sombra suave de la moneda -->
+    <filter id="drop" x="-25%" y="-25%" width="150%" height="150%">
+      <feDropShadow dx="0" dy="1.6" stdDeviation="1.4" flood-color="#3A230E" flood-opacity="0.45"/>
+    </filter>
+
+    <clipPath id="disc"><circle cx="32" cy="32" r="29.5"/></clipPath>
   </defs>
 
-  <!-- Moneda / Brújula de Pergamino Pirata -->
-  <circle cx="32" cy="32" r="30" fill="url(#parchment)" stroke="#5C3B1E" stroke-width="2.5" filter="url(#shadow)"/>
-  <circle cx="32" cy="32" r="25" fill="none" stroke="#BFA06E" stroke-width="1" stroke-dasharray="2,2"/>
+  <!-- ================= MONEDA / PERGAMINO ================= -->
+  <g filter="url(#drop)">
+    <circle cx="32" cy="32" r="29.5" fill="url(#paper)" stroke="#5C3B1E" stroke-width="2.6"/>
+  </g>
 
-  <!-- Rosa de los vientos / Estrella Náutica -->
-  <polygon points="32,8 36,28 56,32 36,36 32,56 28,36 8,32 28,28" fill="#5C3B1E"/>
-  <polygon points="32,8 36,28 32,32 28,28" fill="#07CEF5"/>
-  <polygon points="56,32 36,36 32,32 36,28" fill="#05AECF"/>
-  <polygon points="32,56 28,36 32,32 36,36" fill="#07CEF5"/>
-  <polygon points="8,32 28,28 32,32 28,36" fill="#05AECF"/>
+  <!-- Aro de oro envejecido -->
+  <circle cx="32" cy="32" r="27.2" fill="none" stroke="url(#rimGold)" stroke-width="3" opacity="0.9"/>
+  <circle cx="32" cy="32" r="25.2" fill="none" stroke="#6B4423" stroke-width="1" opacity="0.45"/>
 
-  <!-- Centro de la Brújula -->
-  <circle cx="32" cy="32" r="4" fill="#FFFDF8" stroke="#5C3B1E" stroke-width="1.5"/>
-  <circle cx="32" cy="32" r="1.5" fill="#E63946"/>
+  <!-- Marcas de grados -->
+  <circle cx="32" cy="32" r="23.6" fill="none" stroke="#6B4423" stroke-width="2"
+          stroke-dasharray="1 3.6" stroke-linecap="butt" opacity="0.5"/>
+
+  <!-- Huella del tesoro (senda punteada de mapa) -->
+  <path d="M14 44 C20 36, 24 46, 31 40 S44 34, 50 24"
+        fill="none" stroke="#6B4423" stroke-width="1.2"
+        stroke-dasharray="0.4 2.6" stroke-linecap="round" opacity="0.35"/>
+  <path d="M47.5 20.5 l5 5 M52.5 20.5 l-5 5"
+        fill="none" stroke="#6B4423" stroke-width="1.3" stroke-linecap="round" opacity="0.4"/>
+
+  <!-- ================= ROSA DE LOS VIENTOS ================= -->
+  <g stroke="#4A2E12" stroke-width="0.5" stroke-linejoin="round">
+
+    <!-- Puntos diagonales (más cortos) -->
+    <polygon points="42.6,21.4 33.8,26.7 32,32" fill="url(#lit)"/>
+    <polygon points="42.6,21.4 37.3,30.2 32,32" fill="url(#shade)"/>
+
+    <polygon points="42.6,42.6 33.8,37.3 32,32" fill="url(#lit)"/>
+    <polygon points="42.6,42.6 37.3,33.8 32,32" fill="url(#shade)"/>
+
+    <polygon points="21.4,42.6 26.7,33.8 32,32" fill="url(#lit)"/>
+    <polygon points="21.4,42.6 30.2,37.3 32,32" fill="url(#shade)"/>
+
+    <polygon points="21.4,21.4 30.2,26.7 32,32" fill="url(#lit)"/>
+    <polygon points="21.4,21.4 26.7,30.2 32,32" fill="url(#shade)"/>
+
+    <!-- Puntos cardinales (largos) -->
+    <polygon points="32,9 27.8,26.5 32,32"   fill="url(#lit)"/>
+    <polygon points="32,9 36.2,26.5 32,32"   fill="url(#shade)"/>
+
+    <polygon points="55,32 38,27.8 32,32"    fill="url(#lit)"/>
+    <polygon points="55,32 38,36.2 32,32"    fill="url(#shade)"/>
+
+    <polygon points="32,55 27.8,38 32,32"    fill="url(#lit)"/>
+    <polygon points="32,55 36.2,38 32,32"    fill="url(#shade)"/>
+
+    <polygon points="9,32 26,36.2 32,32"     fill="url(#lit)"/>
+    <polygon points="9,32 26,27.8 32,32"     fill="url(#shade)"/>
+
+    <!-- NORTE: acento cian -->
+    <polygon points="32,9 27.8,26.5 32,32"   fill="url(#north)"/>
+    <polygon points="32,9 36.2,26.5 32,32"   fill="url(#northDark)"/>
+    <polygon points="32,9 27.8,26.5 36.2,26.5" fill="none" stroke="#4A2E12" stroke-width="0.7" opacity="0.55"/>
+  </g>
+
+  <!-- Eje / pasador central -->
+  <circle cx="32" cy="32" r="4.4" fill="#5C3B1E"/>
+  <circle cx="32" cy="32" r="3.4" fill="#FFFDF8" stroke="#5C3B1E" stroke-width="1"/>
+  <circle cx="32" cy="32" r="1.6" fill="#07CEF5"/>
+
+  <!-- ================= TEXTURA Y VIGNEETA ================= -->
+  <g clip-path="url(#disc)">
+    <!-- Vignette envejecido en los bordes -->
+    <circle cx="32" cy="32" r="29.5" fill="none" stroke="#7A4E22" stroke-width="6" opacity="0.18"/>
+    <!-- Grano de pergamino -->
+    <circle cx="32" cy="32" r="29.5" fill="#8A6A3C" filter="url(#grain)" opacity="0.5"
+            style="mix-blend-mode:multiply"/>
+  </g>
 </svg>

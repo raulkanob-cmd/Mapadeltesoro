@@ -1,0 +1,1222 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mapa del Desarrollo Web · Presentación para cliente</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0d0f11;
+  --panel:#16191d;
+  --panel2:#1c2025;
+  --line:rgba(255,255,255,.09);
+  --txt:#e8edf2;
+  --dim:#93a0ad;
+  --accent:#8be034;
+  --accent-dk:#63b81c;
+  --cyan:#07CEF5;
+  --fd:"Archivo","Arial Black","Segoe UI",sans-serif;
+  --fb:"Segoe UI",system-ui,-apple-system,Arial,sans-serif;
+  --stage-h:60vh;
+  --topbar:54px;
+  --navbar:58px;
+  --sidebar:236px;
+  --notes:0px;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;color:var(--txt);font-family:var(--fb);
+  background:
+    radial-gradient(1100px 700px at 78% -10%, #1b2a13 0%, transparent 60%),
+    radial-gradient(900px 620px at -10% 110%, #10222b 0%, transparent 55%),
+    var(--bg);
+  display:grid;grid-template-rows:var(--topbar) minmax(0,1fr) var(--navbar);
+  overflow:hidden;
+}
+.defs{position:absolute;width:0;height:0;overflow:hidden}
+
+/* ================= BARRA SUPERIOR ================= */
+.topbar{display:flex;align-items:center;gap:14px;padding:0 16px;background:linear-gradient(180deg,#1b1f24,#14171b);border-bottom:1px solid var(--line);z-index:30}
+.brand{display:flex;align-items:center;gap:11px;min-width:0}
+.mark{width:30px;height:30px;border-radius:8px;flex:none;background:linear-gradient(145deg,var(--accent),var(--accent-dk));display:grid;place-items:center;color:#08210a;font-weight:900;font-size:.76rem;box-shadow:0 4px 14px rgba(139,224,52,.3);font-family:var(--fd)}
+.brand h1{margin:0;font-size:.95rem;font-weight:650;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.brand p{margin:1px 0 0;font-size:.72rem;color:var(--dim);white-space:nowrap}
+.spacer{flex:1}
+.tabs{display:flex;gap:4px;background:#0f1215;padding:4px;border-radius:10px;border:1px solid var(--line)}
+.tab{border:0;background:transparent;color:var(--dim);font:inherit;font-size:.78rem;font-weight:600;padding:6px 14px;border-radius:7px;cursor:pointer;transition:.18s}
+.tab:hover{color:#fff;background:rgba(255,255,255,.06)}
+.tab.on{background:var(--accent);color:#0a1c04}
+.btn{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line);background:var(--panel2);color:var(--txt);font:inherit;font-size:.78rem;font-weight:600;padding:8px 13px;border-radius:9px;cursor:pointer;transition:.18s;white-space:nowrap}
+.btn:hover{background:#262b31;border-color:rgba(255,255,255,.2);transform:translateY(-1px)}
+.btn:active{transform:none}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:#0a1c04}
+.btn.primary:hover{background:#9bee49}
+.btn.icon{padding:8px 10px}
+.btn.on{background:rgba(139,224,52,.16);border-color:rgba(139,224,52,.5);color:var(--accent)}
+.ic{width:16px;height:16px;display:block;flex:none}
+
+/* ================= ÁREAS ================= */
+.workspace{display:grid;grid-template-columns:var(--sidebar) minmax(0,1fr) var(--notes);min-height:0;transition:grid-template-columns .28s ease}
+body.no-sidebar{--sidebar:0px}
+body.show-notes{--notes:322px}
+
+.sidebar{background:var(--panel);border-right:1px solid var(--line);overflow:auto;padding:12px 10px 18px;scrollbar-width:thin;scrollbar-color:#3a4149 transparent}
+body.no-sidebar .sidebar{display:none}
+.sidebar h2{font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);margin:2px 4px 10px;font-weight:700}
+.thumb{display:flex;gap:9px;align-items:center;width:100%;background:transparent;border:1px solid transparent;border-radius:10px;padding:7px;margin-bottom:6px;cursor:pointer;text-align:left;font:inherit;color:var(--txt);transition:.16s}
+.thumb:hover{background:rgba(255,255,255,.05)}
+.thumb.on{background:rgba(139,224,52,.11);border-color:rgba(139,224,52,.55)}
+.thumb-n{flex:none;width:20px;height:20px;border-radius:6px;font-size:.68rem;font-weight:700;display:grid;place-items:center;background:#252a30;color:var(--dim)}
+.thumb.on .thumb-n{background:var(--accent);color:#0a1c04}
+.thumb-shot{flex:1;aspect-ratio:16/9;border-radius:6px;overflow:hidden;background:#000;border:1px solid var(--line)}
+.thumb-shot svg{width:100%;height:100%;display:block}
+
+.stage{position:relative;display:flex;align-items:center;justify-content:center;padding:26px;min-width:0;overflow:hidden;
+  background:linear-gradient(rgba(255,255,255,.022) 1px,transparent 1px) 0 0/34px 34px,
+             linear-gradient(90deg,rgba(255,255,255,.022) 1px,transparent 1px) 0 0/34px 34px}
+.frame{position:relative;width:min(100%,calc(var(--stage-h) * 16 / 9));aspect-ratio:16/9;border-radius:6px;overflow:hidden;background:#0a0c0e;box-shadow:0 30px 70px -20px rgba(0,0,0,.85),0 0 0 1px rgba(255,255,255,.09)}
+.deck{position:absolute;inset:0}
+.slide{position:absolute;inset:0;opacity:0;transform:translateX(6%) scale(.985);transition:opacity .4s ease,transform .5s cubic-bezier(.22,.61,.36,1);pointer-events:none}
+.slide[data-pos="before"]{transform:translateX(-6%) scale(.985)}
+.slide.active{opacity:1;transform:none;pointer-events:auto}
+.slide .art{width:100%;height:100%;display:block}
+
+.stage-meta{position:absolute;left:26px;bottom:14px;display:flex;align-items:center;gap:9px;font-size:.74rem;color:var(--dim)}
+.stage-meta b{color:var(--txt);font-weight:650}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 9px var(--accent)}
+
+.notes{background:var(--panel);border-left:1px solid var(--line);padding:16px 16px 20px;overflow:auto;display:none;flex-direction:column}
+body.show-notes .notes{display:flex}
+.notes h3{font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin:0 0 10px;font-weight:700}
+.notes .n-title{font-size:.98rem;font-weight:650;margin:0 0 8px}
+.notes .n-body{font-size:.85rem;line-height:1.62;color:#c3ccd5;margin:0 0 16px}
+.notes ul{margin:0;padding-left:18px;font-size:.83rem;line-height:1.75;color:#c3ccd5}
+.notes li::marker{color:var(--accent)}
+.notes .hint{margin-top:auto;font-size:.7rem;color:var(--dim);border-top:1px dashed var(--line);padding-top:12px}
+
+/* ================= BARRA INFERIOR ================= */
+.navbar{display:flex;align-items:center;gap:16px;padding:0 16px;background:linear-gradient(0deg,#1b1f24,#14171b);border-top:1px solid var(--line);z-index:30}
+.nav-group{display:flex;align-items:center;gap:8px}
+.counter{font-variant-numeric:tabular-nums;font-weight:700;font-size:.85rem;background:#0f1215;border:1px solid var(--line);padding:7px 14px;border-radius:9px}
+.counter span{color:var(--accent)}
+.progress{flex:1;height:6px;border-radius:999px;background:rgba(255,255,255,.09);overflow:hidden;position:relative;cursor:pointer}
+.progress i{position:absolute;inset:0 auto 0 0;display:block;width:20%;background:linear-gradient(90deg,var(--accent-dk),var(--accent));transition:width .35s cubic-bezier(.22,.61,.36,1);box-shadow:0 0 12px rgba(139,224,52,.6)}
+.nav-title{font-size:.78rem;color:var(--dim);max-width:32ch;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* ================= REJILLA ================= */
+.overview{position:absolute;inset:0;background:rgba(9,11,13,.96);backdrop-filter:blur(8px);display:none;padding:26px;overflow:auto;z-index:20}
+body.mode-overview .overview{display:block}
+.ov-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:18px}
+.ov-card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:9px;cursor:pointer;text-align:left;font:inherit;color:var(--txt);transition:.18s}
+.ov-card:hover{border-color:var(--accent);transform:translateY(-4px);box-shadow:0 16px 34px -16px rgba(0,0,0,.9)}
+.ov-card.on{border-color:var(--accent);box-shadow:0 0 0 2px rgba(139,224,52,.35)}
+.ov-card .shot{width:100%;aspect-ratio:16/9;overflow:hidden;border-radius:7px;background:#000}
+.ov-card .shot svg{width:100%;height:100%;display:block}
+.ov-card p{margin:9px 3px 3px;font-size:.78rem;font-weight:600}
+.ov-card small{margin:0 3px 3px;display:block;font-size:.7rem;color:var(--dim)}
+
+/* ================= AYUDA ================= */
+.help{position:fixed;inset:0;background:rgba(6,8,9,.82);backdrop-filter:blur(6px);display:none;place-items:center;z-index:60;padding:24px}
+body.show-help .help{display:grid}
+.help-card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:26px 30px;max-width:560px;width:100%;box-shadow:0 40px 90px -30px #000}
+.help-card h3{margin:0 0 4px;font-size:1.1rem}
+.help-card p.sub{margin:0 0 18px;color:var(--dim);font-size:.82rem}
+.keys{display:grid;grid-template-columns:1fr 1fr;gap:9px 22px}
+.keys div{display:flex;align-items:center;gap:9px;font-size:.82rem;color:#c3ccd5}
+.keys kbd{background:#0f1215;border:1px solid var(--line);border-bottom-width:2px;border-radius:6px;padding:2px 7px;font-size:.72rem;font-weight:700;min-width:26px;text-align:center}
+.help-close{margin-top:20px;display:flex;justify-content:flex-end}
+
+/* ================= PRESENTACIÓN ================= */
+body.presenting{--topbar:0px;--navbar:0px;--sidebar:0px;--notes:0px}
+body.presenting .topbar,body.presenting .navbar,body.presenting .sidebar,body.presenting .notes{display:none}
+body.presenting .stage{padding:0;background:#000}
+body.presenting .frame{border-radius:0;box-shadow:none;width:min(100vw,calc(var(--stage-h) * 16 / 9))}
+body.presenting .stage-meta{opacity:0;transition:opacity .3s}
+body.presenting.show-ui .stage-meta{opacity:1}
+
+/* ================= TEXTO SVG ================= */
+.art text{font-family:var(--fb)}
+.kick{font-size:21px;font-weight:700;letter-spacing:.2em;fill:var(--accent)}
+.h1{font-family:var(--fd);font-size:116px;font-weight:900;fill:#fff;letter-spacing:-1.5px}
+.h2{font-family:var(--fd);font-size:86px;font-weight:900;fill:#fff;letter-spacing:-1px}
+.lead{font-size:27px;fill:#a9b4be}
+.chrome{font-size:18px;font-weight:600;fill:#8b96a1;letter-spacing:.2em}
+.it{font-size:34px;font-weight:800;fill:#fff;letter-spacing:.4px}
+.is{font-size:19px;font-weight:600;fill:#93a0ad;letter-spacing:.16em}
+.num{font-family:var(--fd);font-size:60px;font-weight:900;fill:rgba(139,224,52,.9)}
+.ct{font-size:30px;font-weight:800;fill:#fff}
+.cb{font-size:20px;fill:#98a4ae}
+.pill-t{font-size:22px;font-weight:800;fill:var(--accent);letter-spacing:.1em}
+.ui-h{font-size:19px;font-weight:800;fill:#3d2f14}
+.ui-t{font-size:19px;font-weight:800;fill:#20242a}
+.ui-s{font-size:14px;fill:#6b7076}
+.ui-btn{font-size:14px;font-weight:700;fill:#fff;letter-spacing:.06em}
+.ui-bd{font-size:15px;font-weight:900;fill:var(--cyan);text-anchor:middle}
+.dark .ui-h{fill:#e7edf3}
+.dark .ui-t{fill:#e7edf3}
+.dark .ui-s{fill:#93a0ad}
+.q-h{font-size:23px;font-weight:900;fill:#2b2417}
+.q-s{font-size:15px;fill:#8a7856}
+.q-tag{font-size:15px;font-weight:800;fill:#0788a8;letter-spacing:.1em}
+.q-txt{font-size:20px;fill:#2a2e33}
+.q-opt{font-size:19px;font-weight:700;fill:#3b4148}
+.lap-h{font-size:30px;font-weight:900;fill:#2c2415}
+.lap-s{font-size:19px;fill:#7a6a4a}
+.lap-c{font-size:26px;font-weight:900;fill:#22262b}
+.lap-cs{font-size:16px;fill:#7b6a4a}
+.lap-cp{font-size:14px;font-weight:700;fill:#4a4f55}
+.br-url{font-size:26px;fill:#33393f}
+
+/* ================= ANIMACIONES SVG ================= */
+@keyframes fxUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:none}}
+@keyframes fxLeft{from{opacity:0;transform:translateX(-38px)}to{opacity:1;transform:none}}
+@keyframes fxRight{from{opacity:0;transform:translateX(38px)}to{opacity:1;transform:none}}
+@keyframes fxPop{from{opacity:0;transform:scale(.6)}to{opacity:1;transform:scale(1)}}
+@keyframes fxIn{from{opacity:0}to{opacity:1}}
+@keyframes draw{from{stroke-dashoffset:var(--len,1600)}to{stroke-dashoffset:0}}
+@keyframes barGrow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@keyframes fillBar{from{transform:scaleX(0)}to{transform:scaleX(var(--s,1))}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes floatY{0%,100%{transform:translateY(0)}50%{transform:translateY(-16px)}}
+@keyframes drift{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(46px,-30px) scale(1.09)}}
+@keyframes drift2{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-40px,34px) scale(1.12)}}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.55;transform:scale(1.5)}}
+@keyframes tacoBob{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-5px) rotate(2deg)}}
+@keyframes btnTap{0%,100%{transform:scale(1)}50%{transform:scale(1.045)}}
+@keyframes ripple{0%{transform:scale(.55);opacity:.55}100%{transform:scale(2.3);opacity:0}}
+@keyframes selPulse{0%,100%{opacity:.9}50%{opacity:.3}}
+
+/* estado base = oculto */
+.slide .fx-up,.slide .fx-left,.slide .fx-right,.slide .fx-pop,.slide .fx-in{opacity:0}
+.slide .bar-grow{transform:scaleX(0);transform-box:fill-box;transform-origin:left center}
+.slide .draw{stroke-dasharray:var(--len,1600);stroke-dashoffset:var(--len,1600)}
+.slide .pb{transform:scaleX(0);transform-box:fill-box;transform-origin:left center}
+
+/* se reproducen solo con la diapositiva activa */
+.slide.active .fx-up{animation:fxUp .8s cubic-bezier(.22,.61,.36,1) var(--d,0s) both}
+.slide.active .fx-left{animation:fxLeft .8s cubic-bezier(.22,.61,.36,1) var(--d,0s) both}
+.slide.active .fx-right{animation:fxRight .8s cubic-bezier(.22,.61,.36,1) var(--d,0s) both}
+.slide.active .fx-pop{animation:fxPop .6s cubic-bezier(.34,1.56,.64,1) var(--d,0s) both}
+.slide.active .fx-in{animation:fxIn .9s ease var(--d,0s) both}
+.slide.active .bar-grow{animation:barGrow .95s cubic-bezier(.22,.61,.36,1) var(--d,0s) both}
+.slide.active .draw{animation:draw 1.5s cubic-bezier(.4,0,.2,1) var(--d,0s) both}
+.slide.active .pb{animation:fillBar 1.1s cubic-bezier(.22,.61,.36,1) var(--d,0s) both}
+.slide.active .spin{transform-box:fill-box;transform-origin:center;animation:spin 34s linear infinite}
+.slide.active .float-a{animation:floatY 8s ease-in-out infinite}
+.slide.active .float-b{animation:floatY 9.5s ease-in-out -3.2s infinite}
+.slide.active .float-c{animation:floatY 11s ease-in-out -5s infinite}
+.slide.active .drift{transform-box:fill-box;transform-origin:center;animation:drift 26s ease-in-out infinite}
+.slide.active .drift2{transform-box:fill-box;transform-origin:center;animation:drift2 32s ease-in-out infinite}
+.slide.active .pulse{transform-box:fill-box;transform-origin:center;animation:pulse 2.4s ease-in-out infinite}
+.slide.active .taco-bob{transform-box:fill-box;transform-origin:center;animation:tacoBob 3.2s ease-in-out infinite}
+.slide.active .btn-tap{transform-box:fill-box;transform-origin:center;animation:btnTap 2.6s ease-in-out var(--d,0s) infinite}
+.slide.active .ripple{transform-box:fill-box;transform-origin:center;animation:ripple 2.4s ease-out var(--d,0s) infinite}
+.slide.active .sel-pulse{animation:selPulse 1.8s ease-in-out var(--d,0s) infinite}
+
+/* miniaturas / rejilla / impresión: estado final, sin animación */
+.thumb .fx-up,.thumb .fx-left,.thumb .fx-right,.thumb .fx-pop,.thumb .fx-in,
+.ov-card .fx-up,.ov-card .fx-left,.ov-card .fx-right,.ov-card .fx-pop,.ov-card .fx-in{opacity:1 !important;animation:none !important}
+.thumb .bar-grow,.thumb .pb,.ov-card .bar-grow,.ov-card .pb{transform:scaleX(1) !important;animation:none !important}
+.thumb .draw,.ov-card .draw{stroke-dashoffset:0 !important;animation:none !important}
+.thumb .taco-bob,.thumb .btn-tap,.thumb .sel-pulse,.ov-card .taco-bob,.ov-card .btn-tap,.ov-card .sel-pulse{animation:none !important}
+.thumb .ripple,.ov-card .ripple{display:none}
+
+@media (max-width:900px){
+  .tabs,.nav-title{display:none}
+  .workspace{grid-template-columns:0 minmax(0,1fr) var(--notes)}
+  .sidebar{display:none}
+  .stage{padding:14px}
+  .stage-meta{left:14px}
+  .btn .lbl{display:none}
+  body.show-notes .notes{position:absolute;right:0;top:var(--topbar);bottom:var(--navbar);width:min(322px,86vw);z-index:25;box-shadow:-20px 0 50px -20px #000}
+}
+
+@media (prefers-reduced-motion:reduce){
+  .slide *{animation:none !important;transition:none !important}
+  .slide .fx-up,.slide .fx-left,.slide .fx-right,.slide .fx-pop,.slide .fx-in{opacity:1}
+  .slide .bar-grow,.slide .pb{transform:scaleX(1)}
+  .slide .draw{stroke-dashoffset:0}
+}
+
+@media print{
+  @page{size:landscape;margin:0}
+  body{display:block;overflow:visible;background:#fff;height:auto}
+  .topbar,.navbar,.sidebar,.notes,.overview,.help,.stage-meta,.defs{display:none !important}
+  .workspace{display:block}
+  .stage{padding:0;background:#fff;display:block;overflow:visible}
+  .frame{width:100% !important;box-shadow:none;border-radius:0;aspect-ratio:auto}
+  .deck{position:static}
+  .slide{position:relative;opacity:1 !important;transform:none !important;page-break-after:always;break-after:page}
+  .slide *{animation:none !important}
+  .slide .fx-up,.slide .fx-left,.slide .fx-right,.slide .fx-pop,.slide .fx-in{opacity:1 !important}
+  .slide .bar-grow,.slide .pb{transform:scaleX(1) !important}
+  .slide .draw{stroke-dashoffset:0 !important}
+}
+</style>
+</head>
+<body>
+
+<!-- ============ DEFS COMPARTIDOS ============ -->
+<svg class="defs" aria-hidden="true"><defs>
+  <linearGradient id="bgBase" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#1a1e22"/><stop offset=".55" stop-color="#111417"/><stop offset="1" stop-color="#0a0c0e"/>
+  </linearGradient>
+  <radialGradient id="gGreen"><stop offset="0" stop-color="#b7e85a" stop-opacity=".55"/><stop offset="1" stop-color="#b7e85a" stop-opacity="0"/></radialGradient>
+  <radialGradient id="gLime"><stop offset="0" stop-color="#8be034" stop-opacity=".42"/><stop offset="1" stop-color="#8be034" stop-opacity="0"/></radialGradient>
+  <radialGradient id="gAmber"><stop offset="0" stop-color="#f0a03c" stop-opacity=".5"/><stop offset="1" stop-color="#f0a03c" stop-opacity="0"/></radialGradient>
+  <radialGradient id="gCyan"><stop offset="0" stop-color="#07CEF5" stop-opacity=".35"/><stop offset="1" stop-color="#07CEF5" stop-opacity="0"/></radialGradient>
+  <linearGradient id="panelGrad" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#ffffff" stop-opacity=".15"/><stop offset="1" stop-color="#ffffff" stop-opacity=".04"/>
+  </linearGradient>
+  <linearGradient id="screenAmber" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#f8cd80"/><stop offset="1" stop-color="#e6a54d"/>
+  </linearGradient>
+  <linearGradient id="parchment" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#F2D194"/><stop offset="1" stop-color="#E4B568"/>
+  </linearGradient>
+  <linearGradient id="screenNight" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#20252b"/><stop offset="1" stop-color="#0e1114"/>
+  </linearGradient>
+  <linearGradient id="greenBar" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#b6f05a"/><stop offset="1" stop-color="#63b81c"/>
+  </linearGradient>
+  <linearGradient id="metal" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#cfd5db"/><stop offset=".5" stop-color="#9aa2aa"/><stop offset="1" stop-color="#6d747b"/>
+  </linearGradient>
+  <filter id="shadow" x="-35%" y="-35%" width="180%" height="180%">
+    <feDropShadow dx="0" dy="26" stdDeviation="26" flood-color="#000" flood-opacity=".6"/>
+  </filter>
+
+  <!-- Ilustración del taco (placeholder de concepto de la app) -->
+  <g id="taco">
+    <path d="M-40 4a40 32 0 0 0 80 0z" fill="#eec177" stroke="#d6a25a" stroke-width="2"/>
+    <path d="M-34 -2q4 -14 16 -10 4 -12 16 -8 12 -8 20 4 8 0 12 14z" fill="#93c244"/>
+    <circle cx="-16" cy="-6" r="5" fill="#dd5347"/>
+    <circle cx="6" cy="-10" r="4.5" fill="#dd5347"/>
+    <circle cx="24" cy="-4" r="4" fill="#f0ad2e"/>
+    <path d="M-40 4a40 32 0 0 0 80 0" fill="none" stroke="#d6a25a" stroke-width="2"/>
+  </g>
+
+  <!-- Moneda de progreso -->
+  <g id="coin">
+    <circle r="12" fill="#f7df1e" stroke="#d9b30f" stroke-width="2"/>
+    <circle r="6" fill="none" stroke="#d9b30f" stroke-width="2"/>
+  </g>
+</defs></svg>
+
+<!-- ============ BARRA SUPERIOR ============ -->
+<header class="topbar">
+  <div class="brand">
+    <div class="mark">MD</div>
+    <div>
+      <h1>Mapa del Desarrollo Web</h1>
+      <p>Presentación para cliente · 5 diapositivas · SVG animado</p>
+    </div>
+  </div>
+  <nav class="tabs" aria-label="Vistas">
+    <button class="tab on" data-view="edit">Editar</button>
+    <button class="tab" data-view="overview">Rejilla</button>
+    <button class="tab" data-view="present">Presentar</button>
+  </nav>
+  <div class="spacer"></div>
+  <button class="btn on" id="btnSidebar" title="Miniaturas">
+    <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="16" rx="2"/><line x1="9" y1="4" x2="9" y2="20"/><line x1="12" y1="9" x2="18" y2="9"/><line x1="12" y1="13" x2="18" y2="13"/></svg>
+    <span class="lbl">Miniaturas</span>
+  </button>
+  <button class="btn" id="btnNotes" title="Notas del orador (N)">
+    <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20l4.5-1.2L19 8.3 15.7 5 5.2 15.5z"/><line x1="14.5" y1="6.2" x2="17.8" y2="9.5"/></svg>
+    <span class="lbl">Notas</span>
+  </button>
+  <button class="btn" id="btnHelp" title="Atajos de teclado">
+    <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M9.6 9.4a2.5 2.5 0 1 1 3.2 2.4c-.6.2-.8.7-.8 1.3v.4" stroke-linecap="round"/><circle cx="12" cy="17" r="1.1" fill="currentColor" stroke="none"/></svg>
+  </button>
+  <button class="btn primary" id="btnFull" title="Pantalla completa (F)">
+    <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>
+    <span class="lbl">Pantalla completa</span>
+  </button>
+</header>
+
+<!-- ============ ÁREAS ============ -->
+<div class="workspace">
+  <aside class="sidebar" id="sidebar">
+    <h2>Diapositivas</h2>
+    <div id="thumbList"></div>
+  </aside>
+
+  <main class="stage" id="stage">
+    <div class="frame">
+      <div class="deck" id="deck">
+
+        <!-- ==================== 01 · PORTADA ==================== -->
+        <section class="slide">
+          <svg class="art" viewBox="0 0 1600 900" role="img" aria-label="Portada: Mapa del Desarrollo Web">
+            <rect width="1600" height="900" fill="url(#bgBase)"/>
+            <ellipse class="drift" cx="1330" cy="640" rx="560" ry="420" fill="url(#gGreen)"/>
+            <ellipse class="drift2" cx="1520" cy="180" rx="420" ry="340" fill="url(#gAmber)"/>
+            <ellipse class="drift2" cx="180" cy="820" rx="480" ry="360" fill="url(#gLime)"/>
+
+            <g class="fx-left" style="--d:.15s">
+              <rect x="0" y="112" width="548" height="452" fill="url(#panelGrad)"/>
+              <rect x="546" y="112" width="2" height="452" fill="#ffffff" opacity=".14"/>
+            </g>
+
+            <g class="fx-pop" style="--d:.55s">
+              <g class="spin">
+                <circle cx="274" cy="322" r="94" fill="rgba(255,255,255,.07)" stroke="#ffffff" stroke-opacity=".45" stroke-width="3"/>
+                <circle cx="274" cy="322" r="74" fill="none" stroke="#ffffff" stroke-opacity=".2" stroke-width="2"/>
+                <g stroke="#ffffff" stroke-opacity=".5" stroke-width="4" stroke-linecap="round">
+                  <line x1="274" y1="240" x2="274" y2="258"/>
+                  <line x1="274" y1="386" x2="274" y2="404"/>
+                  <line x1="192" y1="322" x2="210" y2="322"/>
+                  <line x1="338" y1="322" x2="356" y2="322"/>
+                </g>
+              </g>
+              <polygon points="274,272 296,322 252,322" fill="#8be034"/>
+              <polygon points="274,372 296,322 252,322" fill="#eef2f6"/>
+              <circle cx="274" cy="322" r="8" fill="#0f1215" stroke="#8be034" stroke-width="3"/>
+              <text x="274" y="236" text-anchor="middle" font-size="15" font-weight="800" fill="#8be034">N</text>
+            </g>
+
+            <g class="fx-up" style="--d:.85s">
+              <g transform="translate(118,470) rotate(-6)">
+                <rect x="0" y="0" width="308" height="470" rx="42" fill="#0d1013" stroke="#3d444b" stroke-width="3" filter="url(#shadow)"/>
+                <rect x="12" y="12" width="284" height="446" rx="32" fill="url(#screenAmber)"/>
+                <rect x="106" y="22" width="96" height="14" rx="7" fill="#0d1013" opacity=".5"/>
+
+                <!-- barra del navegador -->
+                <rect x="34" y="48" width="240" height="30" rx="15" fill="#33383d"/>
+                <g stroke="#cfd6dc" stroke-width="2" fill="none">
+                  <rect x="52" y="57" width="13" height="11" rx="2"/>
+                  <path d="M55 57v-3a4 4 0 0 1 8 0v3"/>
+                </g>
+                <text x="74" y="68" font-size="11" fill="#e7edf3">mapadeltesoro.com</text>
+
+                <!-- encabezado de la app -->
+                <text x="34" y="104" font-size="15" font-weight="800" fill="#2b2417">Mapa del Desarrollo Web</text>
+                <g stroke="#2b2417" stroke-width="3" stroke-linecap="round">
+                  <line x1="248" y1="90" x2="274" y2="90"/>
+                  <line x1="248" y1="98" x2="274" y2="98"/>
+                  <line x1="248" y1="106" x2="264" y2="106"/>
+                </g>
+
+                <!-- progreso general -->
+                <rect x="34" y="116" width="240" height="9" rx="4.5" fill="#000" opacity=".18"/>
+                <rect class="pb" x="34" y="116" width="240" height="9" rx="4.5" fill="#3ea24f" style="--s:.55;--d:1.2s"/>
+
+                <!-- tarjeta HTML -->
+                <rect x="34" y="140" width="240" height="150" rx="18" fill="#fffdf7"/>
+                <rect x="48" y="154" width="98" height="22" rx="11" fill="rgba(7,206,245,.16)"/>
+                <text x="97" y="169" text-anchor="middle" font-size="9" font-weight="800" fill="#0788a8" letter-spacing=".5">10 PREGUNTAS</text>
+                <rect x="152" y="154" width="108" height="22" rx="11" fill="rgba(230,165,77,.3)"/>
+                <text x="206" y="169" text-anchor="middle" font-size="8" font-weight="800" fill="#8a5a12" letter-spacing=".4">VERDADERO O FALSO</text>
+                <g transform="translate(154,208) scale(.5)"><g class="taco-bob"><use href="#taco"/></g></g>
+                <text x="154" y="252" text-anchor="middle" font-size="17" font-weight="900" fill="#2b2417">HTML</text>
+                <rect x="48" y="260" width="212" height="26" rx="13" fill="#ffffff" stroke="#e6e2d8" stroke-width="1.5"/>
+                <text x="154" y="278" text-anchor="middle" font-size="10" font-weight="800" fill="#2b2417" letter-spacing=".6">Revisar</text>
+
+                <!-- tarjeta CSS -->
+                <rect x="34" y="302" width="240" height="150" rx="18" fill="#fffdf7"/>
+                <rect x="48" y="316" width="98" height="22" rx="11" fill="rgba(7,206,245,.16)"/>
+                <text x="97" y="331" text-anchor="middle" font-size="9" font-weight="800" fill="#0788a8" letter-spacing=".5">10 PREGUNTAS</text>
+                <rect x="152" y="316" width="108" height="22" rx="11" fill="rgba(230,165,77,.3)"/>
+                <text x="206" y="331" text-anchor="middle" font-size="8" font-weight="800" fill="#8a5a12" letter-spacing=".4">VERDADERO O FALSO</text>
+                <g transform="translate(154,370) scale(.5)"><g class="taco-bob" style="animation-delay:.6s"><use href="#taco"/></g></g>
+                <text x="154" y="414" text-anchor="middle" font-size="17" font-weight="900" fill="#2b2417">CSS</text>
+                <rect x="48" y="422" width="212" height="26" rx="13" fill="#ffffff" stroke="#e6e2d8" stroke-width="1.5"/>
+                <text x="154" y="440" text-anchor="middle" font-size="10" font-weight="800" fill="#2b2417" letter-spacing=".6">Revisar</text>
+              </g>
+            </g>
+
+            <text x="64" y="64" class="chrome fx-in" style="--d:.1s">MAPA DEL DESARROLLO WEB</text>
+            <text x="1536" y="64" class="chrome fx-in" text-anchor="end" style="--d:.1s">PROPUESTA PARA CLIENTE · 2026</text>
+            <line x1="64" y1="86" x2="1536" y2="86" stroke="#ffffff" stroke-opacity=".18" stroke-width="2" class="draw" style="--len:1480;--d:.2s"/>
+            <rect x="64" y="81" width="300" height="10" rx="5" fill="url(#greenBar)" class="bar-grow" style="--d:.75s"/>
+
+            <rect x="614" y="242" width="48" height="6" rx="3" fill="#8be034" class="bar-grow" style="--d:.5s"/>
+            <text x="682" y="254" class="kick fx-up" style="--d:.55s">APLICACIÓN INTERACTIVA DE APRENDIZAJE</text>
+            <text x="612" y="392" class="h1 fx-up" style="--d:.7s">Mapa del</text>
+            <text x="612" y="508" class="h1 fx-up" style="--d:.82s">Desarrollo</text>
+            <text x="612" y="624" class="h1 fx-up" style="--d:.94s">Web</text>
+            <text x="616" y="690" class="lead fx-up" style="--d:1.1s">HTML · CSS · JavaScript — 3 islas, 30 módulos, 3 exámenes.</text>
+            <g class="fx-up" style="--d:1.25s">
+              <rect x="614" y="726" width="332" height="56" rx="28" fill="rgba(139,224,52,.14)" stroke="#8be034" stroke-width="2"/>
+              <text x="780" y="762" class="pill-t" text-anchor="middle">DEMO EN VIVO · 30 MIN</text>
+            </g>
+
+            <rect x="64" y="856" width="120" height="10" rx="5" fill="#ffffff" opacity=".18" class="bar-grow" style="--d:1.3s"/>
+            <rect x="1000" y="856" width="536" height="10" rx="5" fill="url(#greenBar)" class="bar-grow" style="--d:1.4s"/>
+          </svg>
+        </section>
+
+        <!-- ==================== 02 · CARACTERÍSTICAS ==================== -->
+        <section class="slide">
+          <svg class="art" viewBox="0 0 1600 900" role="img" aria-label="Características de la plataforma">
+            <rect width="1600" height="900" fill="url(#bgBase)"/>
+            <ellipse class="drift" cx="1420" cy="140" rx="520" ry="380" fill="url(#gAmber)"/>
+            <ellipse class="drift2" cx="120" cy="780" rx="460" ry="360" fill="url(#gLime)"/>
+
+            <text x="64" y="64" class="chrome fx-in" style="--d:.1s">MAPA DEL DESARROLLO WEB</text>
+            <text x="1536" y="64" class="chrome fx-in" text-anchor="end" style="--d:.1s">PROPUESTA PARA CLIENTE · 2026</text>
+            <line x1="64" y1="86" x2="1536" y2="86" stroke="#ffffff" stroke-opacity=".18" stroke-width="2" class="draw" style="--len:1480;--d:.2s"/>
+            <rect x="64" y="81" width="300" height="10" rx="5" fill="url(#greenBar)" class="bar-grow" style="--d:.7s"/>
+
+            <text x="120" y="176" class="kick fx-up" style="--d:.35s">CARACTERÍSTICAS DE LA PLATAFORMA</text>
+
+            <g class="fx-left" style="--d:.5s">
+              <g fill="none" stroke="#8be034" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="118" y="274" width="94" height="64" rx="9"/>
+                <path d="M165 338v20M139 360h52"/>
+                <rect x="184" y="302" width="38" height="60" rx="9" fill="#0e1114"/>
+                <line x1="194" y1="312" x2="212" y2="312" stroke-width="4"/>
+              </g>
+              <text x="252" y="306" class="it">RESPONSIVO: CELULAR,</text>
+              <text x="252" y="348" class="it">ESCRITORIO Y TABLETA</text>
+            </g>
+
+            <g class="fx-left" style="--d:.72s">
+              <path d="M176 466a44 44 0 1 0 0 88 36 36 0 1 1 0-88z" fill="#8be034"/>
+              <circle cx="196" cy="474" r="7" fill="#8be034" opacity=".7"/>
+              <text x="252" y="522" class="it">MODO CLARO Y OSCURO</text>
+              <text x="252" y="556" class="is">CON ACENTO ADAPTADO</text>
+            </g>
+
+            <g class="fx-left" style="--d:.94s">
+              <path d="M136 664a28 28 0 0 1 6-56 36 36 0 0 1 68-6 26 26 0 0 1 6 62z" fill="none" stroke="#8be034" stroke-width="5" stroke-linejoin="round"/>
+              <path d="M172 692v32M158 712l14 14 14-14" fill="none" stroke="#8be034" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+              <text x="252" y="696" class="it">WEBAPP INSTALABLE</text>
+              <text x="252" y="730" class="is">SIN TIENDAS DE APLICACIONES</text>
+            </g>
+
+            <!-- teléfono oscuro (atrás) -->
+            <g class="fx-in" style="--d:1.05s">
+              <g transform="translate(1158,236) rotate(7)">
+                <g class="float-b">
+                  <rect x="0" y="0" width="330" height="624" rx="44" fill="#0d1013" stroke="#3d444b" stroke-width="3" filter="url(#shadow)"/>
+                  <rect x="12" y="12" width="306" height="600" rx="34" fill="url(#screenNight)"/>
+
+                  <!-- barra del navegador -->
+                  <rect x="34" y="46" width="262" height="30" rx="15" fill="#22262b"/>
+                  <g stroke="#8b96a1" stroke-width="2" fill="none">
+                    <rect x="52" y="55" width="13" height="11" rx="2"/>
+                    <path d="M55 55v-3a4 4 0 0 1 8 0v3"/>
+                  </g>
+                  <text x="74" y="66" font-size="10.5" fill="#c3ccd5">mapadeltesoro.com</text>
+
+                  <!-- encabezado de la app -->
+                  <text x="34" y="104" font-size="15" font-weight="800" fill="#e7edf3">Mapa del Desarrollo Web</text>
+                  <g stroke="#e7edf3" stroke-width="3" stroke-linecap="round">
+                    <line x1="268" y1="92" x2="294" y2="92"/>
+                    <line x1="268" y1="100" x2="294" y2="100"/>
+                    <line x1="268" y1="108" x2="284" y2="108"/>
+                  </g>
+                  <rect x="34" y="118" width="262" height="9" rx="4.5" fill="#ffffff" opacity=".16"/>
+                  <rect class="pb" x="34" y="118" width="262" height="9" rx="4.5" fill="#8be034" style="--s:.45;--d:1.5s"/>
+
+                  <!-- tarjeta HTML -->
+                  <rect x="34" y="142" width="262" height="146" rx="18" fill="#1b2026" stroke="#2c333a" stroke-width="1.5"/>
+                  <rect x="50" y="156" width="98" height="22" rx="11" fill="rgba(7,206,245,.18)"/>
+                  <text x="99" y="171" text-anchor="middle" font-size="9" font-weight="800" fill="#07CEF5" letter-spacing=".5">10 PREGUNTAS</text>
+                  <rect x="154" y="156" width="110" height="22" rx="11" fill="rgba(230,165,77,.22)"/>
+                  <text x="209" y="171" text-anchor="middle" font-size="8" font-weight="800" fill="#e0a94f" letter-spacing=".4">VERDADERO O FALSO</text>
+                  <g transform="translate(165,208) scale(.5)"><g class="taco-bob"><use href="#taco"/></g></g>
+                  <text x="165" y="250" text-anchor="middle" font-size="17" font-weight="900" fill="#e7edf3">HTML</text>
+                  <rect x="50" y="256" width="230" height="24" rx="12" fill="#22262b" stroke="#3a4046" stroke-width="1.5"/>
+                  <text x="165" y="273" text-anchor="middle" font-size="9.5" font-weight="800" fill="#e7edf3" letter-spacing=".6">Revisar</text>
+
+                  <!-- tarjeta CSS -->
+                  <rect x="34" y="300" width="262" height="146" rx="18" fill="#1b2026" stroke="#2c333a" stroke-width="1.5"/>
+                  <rect x="50" y="314" width="98" height="22" rx="11" fill="rgba(7,206,245,.18)"/>
+                  <text x="99" y="329" text-anchor="middle" font-size="9" font-weight="800" fill="#07CEF5" letter-spacing=".5">10 PREGUNTAS</text>
+                  <rect x="154" y="314" width="110" height="22" rx="11" fill="rgba(230,165,77,.22)"/>
+                  <text x="209" y="329" text-anchor="middle" font-size="8" font-weight="800" fill="#e0a94f" letter-spacing=".4">VERDADERO O FALSO</text>
+                  <g transform="translate(165,366) scale(.5)"><g class="taco-bob" style="animation-delay:.7s"><use href="#taco"/></g></g>
+                  <text x="165" y="408" text-anchor="middle" font-size="17" font-weight="900" fill="#e7edf3">CSS</text>
+                  <rect x="50" y="414" width="230" height="24" rx="12" fill="#22262b" stroke="#3a4046" stroke-width="1.5"/>
+                  <text x="165" y="431" text-anchor="middle" font-size="9.5" font-weight="800" fill="#e7edf3" letter-spacing=".6">Revisar</text>
+
+                  <!-- tarjeta JavaScript -->
+                  <rect x="34" y="458" width="262" height="146" rx="18" fill="#1b2026" stroke="#2c333a" stroke-width="1.5"/>
+                  <rect x="50" y="472" width="98" height="22" rx="11" fill="rgba(7,206,245,.18)"/>
+                  <text x="99" y="487" text-anchor="middle" font-size="9" font-weight="800" fill="#07CEF5" letter-spacing=".5">10 PREGUNTAS</text>
+                  <rect x="154" y="472" width="110" height="22" rx="11" fill="rgba(230,165,77,.22)"/>
+                  <text x="209" y="487" text-anchor="middle" font-size="8" font-weight="800" fill="#e0a94f" letter-spacing=".4">VERDADERO O FALSO</text>
+                  <g transform="translate(165,524) scale(.5)"><g class="taco-bob" style="animation-delay:1.4s"><use href="#taco"/></g></g>
+                  <text x="165" y="566" text-anchor="middle" font-size="15" font-weight="900" fill="#e7edf3">JavaScript</text>
+                  <rect x="50" y="572" width="230" height="24" rx="12" fill="#22262b" stroke="#3a4046" stroke-width="1.5"/>
+                  <text x="165" y="589" text-anchor="middle" font-size="9.5" font-weight="800" fill="#e7edf3" letter-spacing=".6">Revisar</text>
+                </g>
+              </g>
+            </g>
+
+            <!-- teléfono claro (delante) -->
+            <g class="fx-in" style="--d:1.2s">
+              <g transform="translate(742,150) rotate(-7)">
+                <g class="float-a">
+                  <rect x="0" y="0" width="350" height="664" rx="46" fill="#0d1013" stroke="#454c53" stroke-width="3" filter="url(#shadow)"/>
+                  <rect x="12" y="12" width="326" height="640" rx="36" fill="url(#screenAmber)"/>
+
+                  <!-- barra del navegador -->
+                  <rect x="34" y="48" width="282" height="32" rx="16" fill="#33383d"/>
+                  <g stroke="#cfd6dc" stroke-width="2" fill="none">
+                    <rect x="54" y="58" width="13" height="11" rx="2"/>
+                    <path d="M57 58v-3a4 4 0 0 1 8 0v3"/>
+                  </g>
+                  <text x="76" y="69" font-size="11" fill="#e7edf3">mapadeltesoro.com</text>
+
+                  <!-- encabezado de la app -->
+                  <text x="34" y="108" font-size="16" font-weight="800" fill="#2b2417">Mapa del Desarrollo Web</text>
+                  <g stroke="#2b2417" stroke-width="3" stroke-linecap="round">
+                    <line x1="288" y1="94" x2="316" y2="94"/>
+                    <line x1="288" y1="102" x2="316" y2="102"/>
+                    <line x1="288" y1="110" x2="304" y2="110"/>
+                  </g>
+                  <rect x="34" y="120" width="282" height="10" rx="5" fill="#000" opacity=".18"/>
+                  <rect class="pb" x="34" y="120" width="282" height="10" rx="5" fill="#3ea24f" style="--s:.66;--d:1.35s"/>
+
+                  <!-- tarjeta HTML -->
+                  <g class="fx-up" style="--d:1.4s">
+                    <rect x="34" y="146" width="282" height="152" rx="18" fill="#fffdf7"/>
+                    <rect x="50" y="160" width="104" height="24" rx="12" fill="rgba(7,206,245,.16)"/>
+                    <text x="102" y="177" text-anchor="middle" font-size="10" font-weight="800" fill="#0788a8" letter-spacing=".5">10 PREGUNTAS</text>
+                    <rect x="160" y="160" width="116" height="24" rx="12" fill="rgba(230,165,77,.3)"/>
+                    <text x="218" y="177" text-anchor="middle" font-size="9" font-weight="800" fill="#8a5a12" letter-spacing=".4">VERDADERO O FALSO</text>
+                    <g transform="translate(175,216) scale(.52)"><g class="taco-bob"><use href="#taco"/></g></g>
+                    <text x="175" y="260" text-anchor="middle" font-size="18" font-weight="900" fill="#2b2417">HTML</text>
+                    <rect x="50" y="268" width="250" height="26" rx="13" fill="#ffffff" stroke="#e6e2d8" stroke-width="1.5"/>
+                    <text x="175" y="286" text-anchor="middle" font-size="10" font-weight="800" fill="#2b2417" letter-spacing=".6">Revisar</text>
+                  </g>
+
+                  <!-- tarjeta CSS -->
+                  <g class="fx-up" style="--d:1.55s">
+                    <rect x="34" y="310" width="282" height="152" rx="18" fill="#fffdf7"/>
+                    <rect x="50" y="324" width="104" height="24" rx="12" fill="rgba(7,206,245,.16)"/>
+                    <text x="102" y="341" text-anchor="middle" font-size="10" font-weight="800" fill="#0788a8" letter-spacing=".5">10 PREGUNTAS</text>
+                    <rect x="160" y="324" width="116" height="24" rx="12" fill="rgba(230,165,77,.3)"/>
+                    <text x="218" y="341" text-anchor="middle" font-size="9" font-weight="800" fill="#8a5a12" letter-spacing=".4">VERDADERO O FALSO</text>
+                    <g transform="translate(175,380) scale(.52)"><g class="taco-bob" style="animation-delay:.5s"><use href="#taco"/></g></g>
+                    <text x="175" y="424" text-anchor="middle" font-size="18" font-weight="900" fill="#2b2417">CSS</text>
+                    <rect x="50" y="432" width="250" height="26" rx="13" fill="#ffffff" stroke="#e6e2d8" stroke-width="1.5"/>
+                    <text x="175" y="450" text-anchor="middle" font-size="10" font-weight="800" fill="#2b2417" letter-spacing=".6">Revisar</text>
+                  </g>
+
+                  <!-- tarjeta JavaScript -->
+                  <g class="fx-up" style="--d:1.7s">
+                    <rect x="34" y="474" width="282" height="152" rx="18" fill="#fffdf7"/>
+                    <rect x="50" y="488" width="104" height="24" rx="12" fill="rgba(7,206,245,.16)"/>
+                    <text x="102" y="505" text-anchor="middle" font-size="10" font-weight="800" fill="#0788a8" letter-spacing=".5">10 PREGUNTAS</text>
+                    <rect x="160" y="488" width="116" height="24" rx="12" fill="rgba(230,165,77,.3)"/>
+                    <text x="218" y="505" text-anchor="middle" font-size="9" font-weight="800" fill="#8a5a12" letter-spacing=".4">VERDADERO O FALSO</text>
+                    <g transform="translate(175,544) scale(.52)"><g class="taco-bob" style="animation-delay:1s"><use href="#taco"/></g></g>
+                    <text x="175" y="588" text-anchor="middle" font-size="18" font-weight="900" fill="#2b2417">JavaScript</text>
+                    <rect x="50" y="596" width="250" height="26" rx="13" fill="#ffffff" stroke="#e6e2d8" stroke-width="1.5"/>
+                    <circle class="ripple" cx="175" cy="609" r="20" fill="rgba(7,206,245,.35)" style="--d:2s"/>
+                    <text x="175" y="614" text-anchor="middle" font-size="10" font-weight="800" fill="#2b2417" letter-spacing=".6">Revisar</text>
+                  </g>
+                </g>
+              </g>
+            </g>
+          </svg>
+        </section>
+
+        <!-- ==================== 03 · SERVICIOS ==================== -->
+        <section class="slide">
+          <svg class="art" viewBox="0 0 1600 900" role="img" aria-label="Servicios incluidos en la entrega">
+            <rect width="1600" height="900" fill="url(#bgBase)"/>
+            <ellipse class="drift2" cx="120" cy="700" rx="460" ry="380" fill="url(#gLime)"/>
+            <ellipse class="drift" cx="1480" cy="520" rx="480" ry="420" fill="url(#gGreen)"/>
+
+            <text x="64" y="64" class="chrome fx-in" style="--d:.1s">MAPA DEL DESARROLLO WEB</text>
+            <text x="1536" y="64" class="chrome fx-in" text-anchor="end" style="--d:.1s">PROPUESTA PARA CLIENTE · 2026</text>
+            <line x1="64" y1="86" x2="1536" y2="86" stroke="#ffffff" stroke-opacity=".18" stroke-width="2" class="draw" style="--len:1480;--d:.2s"/>
+            <rect x="64" y="81" width="300" height="10" rx="5" fill="url(#greenBar)" class="bar-grow" style="--d:.7s"/>
+
+            <text x="120" y="176" class="kick fx-up" style="--d:.35s">SERVICIOS INCLUIDOS EN LA ENTREGA</text>
+
+            <!-- hosting -->
+            <g class="fx-left" style="--d:.5s">
+              <g fill="rgba(139,224,52,.12)" stroke="#8be034" stroke-width="4">
+                <rect x="120" y="256" width="96" height="36" rx="10"/>
+                <rect x="120" y="300" width="96" height="36" rx="10"/>
+                <rect x="120" y="344" width="96" height="36" rx="10"/>
+              </g>
+              <g fill="#8be034">
+                <circle cx="140" cy="274" r="5"/><circle cx="140" cy="318" r="5"/><circle cx="140" cy="362" r="5"/>
+              </g>
+              <g stroke="#8be034" stroke-width="4" stroke-linecap="round" opacity=".65">
+                <line x1="158" y1="274" x2="200" y2="274"/>
+                <line x1="158" y1="318" x2="200" y2="318"/>
+                <line x1="158" y1="362" x2="200" y2="362"/>
+              </g>
+              <text x="252" y="306" class="it">HOSTING POR 1 AÑO</text>
+              <text x="252" y="340" class="is">SERVIDOR OPTIMIZADO INCLUIDO</text>
+            </g>
+
+            <!-- dominio -->
+            <g class="fx-left" style="--d:.72s">
+              <g fill="none" stroke="#8be034" stroke-width="4" stroke-linecap="round">
+                <circle cx="168" cy="498" r="45"/>
+                <ellipse cx="168" cy="498" rx="20" ry="45"/>
+                <line x1="123" y1="498" x2="213" y2="498"/>
+                <line x1="133" y1="472" x2="203" y2="472"/>
+                <line x1="133" y1="524" x2="203" y2="524"/>
+              </g>
+              <text x="252" y="494" class="it">DOMINIO POR 1 AÑO</text>
+              <text x="252" y="528" class="is">CON GEO Y SEO CONFIGURADOS</text>
+            </g>
+
+            <!-- autoadministrable -->
+            <g class="fx-left" style="--d:.94s">
+              <circle cx="168" cy="686" r="45" fill="rgba(139,224,52,.1)" stroke="#8be034" stroke-width="4"/>
+              <text x="168" y="704" text-anchor="middle" font-family="var(--fd)" font-size="46" font-weight="900" fill="#8be034">W</text>
+              <text x="252" y="682" class="it">AUTOADMINISTRABLE</text>
+              <text x="252" y="716" class="is">2 SESIONES DE CAPACITACIÓN</text>
+            </g>
+
+            <!-- ventana del navegador -->
+            <g class="fx-in" style="--d:.6s">
+              <g transform="translate(880,150)">
+                <rect x="0" y="0" width="740" height="300" rx="18" fill="#f4f6f8" filter="url(#shadow)"/>
+                <path d="M0 18a18 18 0 0 1 18-18h704a18 18 0 0 1 18 18v52H0z" fill="#e9edf1"/>
+                <circle cx="38" cy="44" r="10" fill="#ff5f57"/>
+                <circle cx="68" cy="44" r="10" fill="#febc2e"/>
+                <circle cx="98" cy="44" r="10" fill="#28c840"/>
+                <g fill="none" stroke="#6b7278" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M42 148l-18 14 18 14"/>
+                  <path d="M96 148l18 14-18 14"/>
+                  <path d="M154 138a16 16 0 1 1-6-12M148 118v14h-14" transform="translate(0,20)"/>
+                </g>
+                <rect x="200" y="122" width="510" height="56" rx="28" fill="#ffffff" stroke="#dde3e8" stroke-width="2"/>
+                <g fill="none" stroke="#0788a8" stroke-width="3">
+                  <rect x="228" y="140" width="20" height="20" rx="4"/>
+                  <path d="M232 140v-6a6 6 0 0 1 12 0v6"/>
+                </g>
+                <text x="268" y="159" class="br-url">mapadeltesoroweb.app</text>
+                <rect x="200" y="196" width="510" height="56" rx="28" fill="#ffffff" stroke="#dde3e8" stroke-width="2"/>
+                <g fill="none" stroke="#6b7278" stroke-width="3">
+                  <circle cx="238" cy="224" r="10"/>
+                  <path d="M245 231l8 8"/>
+                </g>
+                <text x="268" y="233" class="br-url" fill="#6b7278">/aprender/html</text>
+              </g>
+            </g>
+
+            <!-- portátil -->
+            <g class="fx-up" style="--d:.95s">
+              <g transform="translate(760,452)">
+                <g class="float-c">
+                  <rect x="0" y="0" width="740" height="404" rx="14" fill="#2b3138" filter="url(#shadow)"/>
+                  <rect x="14" y="14" width="712" height="364" rx="6" fill="url(#screenAmber)"/>
+                  <!-- barra del navegador -->
+                  <rect x="14" y="14" width="712" height="42" fill="#33383d"/>
+                  <circle cx="40" cy="35" r="7" fill="#ff5f57"/>
+                  <circle cx="62" cy="35" r="7" fill="#febc2e"/>
+                  <circle cx="84" cy="35" r="7" fill="#28c840"/>
+                  <rect x="240" y="22" width="300" height="26" rx="13" fill="#22262b"/>
+                  <g stroke="#8b96a1" stroke-width="2" fill="none">
+                    <rect x="256" y="29" width="11" height="9" rx="2"/>
+                    <path d="M258.5 29v-2.5a3.5 3.5 0 0 1 7 0V29"/>
+                  </g>
+                  <text x="276" y="39" font-size="10" fill="#c3ccd5">mapadeltesoro.com</text>
+
+                  <!-- encabezado de la app -->
+                  <text x="44" y="88" font-size="24" font-weight="800" fill="#2b2417">Mapa del Desarrollo Web</text>
+                  <rect x="512" y="70" width="172" height="26" rx="13" fill="rgba(0,0,0,.16)"/>
+                  <text x="598" y="88" text-anchor="middle" font-size="11" font-weight="800" fill="#2b2417" letter-spacing=".6">3 ISLAS · 30 MÓDULOS</text>
+                  <rect x="44" y="100" width="640" height="10" rx="5" fill="#000" opacity=".18"/>
+                  <rect class="pb" x="44" y="100" width="640" height="10" rx="5" fill="#3ea24f" style="--s:.33;--d:1.4s"/>
+
+                  <!-- tarjeta HTML -->
+                  <g class="fx-up" style="--d:1.2s">
+                    <rect x="44" y="126" width="200" height="216" rx="16" fill="#fffdf7"/>
+                    <rect x="60" y="142" width="96" height="22" rx="11" fill="rgba(7,206,245,.16)"/>
+                    <text x="108" y="157" text-anchor="middle" font-size="9" font-weight="800" fill="#0788a8" letter-spacing=".4">10 PREGUNTAS</text>
+                    <use href="#coin" x="220" y="153"/>
+                    <rect x="60" y="174" width="168" height="24" rx="12" fill="rgba(230,165,77,.3)"/>
+                    <text x="144" y="190" text-anchor="middle" font-size="9" font-weight="800" fill="#8a5a12" letter-spacing=".4">VERDADERO O FALSO</text>
+                    <g transform="translate(144,238) scale(.62)"><g class="taco-bob"><use href="#taco"/></g></g>
+                    <text x="144" y="278" text-anchor="middle" font-size="21" font-weight="900" fill="#2b2417">HTML</text>
+                    <rect x="60" y="290" width="168" height="30" rx="15" fill="#ffffff" stroke="#e6e2d8" stroke-width="1.5"/>
+                    <text x="144" y="310" text-anchor="middle" font-size="11" font-weight="800" fill="#2b2417" letter-spacing=".6">Revisar</text>
+                  </g>
+                  <!-- tarjeta CSS -->
+                  <g class="fx-up" style="--d:1.35s">
+                    <rect x="270" y="126" width="200" height="216" rx="16" fill="#fffdf7"/>
+                    <rect x="286" y="142" width="96" height="22" rx="11" fill="rgba(7,206,245,.16)"/>
+                    <text x="334" y="157" text-anchor="middle" font-size="9" font-weight="800" fill="#0788a8" letter-spacing=".4">10 PREGUNTAS</text>
+                    <rect x="286" y="174" width="168" height="24" rx="12" fill="rgba(230,165,77,.3)"/>
+                    <text x="370" y="190" text-anchor="middle" font-size="9" font-weight="800" fill="#8a5a12" letter-spacing=".4">VERDADERO O FALSO</text>
+                    <g transform="translate(370,238) scale(.62)"><g class="taco-bob" style="animation-delay:.5s"><use href="#taco"/></g></g>
+                    <text x="370" y="278" text-anchor="middle" font-size="21" font-weight="900" fill="#2b2417">CSS</text>
+                    <rect x="286" y="290" width="168" height="30" rx="15" fill="#ffffff" stroke="#e6e2d8" stroke-width="1.5"/>
+                    <text x="370" y="310" text-anchor="middle" font-size="11" font-weight="800" fill="#2b2417" letter-spacing=".6">Revisar</text>
+                  </g>
+                  <!-- tarjeta JavaScript -->
+                  <g class="fx-up" style="--d:1.5s">
+                    <rect x="496" y="126" width="200" height="216" rx="16" fill="#fffdf7"/>
+                    <rect x="512" y="142" width="96" height="22" rx="11" fill="rgba(7,206,245,.16)"/>
+                    <text x="560" y="157" text-anchor="middle" font-size="9" font-weight="800" fill="#0788a8" letter-spacing=".4">10 PREGUNTAS</text>
+                    <rect x="512" y="174" width="168" height="24" rx="12" fill="rgba(230,165,77,.3)"/>
+                    <text x="596" y="190" text-anchor="middle" font-size="9" font-weight="800" fill="#8a5a12" letter-spacing=".4">VERDADERO O FALSO</text>
+                    <g transform="translate(596,238) scale(.62)"><g class="taco-bob" style="animation-delay:1s"><use href="#taco"/></g></g>
+                    <text x="596" y="278" text-anchor="middle" font-size="19" font-weight="900" fill="#2b2417">JavaScript</text>
+                    <rect x="512" y="290" width="168" height="30" rx="15" fill="#ffffff" stroke="#e6e2d8" stroke-width="1.5"/>
+                    <circle class="ripple" cx="596" cy="305" r="22" fill="rgba(7,206,245,.3)" style="--d:2s"/>
+                    <text x="596" y="310" text-anchor="middle" font-size="11" font-weight="800" fill="#2b2417" letter-spacing=".6">Revisar</text>
+                  </g>
+                  <path d="M-50 404h840l22 26a10 10 0 0 1-9 16h-866a10 10 0 0 1-9-16z" fill="url(#metal)"/>
+                  <rect x="330" y="418" width="120" height="8" rx="4" fill="#5c646c"/>
+                </g>
+              </g>
+            </g>
+          </svg>
+        </section>
+
+        <!-- ==================== 04 · PLAN DE ESTUDIO ==================== -->
+        <section class="slide">
+          <svg class="art" viewBox="0 0 1600 900" role="img" aria-label="Plan de estudio y evaluación">
+            <rect width="1600" height="900" fill="url(#bgBase)"/>
+            <ellipse class="drift" cx="1500" cy="420" rx="540" ry="460" fill="url(#gAmber)"/>
+            <ellipse class="drift2" cx="1020" cy="820" rx="420" ry="320" fill="url(#gLime)"/>
+
+            <text x="64" y="64" class="chrome fx-in" style="--d:.1s">MAPA DEL DESARROLLO WEB</text>
+            <text x="1536" y="64" class="chrome fx-in" text-anchor="end" style="--d:.1s">PROPUESTA PARA CLIENTE · 2026</text>
+            <line x1="64" y1="86" x2="1536" y2="86" stroke="#ffffff" stroke-opacity=".18" stroke-width="2" class="draw" style="--len:1480;--d:.2s"/>
+            <rect x="64" y="81" width="300" height="10" rx="5" fill="url(#greenBar)" class="bar-grow" style="--d:.7s"/>
+
+            <text x="120" y="176" class="kick fx-up" style="--d:.35s">PLAN DE ESTUDIO Y EVALUACIÓN</text>
+
+            <g class="fx-pop" style="--d:.5s"><rect x="100" y="256" width="26" height="26" rx="5" fill="#8be034"/></g>
+            <text x="150" y="278" class="it fx-up" style="--d:.55s">HTML, CSS Y JAVASCRIPT</text>
+
+            <g class="fx-pop" style="--d:.7s"><rect x="176" y="406" width="26" height="26" rx="5" fill="#8be034"/></g>
+            <text x="226" y="428" class="it fx-up" style="--d:.75s">30 LECCIONES, 3 EXÁMENES</text>
+
+            <g class="fx-pop" style="--d:.9s"><rect x="252" y="556" width="26" height="26" rx="5" fill="#8be034"/></g>
+            <text x="302" y="578" class="it fx-up" style="--d:.95s">2 MÉTODOS DE EVALUACIÓN</text>
+
+            <g class="fx-pop" style="--d:1.1s"><rect x="328" y="706" width="26" height="26" rx="5" fill="#8be034"/></g>
+            <text x="378" y="728" class="it fx-up" style="--d:1.15s">MÁS DE 100 CONCEPTOS CLAVE</text>
+
+            <!-- tableta -->
+            <g class="fx-in" style="--d:1s">
+              <g transform="translate(1010,150) rotate(7)">
+                <g class="float-a">
+                  <ellipse cx="270" cy="330" rx="330" ry="330" fill="url(#gAmber)" opacity=".8"/>
+                  <rect x="0" y="0" width="540" height="664" rx="30" fill="#14181c" stroke="#454b52" stroke-width="3" filter="url(#shadow)"/>
+                  <rect x="16" y="16" width="508" height="632" rx="18" fill="url(#screenAmber)"/>
+
+                  <!-- barra superior de la app -->
+                  <rect x="16" y="16" width="508" height="76" fill="#ffffff" opacity=".5"/>
+                  <rect x="40" y="34" width="42" height="42" rx="11" fill="#07CEF5"/>
+                  <path d="M52 55h18M61 46v18" stroke="#ffffff" stroke-width="4.5" stroke-linecap="round"/>
+                  <text x="98" y="56" font-size="21" font-weight="900" fill="#2b2417">3 PREGUNTAS: VERDADERO O FALSO</text>
+                  <text x="98" y="76" font-size="12" fill="#7b6a4a">Pregunta para el Concepto 1</text>
+                  <circle cx="490" cy="55" r="17" fill="#ffffff" opacity=".7"/>
+                  <path d="M483 48l14 14M497 48l-14 14" stroke="#2b2417" stroke-width="3" stroke-linecap="round"/>
+
+                  <!-- pregunta 1 -->
+                  <g class="fx-up" style="--d:1.25s">
+                    <rect x="40" y="110" width="460" height="248" rx="18" fill="#ffffff" opacity=".96"/>
+                    <rect x="62" y="128" width="132" height="26" rx="13" fill="rgba(7,206,245,.16)"/>
+                    <text x="80" y="147" class="q-tag">PREGUNTA 1</text>
+                    <circle cx="466" cy="141" r="13" fill="none" stroke="#d7cbb4" stroke-width="2"/>
+                    <path d="M466 135v7M466 147v1" stroke="#b9a882" stroke-width="2.6" stroke-linecap="round"/>
+
+                    <!-- enunciado con palabras resaltadas -->
+                    <text x="62" y="190" class="q-txt">El atributo</text>
+                    <rect x="176" y="172" width="94" height="26" rx="8" fill="rgba(7,206,245,.18)"/>
+                    <text x="223" y="191" text-anchor="middle" font-size="17" font-weight="700" fill="#0788a8">concepto</text>
+                    <text x="280" y="190" class="q-txt">fue de un</text>
+                    <rect x="390" y="172" width="82" height="26" rx="8" fill="rgba(230,165,77,.3)"/>
+                    <text x="431" y="191" text-anchor="middle" font-size="17" font-weight="700" fill="#8a5a12">objeto</text>
+
+                    <text x="62" y="222" class="q-txt">al que debe sustituirse con el</text>
+                    <rect x="292" y="204" width="94" height="26" rx="8" fill="rgba(7,206,245,.18)"/>
+                    <text x="339" y="223" text-anchor="middle" font-size="17" font-weight="700" fill="#0788a8">concepto</text>
+                    <text x="396" y="222" class="q-txt">del</text>
+
+                    <rect x="62" y="232" width="126" height="26" rx="8" fill="rgba(230,165,77,.3)"/>
+                    <text x="125" y="251" text-anchor="middle" font-size="17" font-weight="700" fill="#8a5a12">Concepto 2</text>
+
+                    <rect x="62" y="272" width="416" height="34" rx="12" fill="#f7f4ec" stroke="#e6e2d8" stroke-width="1.5"/>
+                    <text x="270" y="295" text-anchor="middle" font-size="17" font-weight="700" fill="#3b4148">Verdadero</text>
+                    <rect x="62" y="314" width="416" height="34" rx="12" fill="#f7f4ec" stroke="#e6e2d8" stroke-width="1.5"/>
+                    <text x="270" y="337" text-anchor="middle" font-size="17" font-weight="700" fill="#3b4148">Falso</text>
+                  </g>
+
+                  <!-- pregunta 2 -->
+                  <g class="fx-up" style="--d:1.45s">
+                    <rect x="40" y="374" width="460" height="248" rx="18" fill="#ffffff" opacity=".96"/>
+                    <rect x="62" y="392" width="132" height="26" rx="13" fill="rgba(7,206,245,.16)"/>
+                    <text x="80" y="411" class="q-tag">PREGUNTA 2</text>
+                    <circle cx="466" cy="405" r="13" fill="none" stroke="#d7cbb4" stroke-width="2"/>
+                    <path d="M466 399v7M466 411v1" stroke="#b9a882" stroke-width="2.6" stroke-linecap="round"/>
+
+                    <text x="62" y="454" class="q-txt">El atributo</text>
+                    <rect x="176" y="436" width="106" height="26" rx="8" fill="rgba(7,206,245,.18)"/>
+                    <text x="229" y="455" text-anchor="middle" font-size="17" font-weight="700" fill="#0788a8">presencial</text>
+                    <text x="292" y="454" class="q-txt">sustituye al</text>
+                    <rect x="414" y="436" width="64" height="26" rx="8" fill="rgba(230,165,77,.3)"/>
+                    <text x="446" y="455" text-anchor="middle" font-size="17" font-weight="700" fill="#8a5a12">href</text>
+
+                    <text x="62" y="486" class="q-txt">y debe inmediatamente sobre algunas</text>
+                    <rect x="62" y="496" width="132" height="26" rx="8" fill="rgba(7,206,245,.18)"/>
+                    <text x="128" y="515" text-anchor="middle" font-size="17" font-weight="700" fill="#0788a8">excepciones</text>
+
+                    <rect x="62" y="536" width="416" height="34" rx="12" fill="#f7f4ec" stroke="#e6e2d8" stroke-width="1.5"/>
+                    <text x="270" y="559" text-anchor="middle" font-size="17" font-weight="700" fill="#3b4148">Verdadero</text>
+
+                    <rect x="62" y="578" width="416" height="34" rx="12" fill="rgba(7,206,245,.1)" stroke="#07CEF5" stroke-width="3" class="sel-pulse" style="--d:2s"/>
+                    <text x="270" y="601" text-anchor="middle" font-size="17" font-weight="800" fill="#0788a8">Falso</text>
+                  </g>
+                </g>
+              </g>
+            </g>
+          </svg>
+        </section>
+
+        <!-- ==================== 05 · PRÓXIMOS PASOS ==================== -->
+        <section class="slide">
+          <svg class="art" viewBox="0 0 1600 900" role="img" aria-label="Próximos pasos">
+            <rect width="1600" height="900" fill="url(#bgBase)"/>
+            <ellipse class="drift2" cx="130" cy="180" rx="480" ry="380" fill="url(#gLime)"/>
+            <ellipse class="drift" cx="1480" cy="760" rx="520" ry="400" fill="url(#gGreen)"/>
+            <ellipse class="drift2" cx="820" cy="900" rx="620" ry="300" fill="url(#gCyan)"/>
+
+            <text x="64" y="64" class="chrome fx-in" style="--d:.1s">MAPA DEL DESARROLLO WEB</text>
+            <text x="1536" y="64" class="chrome fx-in" text-anchor="end" style="--d:.1s">PROPUESTA PARA CLIENTE · 2026</text>
+            <line x1="64" y1="86" x2="1536" y2="86" stroke="#ffffff" stroke-opacity=".18" stroke-width="2" class="draw" style="--len:1480;--d:.2s"/>
+            <rect x="64" y="81" width="300" height="10" rx="5" fill="url(#greenBar)" class="bar-grow" style="--d:.7s"/>
+
+            <rect x="120" y="182" width="48" height="6" rx="3" fill="#8be034" class="bar-grow" style="--d:.4s"/>
+            <text x="188" y="194" class="kick fx-up" style="--d:.45s">DE LA PROPUESTA A LA ENTREGA</text>
+            <text x="114" y="304" class="h2 fx-up" style="--d:.55s">Próximos pasos</text>
+            <text x="118" y="356" class="lead fx-up" style="--d:.7s">Tres etapas claras, con entregables verificables en cada una.</text>
+
+            <path d="M160 406h1400" stroke="#8be034" stroke-opacity=".7" stroke-width="3" stroke-dasharray="14 12" class="draw" style="--len:1400;--d:.8s"/>
+            <circle cx="160" cy="406" r="9" fill="#8be034" class="pulse"/>
+            <circle cx="800" cy="406" r="9" fill="#8be034" class="pulse"/>
+            <circle cx="1440" cy="406" r="9" fill="#8be034" class="pulse"/>
+
+            <g class="fx-up" style="--d:.9s">
+              <rect x="120" y="446" width="440" height="270" rx="20" fill="url(#panelGrad)" stroke="#ffffff" stroke-opacity=".12"/>
+              <text x="154" y="536" class="num">01</text>
+              <text x="154" y="594" class="ct">Alcance y contenido</text>
+              <text x="154" y="638" class="cb">Definimos juntos islas, módulos</text>
+              <text x="154" y="668" class="cb">y dinámica de los exámenes.</text>
+            </g>
+            <g class="fx-up" style="--d:1.05s">
+              <rect x="580" y="446" width="440" height="270" rx="20" fill="url(#panelGrad)" stroke="#ffffff" stroke-opacity=".12"/>
+              <text x="614" y="536" class="num">02</text>
+              <text x="614" y="594" class="ct">Diseño y desarrollo</text>
+              <text x="614" y="638" class="cb">Interfaz responsive, modo oscuro</text>
+              <text x="614" y="668" class="cb">y webapp instalable.</text>
+            </g>
+            <g class="fx-up" style="--d:1.2s">
+              <rect x="1040" y="446" width="440" height="270" rx="20" fill="url(#panelGrad)" stroke="#ffffff" stroke-opacity=".12"/>
+              <text x="1074" y="536" class="num">03</text>
+              <text x="1074" y="594" class="ct">Entrega y soporte</text>
+              <text x="1074" y="638" class="cb">Hosting, dominio y 2 sesiones</text>
+              <text x="1074" y="668" class="cb">de capacitación incluidas.</text>
+            </g>
+
+            <g class="fx-up" style="--d:1.4s">
+              <rect x="120" y="778" width="330" height="62" rx="31" fill="#8be034"/>
+              <text x="285" y="818" text-anchor="middle" font-size="24" font-weight="800" fill="#0b1a05" letter-spacing=".1em">AGENDAR DEMO</text>
+              <text x="486" y="818" class="lead" font-size="24">30 minutos · sin costo · en línea</text>
+            </g>
+            <rect x="1000" y="856" width="536" height="10" rx="5" fill="url(#greenBar)" class="bar-grow" style="--d:1.5s"/>
+          </svg>
+        </section>
+
+      </div>
+
+      <!-- Rejilla -->
+      <section class="overview" id="overview"><div class="ov-grid" id="ovGrid"></div></section>
+    </div>
+
+    <div class="stage-meta">
+      <span class="dot"></span>
+      <b id="metaNum">01</b>
+      <span id="metaTitle">Portada</span>
+    </div>
+  </main>
+
+  <aside class="notes" id="notes">
+    <h3>Notas del orador</h3>
+    <p class="n-title" id="noteTitle"></p>
+    <p class="n-body" id="noteBody"></p>
+    <ul id="noteList"></ul>
+    <p class="hint">Atajos: flechas o espacio para navegar · N notas · G rejilla · F pantalla completa · Esc salir</p>
+  </aside>
+</div>
+
+<!-- ============ BARRA INFERIOR ============ -->
+<footer class="navbar">
+  <div class="nav-group">
+    <button class="btn icon" id="btnPrev" title="Anterior">
+      <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5L8 12l7 7"/></svg>
+    </button>
+    <div class="counter"><span id="curNum">1</span> / <b id="totNum">5</b></div>
+    <button class="btn icon" id="btnNext" title="Siguiente">
+      <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg>
+    </button>
+  </div>
+
+  <div class="progress" id="progress" title="Ir a diapositiva"><i id="progressBar"></i></div>
+
+  <div class="nav-group">
+    <span class="nav-title" id="navTitle">Portada</span>
+    <button class="btn icon" id="btnAuto" title="Reproducción automática">
+      <svg class="ic" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5l11 7-11 7z"/></svg>
+    </button>
+    <button class="btn icon" id="btnPrint" title="Imprimir o guardar como PDF">
+      <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M7 9V4h10v5"/><rect x="4" y="9" width="16" height="7" rx="2"/><path d="M7 14h10v6H7z"/></svg>
+    </button>
+  </div>
+</footer>
+
+<!-- ============ AYUDA ============ -->
+<div class="help" id="help">
+  <div class="help-card">
+    <h3>Atajos de teclado</h3>
+    <p class="sub">Presentación SVG animada para clientes, sin imágenes externas.</p>
+    <div class="keys">
+      <div><kbd>→</kbd><kbd>Espacio</kbd> Diapositiva siguiente</div>
+      <div><kbd>←</kbd> Diapositiva anterior</div>
+      <div><kbd>Inicio</kbd> Primera diapositiva</div>
+      <div><kbd>Fin</kbd> Última diapositiva</div>
+      <div><kbd>N</kbd> Notas del orador</div>
+      <div><kbd>G</kbd> Rejilla de diapositivas</div>
+      <div><kbd>F</kbd> Pantalla completa</div>
+      <div><kbd>B</kbd> Barra de miniaturas</div>
+      <div><kbd>P</kbd> Imprimir en PDF</div>
+      <div><kbd>Esc</kbd> Salir o cerrar</div>
+    </div>
+    <div class="help-close"><button class="btn primary" id="helpClose">Entendido</button></div>
+  </div>
+</div>
+
+<script>
+/* =========================================================
+   METADATOS DE CADA DIAPOSITIVA (dibujadas a mano en SVG)
+   ========================================================= */
+const SLIDES = [
+  {
+    title:"Portada", kicker:"Apertura",
+    notes:"Abrimos con la promesa de valor: una app interactiva para estudiar conceptos de frontend. Un minuto.",
+    bullets:["Qué es: app de aprendizaje gamificada","Para quién: equipos y estudiantes de frontend","Cierre: demo en vivo de 30 minutos"]
+  },
+  {
+    title:"Características de la plataforma", kicker:"Producto",
+    notes:"Resaltar que es la misma app en cualquier pantalla, con modo oscuro nativo y sin depender de tiendas de aplicaciones.",
+    bullets:["Responsivo: celular, escritorio y tableta","Modo claro y oscuro con acento adaptado","Webapp instalable desde el navegador"]
+  },
+  {
+    title:"Servicios incluidos en la entrega", kicker:"Infraestructura",
+    notes:"Todo lo técnico queda cubierto: el cliente recibe la app publicada y capacitación para administrarla.",
+    bullets:["Hosting por 1 año","Dominio por 1 año con GEO y SEO","Autoadministrable con 2 sesiones de capacitación"]
+  },
+  {
+    title:"Plan de estudio y evaluación", kicker:"Contenido",
+    notes:"Detalle académico: 3 islas de conocimiento, 30 lecciones con 3 preguntas cada una y exámenes finales con dos dinámicas de evaluación.",
+    bullets:["HTML, CSS y JavaScript","30 lecciones y 3 exámenes finales","Verdadero o falso y opción múltiple","Más de 100 conceptos clave"]
+  },
+  {
+    title:"Próximos pasos", kicker:"Cierre",
+    notes:"Cerrar con el plan de trabajo y una sola llamada a la acción: agendar la demo.",
+    bullets:["01 Alcance y contenido","02 Diseño y desarrollo","03 Entrega y soporte","CTA: agendar demo de 30 minutos"]
+  }
+];
+
+/* =========================================================
+   ESTADO Y CONSTRUCCIÓN
+   ========================================================= */
+let current = 0, autoplay = null;
+const $ = s => document.querySelector(s);
+const deck = $("#deck");
+const thumbList = $("#thumbList");
+const ovGrid = $("#ovGrid");
+const slideEls = [...deck.children];
+
+SLIDES.forEach((s, i) => {
+  const n = String(i + 1).padStart(2, "0");
+
+  // Miniatura (clon del SVG, en estado final)
+  const t = document.createElement("button");
+  t.className = "thumb";
+  t.innerHTML = `<span class="thumb-n">${i + 1}</span><span class="thumb-shot"></span>`;
+  t.querySelector(".thumb-shot").appendChild(slideEls[i].querySelector("svg").cloneNode(true));
+  t.addEventListener("click", () => go(i));
+  thumbList.appendChild(t);
+
+  // Tarjeta de rejilla
+  const c = document.createElement("button");
+  c.className = "ov-card";
+  c.innerHTML = `<div class="shot"></div><p>${s.title}</p><small>${n} · ${s.kicker}</small>`;
+  c.querySelector(".shot").appendChild(slideEls[i].querySelector("svg").cloneNode(true));
+  c.addEventListener("click", () => { go(i); setView("edit"); });
+  ovGrid.appendChild(c);
+});
+
+$("#totNum").textContent = SLIDES.length;
+
+/* =========================================================
+   NAVEGACIÓN
+   ========================================================= */
+function go(i){
+  current = Math.max(0, Math.min(SLIDES.length - 1, i));
+  const s = SLIDES[current];
+
+  slideEls.forEach((el, k) => {
+    el.classList.toggle("active", k === current);
+    el.dataset.pos = k < current ? "before" : (k > current ? "after" : "");
+  });
+  [...thumbList.children].forEach((el, k) => el.classList.toggle("on", k === current));
+  [...ovGrid.children].forEach((el, k) => el.classList.toggle("on", k === current));
+
+  $("#curNum").textContent = current + 1;
+  $("#progressBar").style.width = ((current + 1) / SLIDES.length * 100) + "%";
+  $("#navTitle").textContent = s.title;
+  $("#metaNum").textContent = String(current + 1).padStart(2, "0");
+  $("#metaTitle").textContent = s.title;
+  $("#noteTitle").textContent = `${String(current+1).padStart(2,"0")} · ${s.title}`;
+  $("#noteBody").textContent = s.notes;
+  $("#noteList").innerHTML = s.bullets.map(b => `<li>${b}</li>`).join("");
+  document.title = `${s.title} · Mapa del Desarrollo Web`;
+  const th = thumbList.children[current];
+  if (th) th.scrollIntoView({block:"nearest", behavior:"smooth"});
+}
+const next = () => go(current + 1 === SLIDES.length ? 0 : current + 1);
+const prev = () => go(current === 0 ? SLIDES.length - 1 : current - 1);
+
+/* =========================================================
+   VISTAS
+   ========================================================= */
+function setView(v){
+  document.body.classList.toggle("mode-overview", v === "overview");
+  if (v === "present") enterPresent(); else exitPresent();
+  document.querySelectorAll(".tab").forEach(t => t.classList.toggle("on", t.dataset.view === v));
+}
+function enterPresent(){
+  document.body.classList.add("presenting");
+  document.body.classList.remove("mode-overview");
+  if (!document.fullscreenElement && document.documentElement.requestFullscreen)
+    document.documentElement.requestFullscreen().catch(()=>{});
+  flashUI();
+}
+function exitPresent(){
+  document.body.classList.remove("presenting");
+  if (document.fullscreenElement) document.exitFullscreen().catch(()=>{});
+}
+let uiTimer;
+function flashUI(){
+  document.body.classList.add("show-ui");
+  clearTimeout(uiTimer);
+  uiTimer = setTimeout(() => document.body.classList.remove("show-ui"), 2200);
+}
+
+/* =========================================================
+   AJUSTE DEL ESCENARIO
+   ========================================================= */
+function fit(){
+  const st = $("#stage");
+  const pad = parseFloat(getComputedStyle(st).paddingTop) * 2;
+  document.documentElement.style.setProperty("--stage-h", (st.clientHeight - pad) + "px");
+}
+new ResizeObserver(fit).observe($("#stage"));
+window.addEventListener("resize", fit);
+fit();
+
+/* =========================================================
+   CONTROLES
+   ========================================================= */
+$("#btnPrev").onclick = prev;
+$("#btnNext").onclick = next;
+$("#btnSidebar").onclick = e => {
+  document.body.classList.toggle("no-sidebar");
+  e.currentTarget.classList.toggle("on", !document.body.classList.contains("no-sidebar"));
+  setTimeout(fit, 300);
+};
+$("#btnNotes").onclick = e => {
+  document.body.classList.toggle("show-notes");
+  e.currentTarget.classList.toggle("on");
+  setTimeout(fit, 300);
+};
+$("#btnFull").onclick = () =>
+  document.body.classList.contains("presenting") ? setView("edit") : setView("present");
+$("#btnHelp").onclick = () => document.body.classList.toggle("show-help");
+$("#helpClose").onclick = () => document.body.classList.remove("show-help");
+$("#help").onclick = e => { if (e.target.id === "help") document.body.classList.remove("show-help"); };
+$("#btnPrint").onclick = () => window.print();
+
+$("#btnAuto").onclick = e => {
+  const b = e.currentTarget;
+  if (autoplay){
+    clearInterval(autoplay); autoplay = null;
+    b.classList.remove("on");
+    b.innerHTML = '<svg class="ic" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5l11 7-11 7z"/></svg>';
+  } else {
+    autoplay = setInterval(next, 7000);
+    b.classList.add("on");
+    b.innerHTML = '<svg class="ic" viewBox="0 0 24 24" fill="currentColor"><rect x="7" y="5" width="4" height="14" rx="1"/><rect x="13" y="5" width="4" height="14" rx="1"/></svg>';
+  }
+};
+
+$("#progress").onclick = e => {
+  const r = e.currentTarget.getBoundingClientRect();
+  go(Math.round((e.clientX - r.left) / r.width * (SLIDES.length - 1)));
+};
+
+document.querySelectorAll(".tab").forEach(t => t.onclick = () => setView(t.dataset.view));
+
+document.addEventListener("keydown", e => {
+  if (e.metaKey || e.ctrlKey || e.altKey) return;
+  const k = e.key;
+  if (["ArrowRight","PageDown"," ","Enter"].includes(k)){ e.preventDefault(); next(); flashUI(); }
+  else if (["ArrowLeft","PageUp","Backspace"].includes(k)){ e.preventDefault(); prev(); flashUI(); }
+  else if (k === "Home"){ go(0); }
+  else if (k === "End"){ go(SLIDES.length - 1); }
+  else if (k.toLowerCase() === "n"){ $("#btnNotes").click(); }
+  else if (k.toLowerCase() === "b"){ $("#btnSidebar").click(); }
+  else if (k.toLowerCase() === "g"){ setView(document.body.classList.contains("mode-overview") ? "edit" : "overview"); }
+  else if (k.toLowerCase() === "f"){ setView(document.body.classList.contains("presenting") ? "edit" : "present"); }
+  else if (k.toLowerCase() === "p"){ e.preventDefault(); window.print(); }
+  else if (k === "?" || k === "/"){ document.body.classList.toggle("show-help"); }
+  else if (k === "Escape"){
+    if (document.body.classList.contains("show-help")) document.body.classList.remove("show-help");
+    else setView("edit");
+  }
+});
+
+document.addEventListener("fullscreenchange", () => {
+  if (!document.fullscreenElement && document.body.classList.contains("presenting")){
+    document.body.classList.remove("presenting");
+    document.querySelectorAll(".tab").forEach(t => t.classList.toggle("on", t.dataset.view === "edit"));
+  }
+  setTimeout(fit, 120);
+});
+
+/* Deslizar en pantallas táctiles */
+let x0 = null;
+$("#stage").addEventListener("touchstart", e => x0 = e.touches[0].clientX, {passive:true});
+$("#stage").addEventListener("touchend", e => {
+  if (x0 === null) return;
+  const dx = e.changedTouches[0].clientX - x0;
+  if (Math.abs(dx) > 55) (dx < 0 ? next() : prev());
+  x0 = null;
+}, {passive:true});
+
+/* Clic en la diapositiva solo avanza en modo presentación */
+deck.addEventListener("click", () => {
+  if (document.body.classList.contains("presenting")){ next(); flashUI(); }
+});
+
+go(0);
+</script>
+</body>
+</html>
